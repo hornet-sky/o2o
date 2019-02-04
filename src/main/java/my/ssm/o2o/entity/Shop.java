@@ -64,7 +64,7 @@ public class Shop {
     /**  
      * <p>店铺创建人</p>     
      */
-    private UserInfo userInfo;
+    private UserInfo owner;
     /**  
      * <p>店铺所在区域</p>     
      */

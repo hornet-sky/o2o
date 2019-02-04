@@ -14,6 +14,7 @@
         <property name="user" value="${jdbc.username}"></property>
         <property name="password" value="${jdbc.password}"></property>
         <!-- 连接池参数 -->
+        <property name="initialPoolSize" value="${c3p0.initial_pool_size}"></property>
         <property name="maxPoolSize" value="${c3p0.max_pool_size}"></property>
         <property name="minPoolSize" value="${c3p0.min_pool_size}"></property>
         <!-- 关闭连接后是否自动commit -->

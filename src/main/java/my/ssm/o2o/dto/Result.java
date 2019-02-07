@@ -19,10 +19,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Result {
-    private Boolean success = true;
-    private String errMsg;
-    public Result(String errMsg) {
-        this.success = false;
-        this.errMsg = errMsg;
-    }
+    private Integer state;
+    private String msg;
 }

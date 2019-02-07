@@ -1,4 +1,4 @@
-package my.ssm.o2o.web;
+package my.ssm.o2o.web.superadmin;
 
 import java.util.List;
 
@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import my.ssm.o2o.dto.GridResult;
+import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.Result;
 import my.ssm.o2o.entity.Area;
+import my.ssm.o2o.enums.AreaOperStateEnum;
 import my.ssm.o2o.service.AreaService;
 
 /**  
@@ -21,20 +23,21 @@ import my.ssm.o2o.service.AreaService;
  * @author Wanghui    
  */  
 @Controller
-@RequestMapping("/super_admin")
+@RequestMapping("/superadmin")
 public class AreaController {
-    @SuppressWarnings("unused")
     private Logger logger = LoggerFactory.getLogger(AreaController.class);
     @Autowired
     private AreaService areaService;
-    @GetMapping("/list_area")
+    
+    @GetMapping("/listarea")
     @ResponseBody
     public Result listArea() {
         try {
             List<Area> areaList = areaService.findAll();
             return new GridResult<Area>(areaList, areaList.size());
         } catch (Exception e) {
-            return new Result(e.getMessage());
+            logger.error(e.getMessage(), e);
+            return new OperationResult<Area, AreaOperStateEnum>(AreaOperStateEnum.OPERATION_FAILURE, e);
         }
     }
 }

@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `tb_shop` (
   `priority` INT NOT NULL COMMENT '权重（影响展示顺序）',
   `create_time` DATETIME NOT NULL COMMENT '创建时间',
   `last_edit_time` DATETIME COMMENT '修改时间',
-  `enable_status` TINYINT(2) NOT NULL COMMENT '店铺状态：-1 不可用，0 审核中，1 可用',
+  `enable_status` TINYINT(2) NOT NULL COMMENT '店铺状态：-1 审核不通过，0 审核中，1 审核通过',
   `advice` VARCHAR(255) COMMENT '超级管理员给店家的建议',
   CONSTRAINT fk_shop_profile FOREIGN KEY(`owner_id`) REFERENCES `tb_user_info`(`user_id`),
   CONSTRAINT fk_shop_area FOREIGN KEY(`area_id`) REFERENCES `tb_area`(`area_id`),

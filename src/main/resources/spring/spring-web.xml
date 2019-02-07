@@ -3,15 +3,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
     <!-- 1、开启SpringMVC注解模式 -->
     <mvc:annotation-driven />
     
     <!-- 2、静态资源配置 -->
     <mvc:resources location="/resources/" mapping="/resources/**" />
-    <!-- <mvc:default-servlet-handler/> -->
+    <mvc:default-servlet-handler/>
     
     <!-- 3、定义视图解析器 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -20,5 +22,19 @@
     </bean>
     
     <!-- 4、扫描指定位置的controller组件 -->
-    <context:component-scan base-package="my.ssm.o2o.web" />
+    <context:component-scan base-package="my.ssm.o2o.web,my.ssm.o2o.component" />
+    
+    <!-- 5、引入一些配置参数 -->
+    <util:properties id="prop" location="classpath:config.properties"/>
+    
+    <!-- 6、文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	     <!-- 100MB=104857600B  10MB=10485760B  6MB=6291456B -->
+	     <property name="maxUploadSize" value="#{prop['upload.maxUploadSize']}" /> <!-- 通过SpEL表达式#{}获取bean的属性值 -->
+	     <!-- <property name="maxInMemorySize" value="4096" /> -->
+	     <property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+    
+    <!-- 7、其他 -->
+    <bean class="my.ssm.o2o.util.SpringContextUtils"></bean>
 </beans>

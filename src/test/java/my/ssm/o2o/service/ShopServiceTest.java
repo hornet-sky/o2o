@@ -1,6 +1,7 @@
 package my.ssm.o2o.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
@@ -37,11 +38,11 @@ public class ShopServiceTest extends BaseTest {
         shop.setPriority(2);
         shop.setShopAddr("上海黄浦区南京东路20号");
         shop.setShopDesc("新店开张");
-        shop.setShopName("和平饭店");
+        shop.setShopName("和平饭店22");
         
         File shopImg = new File("C:\\Users\\Wang\\Desktop\\xiaohuangren.jpg");
         
         //在测试环境中，PathUtil.getImageBaseDirPath中报“Failed to load ApplicationContext”
-        //shopService.register(shop, new FileInputStream(shopImg), ".jpg"); 
+        shopService.register(shop, new FileInputStream(shopImg), ".jpg"); 
     }
 }

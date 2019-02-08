@@ -21,19 +21,19 @@
         <property name="suffix" value=".html"></property>
     </bean>
     
-    <!-- 4、扫描指定位置的controller组件 -->
+    <!-- 4、文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+         <!-- 100MB=104857600B  10MB=10485760B  6MB=6291456B -->
+         <property name="maxUploadSize" value="#{prop['upload.maxUploadSize']}" /> <!-- 通过SpEL表达式#{}获取bean的属性值 -->
+         <!-- <property name="maxInMemorySize" value="4096" /> -->
+         <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+    
+    <!-- 5、扫描指定位置的controller组件 -->
     <context:component-scan base-package="my.ssm.o2o.web,my.ssm.o2o.component" />
     
-    <!-- 5、引入一些配置参数 -->
+    <!-- 6、引入一些配置参数 -->
     <util:properties id="prop" location="classpath:config.properties"/>
-    
-    <!-- 6、文件上传 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	     <!-- 100MB=104857600B  10MB=10485760B  6MB=6291456B -->
-	     <property name="maxUploadSize" value="#{prop['upload.maxUploadSize']}" /> <!-- 通过SpEL表达式#{}获取bean的属性值 -->
-	     <!-- <property name="maxInMemorySize" value="4096" /> -->
-	     <property name="defaultEncoding" value="UTF-8"></property>
-	</bean>
     
     <!-- 7、其他 -->
     <bean class="my.ssm.o2o.util.SpringContextUtils"></bean>

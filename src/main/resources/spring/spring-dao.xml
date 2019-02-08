@@ -6,11 +6,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
     <!-- 1、引入数据库的配置参数 -->
     <context:property-placeholder location="classpath:db.properties" />
-    <!-- 2、配置c3p0数据源 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <!-- 2、配置主从库数据源 -->
+    <bean id="abstractDataSource" abstract="true" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <!-- 基本参数 -->
         <property name="driverClass" value="${jdbc.driver}"></property>
-        <property name="jdbcUrl" value="${jdbc.url}"></property>
         <property name="user" value="${jdbc.username}"></property>
         <property name="password" value="${jdbc.password}"></property>
         <!-- 连接池参数 -->
@@ -23,6 +22,28 @@
         <property name="checkoutTimeout" value="${c3p0.checkout_timeout}"></property>
         <!-- 获取连接失败后重试次数 -->
         <property name="acquireRetryAttempts" value="${c3p0.acquire_retry_attempts}"></property>
+    </bean>
+    <!-- 主库，主要是写操作 -->
+    <bean id="master" parent="abstractDataSource">
+        <property name="jdbcUrl" value="${jdbc.master.url}"></property>
+    </bean>
+    <!-- 从库，读操作 -->
+    <bean id="slave" parent="abstractDataSource">
+        <property name="jdbcUrl" value="${jdbc.slave.url}"></property>
+    </bean>
+    <bean id="dynamicDataSource" class="my.ssm.o2o.dao.split.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry key="master" value-ref="master"></entry>
+                <entry key="slave" value-ref="slave"></entry>
+            </map>
+        </property>
+    </bean>
+    <!-- 等到SQL执行阶段真正需要数据库连接的时候才去问dynamicDataSource要连接，
+            而dynamicDataSource会借助MyBatis拦截器事先准备好的key选择对应的数据源，然后从数据源里获取连接。
+     -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource" ref="dynamicDataSource"></property>
     </bean>
     <!-- 3、配置sqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

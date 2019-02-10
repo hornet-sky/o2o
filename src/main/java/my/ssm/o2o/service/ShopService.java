@@ -11,18 +11,39 @@ import my.ssm.o2o.entity.Shop;
  */  
 public interface ShopService {
     /**  
+     * <p>查找指定ID的店铺信息</p>  
+     * @param shopId 店铺ID
+     * @return  店铺信息
+     */  
+    Shop findShopById(Integer shopId);
+    /**  
      * <p>注册店铺</p>  
      * @param shop 店铺
      * @param imgIn  店铺照片输入流
      * @param suffix 店铺照片后缀名，例如“.jpg”
      */  
-    void register(Shop shop, InputStream imgIn, String suffix);
+    void registerShop(Shop shop, InputStream imgIn, String suffix);
     /**  
-     * <p>添加或更新店铺缩略图</p>  
+     * <p>修改店铺信息</p>  
+     * @param shop 店铺
+     * @param imgIn  店铺照片输入流
+     * @param suffix 店铺照片后缀名，例如“.jpg”
+     */  
+    void modifyShop(Shop shop, InputStream imgIn, String suffix);
+    /**  
+     * <p>添加店铺缩略图</p>  
      * @param shopId 店铺ID
      * @param imgIn  店铺照片输入流
      * @param suffix 店铺照片后缀名，例如“.jpg”
      * @return 店铺缩略图的相对路径 
      */  
-    String addOrUpdateThumbnail(Integer shopId, InputStream imgIn, String suffix);
+    String addThumbnail(Integer shopId, InputStream imgIn, String suffix);
+    /**  
+     * <p>更新店铺缩略图</p>  
+     * @param shopId 店铺ID
+     * @param imgIn  店铺照片输入流
+     * @param suffix 店铺照片后缀名，例如“.jpg”
+     * @return 新的店铺缩略图的相对路径 
+     */  
+    String updateThumbnail(Integer shopId, InputStream imgIn, String suffix);
 }

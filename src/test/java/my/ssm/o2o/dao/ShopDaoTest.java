@@ -18,6 +18,12 @@ public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
     @Test
+    public void testFindById() {
+        Shop shop = shopDao.findById(2);
+        System.out.println(shop);
+    }
+    
+    @Test
     public void testSave() {
         UserInfo owner = new UserInfo();
         owner.setUserId(1L);

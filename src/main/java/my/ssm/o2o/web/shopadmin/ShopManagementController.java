@@ -40,9 +40,10 @@ public class ShopManagementController {
     @Autowired
     private CommonService commonService;
     
-    @PostMapping("/registershop")
+    @PostMapping("/registerormodifyshop")
     @ResponseBody
-    public Result registerShop(
+    public Result registerOrModifyShop(
+            @RequestParam(name = "shopId", required = false) Integer shopId, 
             @RequestParam(name = "shopName") String shopName, 
             @RequestParam(name = "shopCategory") Long shopCategoryId,
             @RequestParam(name = "shopArea") Integer shopAreaId,
@@ -52,12 +53,13 @@ public class ShopManagementController {
             @RequestParam(name = "verifyCodeActual") String verifyCodeActual,
             @RequestParam(name = "shopImg", required = false) CommonsMultipartFile shopImg,
             HttpSession session) {
-        logger.debug("registershop - shopName={}, shopCategory={}, shopArea={}, shopAddr={}, shopPhone={}, shopDesc={}, verifyCodeActual={}, shopImg={}",
-                shopName, shopCategoryId, shopAreaId, shopAddr, shopPhone, shopDesc, verifyCodeActual, shopImg);
+        logger.debug("registershop - shopId={}, shopName={}, shopCategory={}, shopArea={}, shopAddr={}, shopPhone={}, shopDesc={}, verifyCodeActual={}, shopImg={}",
+                shopId, shopName, shopCategoryId, shopAreaId, shopAddr, shopPhone, shopDesc, verifyCodeActual, shopImg);
         if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_VERIFY_CODE);
         }
         Shop shop = new Shop();
+        shop.setShopId(shopId);
         shop.setShopName(shopName);
         shop.setShopAddr(shopAddr);
         shop.setPhone(shopPhone);
@@ -69,9 +71,8 @@ public class ShopManagementController {
         Area area = new Area();
         area.setAreaId(shopAreaId);
         
-        //TODO owner应该从session中获取，是登录用户
-        UserInfo owner = new UserInfo();
-        owner.setUserId(1L);
+        //获取登录用户
+        UserInfo owner = (UserInfo) session.getAttribute("user");
         
         shop.setShopCategory(shopCategory);
         shop.setArea(area);
@@ -90,7 +91,11 @@ public class ShopManagementController {
                     return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_IMAGE_TYPE, suffix);
                 }
             }
-            shopService.register(shop, shopImgIn, suffix);
+            if(shopId == null) {
+                shopService.registerShop(shop, shopImgIn, suffix);
+            } else {
+                shopService.modifyShop(shop, shopImgIn, suffix);
+            }
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

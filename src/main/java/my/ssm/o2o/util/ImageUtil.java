@@ -9,6 +9,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,36 @@ public final class ImageUtil {
                 wmIn.close();
         }
         return destFileRelativePath;
+    }
+    
+    /**  
+     * <p>删除指定路径的文件或目录</p>  
+     * @param destRelativePath  文件或目录的相对路径
+     * @return 成功删除则返回true
+     */  
+    public static void remove(String destRelativePath) {
+        logger.debug("准备删除的文件或目录的相对路径[{}]", destRelativePath);
+        if(StringUtils.isBlank(destRelativePath)) {
+            return;
+        }
+        String destAbsolutePath = PathUtil.getImageBaseDirPath() + destRelativePath;
+        logger.debug("准备删除的文件或目录的绝对路径[{}]", destAbsolutePath);
+        File file = new File(destAbsolutePath);
+        if(!file.exists()) {
+            logger.debug("目标文件或目录不存在[{}]", destAbsolutePath);
+            return;
+        }
+        deepDelete(file);
+    }
+    
+    private static void deepDelete(File file) {
+        if(file.isDirectory()) {
+            File[] subFiles = file.listFiles();
+            for(File sf : subFiles) {
+                deepDelete(sf);
+            }
+        }
+        file.delete();
     }
     
     /**  

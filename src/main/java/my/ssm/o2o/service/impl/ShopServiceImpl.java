@@ -32,7 +32,7 @@ public class ShopServiceImpl implements ShopService {
     
     @Transactional
     @Override
-    public void register(Shop shop, InputStream imgIn, String suffix) {
+    public void registerShop(Shop shop, InputStream imgIn, String suffix) {
         //1、保存店铺实体
         //把参数校验都放在controller层。为保证运行效率，service层不进行二次校验。
         shop.setPriority(0); //TODO 找一种处理权重的方式
@@ -52,13 +52,13 @@ public class ShopServiceImpl implements ShopService {
                     shopId, shop.getShopName(), imgIn, suffix);
             return;
         }
-        String thumbnailRelativePath = addOrUpdateThumbnail(shopId, imgIn, suffix);
+        String thumbnailRelativePath = addThumbnail(shopId, imgIn, suffix);
         shop.setShopImg(thumbnailRelativePath);
     }
 
     @Transactional
     @Override
-    public String addOrUpdateThumbnail(Integer shopId, InputStream imgIn, String suffix) {
+    public String addThumbnail(Integer shopId, InputStream imgIn, String suffix) {
         String thumbnailRelativePath = null;
         try {
             thumbnailRelativePath = ImageUtil.generateThumbnail(imgIn, suffix,
@@ -71,8 +71,49 @@ public class ShopServiceImpl implements ShopService {
         shop.setShopImg(thumbnailRelativePath);
         int effectedRows = shopDao.update(shop);
         if(effectedRows == 0) {
-            throw new ShopOperationException("添加或更新店铺缩略图失败");
+            ImageUtil.remove(thumbnailRelativePath); //删除生成好的缩略图
+            throw new ShopOperationException("更新店铺缩略图相对地址失败");
         }
         return thumbnailRelativePath;
+    }
+    
+    @Transactional
+    @Override
+    public String updateThumbnail(Integer shopId, InputStream imgIn, String suffix) {
+        String oldThumbnailRelativePath = null;
+        try {
+            oldThumbnailRelativePath = shopDao.findById(shopId).getShopImg();
+            ImageUtil.remove(oldThumbnailRelativePath);
+        } catch (Exception e) {
+            logger.error("删除旧的店铺缩略图失败：shopId={}，oldThumbnailRelativePath={}，ShopImgInputStream={}，suffix={}",
+                    shopId, oldThumbnailRelativePath, imgIn, suffix);
+            throw new ShopOperationException("删除旧的店铺缩略图失败");
+        }
+        return addThumbnail(shopId, imgIn, suffix);
+    }
+
+    @Override
+    public Shop findShopById(Integer shopId) {
+        return shopDao.findById(shopId);
+    }
+
+    @Transactional
+    @Override
+    public void modifyShop(Shop shop, InputStream imgIn, String suffix) {
+        //1、修改店铺信息
+        shop.setLastEditTime(new Date());
+        int effectedRows = shopDao.update(shop);
+        if(effectedRows == 0) {
+            throw new ShopOperationException("修改店铺信息失败");
+        }
+        //2、更新店铺缩略图
+        Integer shopId = shop.getShopId();
+        if(imgIn == null || StringUtils.isBlank(suffix)) {
+            logger.info("未更新店铺缩略图：shopId={}，shopName={}，ShopImgInputStream={}，suffix={}",
+                    shopId, shop.getShopName(), imgIn, suffix);
+            return;
+        }
+        String thumbnailRelativePath = updateThumbnail(shopId, imgIn, suffix);
+        shop.setShopImg(thumbnailRelativePath);
     }
 }

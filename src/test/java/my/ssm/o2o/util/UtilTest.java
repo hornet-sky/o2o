@@ -6,7 +6,7 @@ import my.ssm.o2o.BaseTest;
 
 public class UtilTest extends BaseTest {
     @Test
-    public void testSpringContextUtilsGetBeanById() {
-
+    public void testImageUtilRemove() {
+        ImageUtil.remove("upload/item/shop/8");
     }
 }

@@ -9,6 +9,12 @@ import my.ssm.o2o.entity.Shop;
  */  
 public interface ShopDao {
     /**  
+     * <p>查找指定ID的店铺信息</p>  
+     * @param shopId 店铺ID
+     * @return  店铺信息
+     */  
+    Shop findById(Integer shopId);
+    /**  
      * <p>保存店铺</p>  
      * @param shop 待保存的店铺
      * @return  影响的行数

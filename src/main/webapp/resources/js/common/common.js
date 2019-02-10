@@ -46,3 +46,17 @@ function getParsedResultFromXhr(xhr) {
 		return null;
 	}
 }
+
+/**
+ * 通过解析请求参数串获取指定名字的请求参数值
+ * @param name 参数名
+ * @returns 参数值
+ */
+function getQueryStrValByName(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var result = window.location.search.substr(1).match(reg);
+    if(result == null) { //没匹配到
+        return null;
+    }
+    return decodeURIComponent(result[2]);
+}

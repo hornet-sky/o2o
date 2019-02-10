@@ -1,18 +1,21 @@
 $(function() {
-	var getInitInfoUri = "getshopregisterinitinfo";
-	var registerShopUri = "registershop";
+	var shopId = getQueryStrValByName("shopId");
+	
+	var getInitDataUri = "getinitdata";
+	var submitShopInfoUri = "registerormodifyshop";
 	var imageUploadProps = { //有关图片上传的默认参数，比如允许图片的大小、格式等。
 		maxUploadSize: 6291456, //6MB
 		acceptImageTypes: ["image/jpg", "image/jpeg", "image/png", "image/bmp", "image/gif"],
 	}; 
+	//初始化页面组件
+	init();
 	
-	shopRegisterInit();
-	
-	function shopRegisterInit() {
-		$.getJSON(getInitInfoUri, {
-			parentShopCategoryId: 1 //TODO 目前先写死1，即父类是“美食”
+	function init() {
+		$.getJSON(getInitDataUri, {
+			parentShopCategoryId: 1, //TODO 目前先写死1，即父类是“美食”
+			shopId: shopId
 		}, function(data) {
-			console.log("shopRegisterInit - returned data", data);
+			console.log("init - returned data", data);
 			if(data.state < 0) { //请求失败
 				$.toast(data.msg);
 				return;
@@ -49,11 +52,26 @@ $(function() {
 			areaList.map(function(item, index) {
 				$shopArea.append("<option value='" + item.areaId + "'>" + item.areaName + "</option>");
 			});
-			//4、初始化“注册”按钮
+			//4、如果是修改店铺信息，则还需要一些特殊的处理
+			if(shopId) {
+				var shop = data.entity.shop;
+				$shopCategory.find("option[value='" + shop.shopCategory.shopCategoryId + "']")
+					.attr("selected", "selected");
+				if(shop.enableStatus !== 0) { // -1 审核不通过，0 审核中，1 审核通过
+					$shopCategory.attr("disabled", "disabled"); //只有审核中的可以改
+				}
+				$shopArea.find("option[value='" + shop.area.areaId + "']")
+					.attr("selected", "selected");
+				$("#shop-name").val(shop.shopName);
+				$("#shop-addr").val(shop.shopAddr);
+				$("#shop-phone").val(shop.phone);
+				$("#shop-desc").val(shop.shopDesc);
+			}
+			//5、初始化“提交”按钮
 			$("#submit-btn").click(function() {
-				registerShop();
+				submitShopInfo();
 			});
-			//5、绑定“验证码”图片点击事件
+			//6、绑定“验证码”图片点击事件
 			$("#kaptcha-img").click(function() {
 				changeVerifyCode(this); //changeVerifyCode方法来自common.js
 			});
@@ -61,16 +79,16 @@ $(function() {
 	}
 	
 	var inProcess = false;
-	function registerShop() {
+	function submitShopInfo() {
 		var formData = checkInputAndGenerateFormData();
 		if(formData) {
-			if(inProcess) { //防止在网络不好的情况下连续点击“注册”按钮
-				$.toast("正在注册中...");
+			if(inProcess) { //防止在网络不好的情况下连续点击“提交”按钮
+				$.toast("信息已提交...");
 				return;
 			}
 			inProcess = true;
 			$.ajax({
-				url: registerShopUri,
+				url: submitShopInfoUri,
 				type: "POST",
 				data: formData,
 				contentType: false,
@@ -78,10 +96,10 @@ $(function() {
 				cache: false,
 				dataType: "json",
 				success: function(data, textStatus, jqXHR) {
-					console.log("registerShop - returned data", data);
+					console.log("submitShopInfo - returned data", data);
 					changeVerifyCode($("#kaptcha-img").get(0));
 					inProcess = false;
-					if(data.state < 0) { //注册失败
+					if(data.state < 0) { //操作失败
 						$.toast(data.msg);
 						return;
 					}
@@ -102,6 +120,9 @@ $(function() {
 	
 	function checkInputAndGenerateFormData() {
 		var formData = new FormData();
+		if(shopId) { //修改店铺信息
+			formData.append("shopId", shopId);
+		}
 		
 		var shopName = $("#shop-name").val();
 		if(!shopName) {

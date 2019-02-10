@@ -42,7 +42,6 @@ public class ShopServiceTest extends BaseTest {
         
         File shopImg = new File("C:\\Users\\Wang\\Desktop\\xiaohuangren.jpg");
         
-        //在测试环境中，PathUtil.getImageBaseDirPath中报“Failed to load ApplicationContext”
-        shopService.register(shop, new FileInputStream(shopImg), ".jpg"); 
+        shopService.registerShop(shop, new FileInputStream(shopImg), ".jpg"); 
     }
 }

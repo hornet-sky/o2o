@@ -23,6 +23,9 @@
         <id column="shop_category_id" property="shopCategoryId" />
         <result column="shop_category_name" property="shopCategoryName" />
     </association>
+    <association property="owner" javaType="my.ssm.o2o.entity.UserInfo">
+        <id column="owner_id" property="userId" />
+    </association>
   </resultMap>
   <select id="findById" resultMap="shopMap" parameterType="java.lang.Integer">
     SELECT 
@@ -37,6 +40,7 @@
 	  s.`last_edit_time`,
 	  s.`enable_status`,
 	  s.`advice`,
+	  s.`owner_id`,
 	  a.`area_id`,
 	  a.`area_name`,
 	  sc.`shop_category_id`,
@@ -46,6 +50,72 @@
 	  LEFT JOIN `tb_area` a ON s.`area_id` = a.`area_id`
 	  LEFT JOIN `tb_shop_category` sc ON s.`shop_category_id` = sc.`shop_category_id`
 	WHERE `shop_id` = #{shopId}
+  </select>
+  <select id="list" resultMap="shopMap">
+    SELECT 
+      s.`shop_id`,
+      s.`shop_name`,
+      s.`shop_desc`,
+      s.`shop_addr`,
+      s.`shop_img`,
+      s.`phone`,
+      s.`priority`,
+      s.`create_time`,
+      s.`last_edit_time`,
+      s.`enable_status`,
+      s.`advice`,
+      s.`owner_id`,
+      a.`area_id`,
+      a.`area_name`,
+      sc.`shop_category_id`,
+      sc.`shop_category_name` 
+    FROM
+      `tb_shop` s 
+      LEFT JOIN `tb_area` a ON s.`area_id` = a.`area_id`
+      LEFT JOIN `tb_shop_category` sc ON s.`shop_category_id` = sc.`shop_category_id`
+    <where>
+        <if test="condition.area != null and condition.area.areaId != null">
+            s.`area_id` = #{condition.area.areaId}
+        </if>
+        <if test="condition.shopCategory != null and condition.shopCategory.shopCategoryId != null">
+            AND s.`shop_category_id` = #{condition.shopCategory.shopCategoryId}
+        </if>
+        <if test="condition.owner != null and condition.owner.userId != null">
+            AND s.`owner_id` = #{condition.owner.userId}
+        </if>
+        <if test="condition.enableStatus != null">
+            AND s.`enable_status` = #{condition.enableStatus}
+        </if>
+        <if test="condition.shopName != null">
+            AND s.`shop_name` LIKE CONCAT("%", #{condition.shopName}, "%")
+        </if>
+    </where>
+    ORDER BY s.`priority` DESC
+    LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+  </select>
+  <select id="count" resultType="long">
+    SELECT COUNT(1)
+    FROM
+      `tb_shop` s 
+      LEFT JOIN `tb_area` a ON s.`area_id` = a.`area_id`
+      LEFT JOIN `tb_shop_category` sc ON s.`shop_category_id` = sc.`shop_category_id`
+    <where>
+        <if test="condition.area != null and condition.area.areaId != null">
+            s.`area_id` = #{condition.area.areaId}
+        </if>
+        <if test="condition.shopCategory != null and condition.shopCategory.shopCategoryId != null">
+            AND s.`shop_category_id` = #{condition.shopCategory.shopCategoryId}
+        </if>
+        <if test="condition.owner != null and condition.owner.userId != null">
+            AND s.`owner_id` = #{condition.owner.userId}
+        </if>
+        <if test="condition.enableStatus != null">
+            AND s.`enable_status` = #{condition.enableStatus}
+        </if>
+        <if test="condition.shopName != null">
+            AND s.`shop_name` LIKE CONCAT("%", #{condition.shopName}, "%")
+        </if>
+    </where>
   </select>
   <insert id="save" parameterType="shop" 
     useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId">

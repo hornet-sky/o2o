@@ -3,6 +3,7 @@ package my.ssm.o2o.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import my.ssm.o2o.dao.ShopDao;
+import my.ssm.o2o.dto.PagingParams;
+import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.exception.ShopOperationException;
@@ -115,5 +118,12 @@ public class ShopServiceImpl implements ShopService {
         }
         String thumbnailRelativePath = updateThumbnail(shopId, imgIn, suffix);
         shop.setShopImg(thumbnailRelativePath);
+    }
+
+    @Override
+    public PagingResult<Shop> list(Shop condition, PagingParams pagingParams) {
+        List<Shop> list = shopDao.list(condition, pagingParams);
+        long count = shopDao.count(condition);
+        return new PagingResult<Shop>(list, count);
     }
 }

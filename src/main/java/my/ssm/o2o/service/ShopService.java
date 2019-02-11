@@ -2,6 +2,8 @@ package my.ssm.o2o.service;
 
 import java.io.InputStream;
 
+import my.ssm.o2o.dto.PagingParams;
+import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.Shop;
 
 /**  
@@ -16,6 +18,13 @@ public interface ShopService {
      * @return  店铺信息
      */  
     Shop findShopById(Integer shopId);
+    /**  
+     * <p>查找指定条件及分页参数的店铺信息</p>  
+     * @param condition 查询条件
+     * @param pagingParams 分页参数
+     * @return  查询结果
+     */  
+    PagingResult<Shop> list(Shop condition, PagingParams pagingParams);
     /**  
      * <p>注册店铺</p>  
      * @param shop 店铺

@@ -1,5 +1,10 @@
 package my.ssm.o2o.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.entity.Shop;
 
 /**  
@@ -14,6 +19,19 @@ public interface ShopDao {
      * @return  店铺信息
      */  
     Shop findById(Integer shopId);
+    /**  
+     * <p>查找指定条件及分页参数的店铺信息</p>  
+     * @param condition 查询条件
+     * @param pagingParams 分页参数
+     * @return  店铺信息列表
+     */  
+    List<Shop> list(@Param("condition") Shop condition, @Param("pagingParams") PagingParams pagingParams);
+    /**  
+     * <p>统计指定条件的店铺数量</p>  
+     * @param condition 查询条件
+     * @return  店铺数量
+     */  
+    long count(@Param("condition") Shop condition);
     /**  
      * <p>保存店铺</p>  
      * @param shop 待保存的店铺

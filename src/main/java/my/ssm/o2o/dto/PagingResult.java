@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class GridResult<T> extends Result {
+public class PagingResult<T> extends Result {
     private List<T> rows = Collections.emptyList();
-    private Integer total = 0;
+    private Long total = 0L;
 }

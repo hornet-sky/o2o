@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import my.ssm.o2o.BaseTest;
+import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.entity.Area;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.ShopCategory;
@@ -21,6 +23,18 @@ public class ShopDaoTest extends BaseTest {
     public void testFindById() {
         Shop shop = shopDao.findById(2);
         System.out.println(shop);
+    }
+    
+    @Test
+    public void testList() {
+        Shop condition = new Shop();
+        //condition.setShopName("早");
+        //condition.setEnableStatus(1);
+        PagingParams pagingParams = new PagingParams();
+        pagingParams.setPageNo(2);
+        pagingParams.setPageSize(2);
+        List<Shop> shops = shopDao.list(condition, pagingParams);
+        shops.forEach(System.out::println);
     }
     
     @Test

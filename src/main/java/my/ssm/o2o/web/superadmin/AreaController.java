@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import my.ssm.o2o.dto.GridResult;
+import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.Result;
 import my.ssm.o2o.entity.Area;
@@ -33,8 +33,9 @@ public class AreaController {
     @ResponseBody
     public Result listArea() {
         try {
+            //TODO 需要修改成分页操作
             List<Area> areaList = areaService.findAll();
-            return new GridResult<Area>(areaList, areaList.size());
+            return new PagingResult<Area>(areaList, new Long(areaList.size()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new OperationResult<Area, AreaOperStateEnum>(AreaOperStateEnum.OPERATION_FAILURE, e);

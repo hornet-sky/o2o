@@ -1,7 +1,7 @@
 $(function() {
 	var shopId = getQueryStrValByName("shopId");
 	
-	var getInitDataUri = "getinitdata";
+	var getInitDataUri = "getshopoperationinitdata";
 	var submitShopInfoUri = "registerormodifyshop";
 	var imageUploadProps = { //有关图片上传的默认参数，比如允许图片的大小、格式等。
 		maxUploadSize: 6291456, //6MB
@@ -18,6 +18,7 @@ $(function() {
 			console.log("init - returned data", data);
 			if(data.state < 0) { //请求失败
 				$.toast(data.msg);
+				setTimeout("location.href='shoplist'", 1500);
 				return;
 			}
 			//1、有关图片上传的参数
@@ -52,9 +53,21 @@ $(function() {
 			areaList.map(function(item, index) {
 				$shopArea.append("<option value='" + item.areaId + "'>" + item.areaName + "</option>");
 			});
-			//4、如果是修改店铺信息，则还需要一些特殊的处理
+			//4、初始化“提交”按钮
+			var $submitBtn = $("#submit-btn").click(function() {
+				submitShopInfo();
+			});
+			//5、绑定“验证码”图片点击事件
+			var $kaptchaImg = $("#kaptcha-img").click(function() {
+				changeVerifyCode(this); //changeVerifyCode方法来自common.js
+			});
+			//6、如果是修改店铺信息，则还需要一些特殊的处理
 			if(shopId) {
 				var shop = data.entity.shop;
+				var $shopName = $("#shop-name").val(shop.shopName);
+				var $shopAddr = $("#shop-addr").val(shop.shopAddr);
+				var $shopPhone = $("#shop-phone").val(shop.phone);
+				var $shopDesc = $("#shop-desc").val(shop.shopDesc);
 				$shopCategory.find("option[value='" + shop.shopCategory.shopCategoryId + "']")
 					.attr("selected", "selected");
 				if(shop.enableStatus !== 0) { // -1 审核不通过，0 审核中，1 审核通过
@@ -62,19 +75,18 @@ $(function() {
 				}
 				$shopArea.find("option[value='" + shop.area.areaId + "']")
 					.attr("selected", "selected");
-				$("#shop-name").val(shop.shopName);
-				$("#shop-addr").val(shop.shopAddr);
-				$("#shop-phone").val(shop.phone);
-				$("#shop-desc").val(shop.shopDesc);
+				if(shop.enableStatus === -1) {
+					$shopArea.attr("disabled", "disabled");
+					$shopName.attr("disabled", "disabled");
+					$shopAddr.attr("disabled", "disabled");
+					$shopPhone.attr("disabled", "disabled");
+					$shopDesc.attr("disabled", "disabled");
+					$submitBtn.parent().remove();
+					$kaptchaImg.parents("li").remove();
+					$("#shop-img").parents("li").remove();
+					$("#return-btn").parent().addClass("col-100").removeClass("col-50");
+				}
 			}
-			//5、初始化“提交”按钮
-			$("#submit-btn").click(function() {
-				submitShopInfo();
-			});
-			//6、绑定“验证码”图片点击事件
-			$("#kaptcha-img").click(function() {
-				changeVerifyCode(this); //changeVerifyCode方法来自common.js
-			});
 		});
 	}
 	
@@ -104,6 +116,7 @@ $(function() {
 						return;
 					}
 					$.toast(data.msg);
+					setTimeout("location.href='shoplist'", 1500);
 				},
 				error: function (xhr, textStatus, errorThrown) {
 				    console.log("XMLHttpRequest", xhr);

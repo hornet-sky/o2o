@@ -16,6 +16,7 @@ import my.ssm.o2o.dao.ShopDao;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.Shop;
+import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.exception.ShopOperationException;
 import my.ssm.o2o.service.ShopService;
@@ -122,6 +123,9 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public PagingResult<Shop> list(Shop condition, PagingParams pagingParams) {
+        if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
+            pagingParams.addOrderRule("shop_id", Direction.DESC);
+        }
         List<Shop> list = shopDao.list(condition, pagingParams);
         long count = shopDao.count(condition);
         return new PagingResult<Shop>(list, count);

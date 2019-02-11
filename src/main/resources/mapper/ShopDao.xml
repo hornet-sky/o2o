@@ -90,7 +90,9 @@
             AND s.`shop_name` LIKE CONCAT("%", #{condition.shopName}, "%")
         </if>
     </where>
-    ORDER BY s.`priority` DESC
+    <if test="pagingParams.orderRules != null">
+        ORDER BY ${pagingParams.orderRules}
+    </if>
     LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
   </select>
   <select id="count" resultType="long">

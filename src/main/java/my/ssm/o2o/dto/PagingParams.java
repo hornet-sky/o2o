@@ -1,7 +1,14 @@
 package my.ssm.o2o.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Getter;
 import lombok.Setter;
+import my.ssm.o2o.enums.Direction;
 
 /**  
  * <p>分页参数</p>
@@ -15,6 +22,7 @@ public class PagingParams {
     private Integer pageSize = 10;
     private Integer rowIndex;
     private Integer rowSize;
+    private Map<String, Direction> orderRuleMap = new HashMap<>();
     public Integer getRowIndex() {
         if(rowIndex == null) {
             if(pageNo < 1) {
@@ -32,5 +40,28 @@ public class PagingParams {
             rowSize = pageSize;
         }
         return rowSize;
+    }
+    public void addOrderRule(String field, Direction direction) {
+        if(StringUtils.isBlank(field))
+            return;
+        if(direction == null)
+            direction = Direction.ASC;
+        orderRuleMap.put(field, direction);
+    }
+    public String getOrderRules() {
+        if(orderRuleMap.size() == 0) {
+            return null;
+        }
+        String ruleStr = "";
+        for(Entry<String, Direction> entry : orderRuleMap.entrySet()) {
+            if(!"".equals(ruleStr)) {
+                ruleStr += ", ";
+            }
+            ruleStr += entry.getKey() + " " + entry.getValue();
+        }
+        return ruleStr;
+    }
+    public boolean isOrderRuleMapEmpty() {
+        return orderRuleMap.isEmpty();
     }
 }

@@ -15,14 +15,14 @@ import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.service.ShopService;
 
 /**  
- * <p>店铺管理控制器</p>
+ * <p>店铺管理模块路由控制器</p>
  * <p>Date: 2019年2月6日</p>
  * @author Wanghui    
  */  
 @Controller
 @RequestMapping("/shopadmin")
-public class ShopAdminController { //TODO 给两个类改名
-    private Logger logger = LoggerFactory.getLogger(ShopAdminController.class);
+public class ShopAdminRoutingController {
+    private Logger logger = LoggerFactory.getLogger(ShopAdminRoutingController.class);
     @Autowired
     private ShopService shopService;
     
@@ -38,7 +38,7 @@ public class ShopAdminController { //TODO 给两个类改名
     
     @GetMapping("/shopmanagement")
     public String shopManagement(
-            @RequestParam("shopId") Integer shopId,
+            @RequestParam("shopId") Long shopId,
             HttpSession session) {
         UserInfo owner = (UserInfo) session.getAttribute("user");
         Shop shop = shopService.findShopById(shopId);
@@ -49,5 +49,19 @@ public class ShopAdminController { //TODO 给两个类改名
         }
         session.setAttribute("currShop", shop); //存放到session里避免后续操作反复查询数据库
         return "shop/shopmanagement";
+    }
+    
+    @GetMapping("/productcategorymanagement")
+    public String productCategoryManagement(@RequestParam("shopId") Long shopId,
+            HttpSession session) {
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        UserInfo owner = (UserInfo) session.getAttribute("user");
+        
+        if(currShop == null || !currShop.getShopId().equals(shopId)) {
+            logger.error("productcategorymanagement - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
+                    owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
+            return "redirect:shoplist";
+        }
+        return "shop/productcategorymanagement";
     }
 }

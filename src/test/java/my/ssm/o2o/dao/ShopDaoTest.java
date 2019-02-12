@@ -21,7 +21,7 @@ public class ShopDaoTest extends BaseTest {
     private ShopDao shopDao;
     @Test
     public void testFindById() {
-        Shop shop = shopDao.findById(2);
+        Shop shop = shopDao.findById(2L);
         System.out.println(shop);
     }
     
@@ -75,7 +75,7 @@ public class ShopDaoTest extends BaseTest {
         ShopCategory shopCategory = new ShopCategory();
         
         Shop shop = new Shop();
-        shop.setShopId(2);
+        shop.setShopId(2L);
         shop.setArea(area);
         shop.setShopCategory(shopCategory);
         shop.setLastEditTime(new Date());

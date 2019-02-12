@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `tb_product` (
   `create_time` DATETIME NOT NULL COMMENT '创建时间',
   `last_edit_time` DATETIME COMMENT '修改时间',
   `enable_status` TINYINT(2) NOT NULL COMMENT '商品状态：0 下架，1 在前端展示',
-  `product_category_id` INT NOT NULL COMMENT '商品类型ID',
+  `product_category_id` INT COMMENT '商品类型ID',
   `shop_id` INT NOT NULL COMMENT '店铺ID',
   CONSTRAINT fk_product_prodcate FOREIGN KEY(`product_category_id`) REFERENCES `tb_product_category`(`product_category_id`),
   CONSTRAINT fk_product_shop FOREIGN KEY(`shop_id`) REFERENCES `tb_shop`(`shop_id`)

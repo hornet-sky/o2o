@@ -17,7 +17,7 @@ public interface ShopService {
      * @param shopId 店铺ID
      * @return  店铺信息
      */  
-    Shop findShopById(Integer shopId);
+    Shop findShopById(Long shopId);
     /**  
      * <p>查找指定条件及分页参数的店铺信息</p>  
      * @param condition 查询条件
@@ -46,7 +46,7 @@ public interface ShopService {
      * @param suffix 店铺照片后缀名，例如“.jpg”
      * @return 店铺缩略图的相对路径 
      */  
-    String addThumbnail(Integer shopId, InputStream imgIn, String suffix);
+    String addThumbnail(Long shopId, InputStream imgIn, String suffix);
     /**  
      * <p>更新店铺缩略图</p>  
      * @param shopId 店铺ID
@@ -54,5 +54,5 @@ public interface ShopService {
      * @param suffix 店铺照片后缀名，例如“.jpg”
      * @return 新的店铺缩略图的相对路径 
      */  
-    String updateThumbnail(Integer shopId, InputStream imgIn, String suffix);
+    String updateThumbnail(Long shopId, InputStream imgIn, String suffix);
 }

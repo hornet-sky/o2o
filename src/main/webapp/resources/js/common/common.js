@@ -60,3 +60,16 @@ function getQueryStrValByName(name) {
     }
     return decodeURIComponent(result[2]);
 }
+
+/**
+ * 打印请求失败响应信息
+ * @param xhr XMLHttpRequest
+ * @param textStatus 文本状态
+ * @param errorThrown 异常
+ * @returns undefined
+ */
+function printErr(xhr, textStatus, errorThrown) {
+	console.log("XMLHttpRequest", xhr);
+    console.log("textStatus", textStatus);
+    console.log("errorThrown", errorThrown);
+}

@@ -18,9 +18,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Shop {
     /**  
-     * <p>店铺类别ID</p>     
+     * <p>店铺ID</p>     
      */
-    private Integer shopId;
+    private Long shopId;
     /**  
      * <p>店铺名称</p>     
      */

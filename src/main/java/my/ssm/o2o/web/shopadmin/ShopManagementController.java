@@ -33,7 +33,7 @@ import my.ssm.o2o.util.CommonUtil;
 import my.ssm.o2o.util.KaptchaUtil;
 
 /**  
- * <p>店铺管理控制器</p>
+ * <p>店铺管理功能控制器</p>
  * <p>Date: 2019年2月6日</p>
  * @author Wanghui    
  */ 
@@ -85,7 +85,7 @@ public class ShopManagementController {
     
     @GetMapping("/getshopmanagementinitdata")
     @ResponseBody
-    public Result getShopManagementInitData(@RequestParam(name = "shopId") Integer shopId, 
+    public Result getShopManagementInitData(@RequestParam(name = "shopId") Long shopId, 
             HttpSession session) {
         Shop shop = (Shop) session.getAttribute("currShop");
         if(shop == null || !shopId.equals(shop.getShopId())) {
@@ -101,7 +101,7 @@ public class ShopManagementController {
     @ResponseBody
     public Result getShopOperationInitData(
             @RequestParam(name = "parentShopCategoryId") Long parentShopCategoryId,
-            @RequestParam(name = "shopId", required = false) Integer shopId,
+            @RequestParam(name = "shopId", required = false) Long shopId,
             HttpSession session) {
         logger.debug("parentShopCategoryId={}, shopId={}", parentShopCategoryId, shopId);
         Map<String, Object> data = new HashMap<>();
@@ -137,7 +137,7 @@ public class ShopManagementController {
     @PostMapping("/registerormodifyshop")
     @ResponseBody
     public Result registerOrModifyShop(
-            @RequestParam(name = "shopId", required = false) Integer shopId, 
+            @RequestParam(name = "shopId", required = false) Long shopId, 
             @RequestParam(name = "shopName") String shopName, 
             @RequestParam(name = "shopCategory") Long shopCategoryId,
             @RequestParam(name = "shopArea") Integer shopAreaId,

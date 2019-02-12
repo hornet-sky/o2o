@@ -47,7 +47,7 @@ public class ShopServiceImpl implements ShopService {
             throw new ShopOperationException("注册店铺失败");
         }
         //2、添加店铺缩略图
-        Integer shopId = shop.getShopId();
+        Long shopId = shop.getShopId();
         if(shopId == null || shopId <= 0) {
             throw new ShopOperationException("注册店铺失败，未生成有效的店铺ID：" + shopId);
         }
@@ -62,7 +62,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Transactional
     @Override
-    public String addThumbnail(Integer shopId, InputStream imgIn, String suffix) {
+    public String addThumbnail(Long shopId, InputStream imgIn, String suffix) {
         String thumbnailRelativePath = null;
         try {
             thumbnailRelativePath = ImageUtil.generateThumbnail(imgIn, suffix,
@@ -83,7 +83,7 @@ public class ShopServiceImpl implements ShopService {
     
     @Transactional
     @Override
-    public String updateThumbnail(Integer shopId, InputStream imgIn, String suffix) {
+    public String updateThumbnail(Long shopId, InputStream imgIn, String suffix) {
         String oldThumbnailRelativePath = null;
         try {
             oldThumbnailRelativePath = shopDao.findById(shopId).getShopImg();
@@ -97,7 +97,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop findShopById(Integer shopId) {
+    public Shop findShopById(Long shopId) {
         return shopDao.findById(shopId);
     }
 
@@ -111,7 +111,7 @@ public class ShopServiceImpl implements ShopService {
             throw new ShopOperationException("修改店铺信息失败");
         }
         //2、更新店铺缩略图
-        Integer shopId = shop.getShopId();
+        Long shopId = shop.getShopId();
         if(imgIn == null || StringUtils.isBlank(suffix)) {
             logger.info("未更新店铺缩略图：shopId={}，shopName={}，ShopImgInputStream={}，suffix={}",
                     shopId, shop.getShopName(), imgIn, suffix);

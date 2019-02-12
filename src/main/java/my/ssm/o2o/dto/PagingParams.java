@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import my.ssm.o2o.enums.Direction;
 
@@ -15,6 +16,7 @@ import my.ssm.o2o.enums.Direction;
  * <p>Date: 2019年2月10日</p>
  * @author Wanghui    
  */  
+@NoArgsConstructor
 @Getter
 @Setter
 public class PagingParams {
@@ -23,6 +25,15 @@ public class PagingParams {
     private Integer rowIndex;
     private Integer rowSize;
     private Map<String, Direction> orderRuleMap = new HashMap<>();
+    public PagingParams(Integer pageNo, Integer pageSize) {
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+    }
+    public PagingParams(Integer pageNo, Integer pageSize, String orderField, Direction direction) {
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+        orderRuleMap.put(orderField, direction);
+    }
     public Integer getRowIndex() {
         if(rowIndex == null) {
             if(pageNo < 1) {

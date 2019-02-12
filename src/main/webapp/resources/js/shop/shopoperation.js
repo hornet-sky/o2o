@@ -90,15 +90,10 @@ $(function() {
 		});
 	}
 	
-	var inProcess = false;
 	function submitShopInfo() {
 		var formData = checkInputAndGenerateFormData();
 		if(formData) {
-			if(inProcess) { //防止在网络不好的情况下连续点击“提交”按钮
-				$.toast("信息已提交...");
-				return;
-			}
-			inProcess = true;
+			$.showPreloader('提交中...');
 			$.ajax({
 				url: submitShopInfoUri,
 				type: "POST",
@@ -110,7 +105,7 @@ $(function() {
 				success: function(data, textStatus, jqXHR) {
 					console.log("submitShopInfo - returned data", data);
 					changeVerifyCode($("#kaptcha-img").get(0));
-					inProcess = false;
+					$.hidePreloader();
 					if(data.state < 0) { //操作失败
 						$.toast(data.msg);
 						return;
@@ -119,11 +114,9 @@ $(function() {
 					setTimeout("location.href='shoplist'", 1500);
 				},
 				error: function (xhr, textStatus, errorThrown) {
-				    console.log("XMLHttpRequest", xhr);
-				    console.log("textStatus", textStatus);
-				    console.log("errorThrown", errorThrown);
+					printErr(xhr, textStatus, errorThrown);
 				    changeVerifyCode($("#kaptcha-img").get(0));
-				    inProcess = false;
+				    $.hidePreloader();
 				    var result = getParsedResultFromXhr(xhr);
 				    $.toast(result ? result.msg : "服务器出错~");
 				}

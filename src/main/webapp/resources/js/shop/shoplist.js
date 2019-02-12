@@ -28,7 +28,7 @@ $(function() {
 			type: "GET",
 			data: {
 				pageNo: 1,
-				pageSize: 5
+				pageSize: 10
 			},
 			//cache: false,
 			dataType: "json",
@@ -43,15 +43,13 @@ $(function() {
 					rowsHtml += "<div class='row row-shop'><div class='col-40 shop-name'>"
 						+ row.shopName + "</div><div class='col-40'>"
 						+ getShopStatusInfo(row.enableStatus)
-						+ "</div><div class='col-20'><a href='shopmanagement?shopId=" 
+						+ "</div><div class='col-20'><a class='button' href='shopmanagement?shopId=" 
 						+ row.shopId + "'>进入</a></div></div>";
 				});
 				$(".show-wrap").html(rowsHtml);
 			},
 			error: function (xhr, textStatus, errorThrown) {
-			    console.log("XMLHttpRequest", xhr);
-			    console.log("textStatus", textStatus);
-			    console.log("errorThrown", errorThrown);
+				printErr(xhr, textStatus, errorThrown);
 			    var result = getParsedResultFromXhr(xhr);
 			    $.toast(result ? result.msg : "服务器出错~");
 			}

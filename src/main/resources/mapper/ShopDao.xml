@@ -27,7 +27,7 @@
         <id column="owner_id" property="userId" />
     </association>
   </resultMap>
-  <select id="findById" resultMap="shopMap" parameterType="java.lang.Integer">
+  <select id="findById" resultMap="shopMap" parameterType="long">
     SELECT 
 	  s.`shop_id`,
 	  s.`shop_name`,

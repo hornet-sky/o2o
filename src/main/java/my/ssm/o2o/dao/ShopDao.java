@@ -18,7 +18,7 @@ public interface ShopDao {
      * @param shopId 店铺ID
      * @return  店铺信息
      */  
-    Shop findById(Integer shopId);
+    Shop findById(Long shopId);
     /**  
      * <p>查找指定条件及分页参数的店铺信息</p>  
      * @param condition 查询条件

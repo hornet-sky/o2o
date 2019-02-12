@@ -1,0 +1,22 @@
+.row-product-category-title {
+    border: 1px solid #999;
+    padding: .5rem;
+}
+.row-product-category {
+	border: 1px solid #999;
+	padding: .5rem;
+	border-top: none;
+}
+.product-category-name {
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.mb {
+    margin-bottom: .5rem;
+}
+.category-input {
+	width: 80%;
+	background-color: transparent;
+	border-style: none;
+}

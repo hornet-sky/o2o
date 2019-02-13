@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import my.ssm.o2o.dto.ImageHolder;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 
@@ -29,15 +30,14 @@ public final class ImageUtil {
     
     /**  
      * <p>给上传的图片生成缩略图</p>  
-     * @param pin 上传的图片文件流
-     * @param suffix 上传的图片文件后缀名
+     * @param image  图片文件持有器。其内部包含了图片文件的输入流和文件名等信息。
      * @param destDirRelativePath 缩略图所在目录的相对路径
      * @return  缩略图的相对路径
      * @throws IOException 转换过程中的IO异常
      */  
-    public static String generateThumbnail(InputStream imgIn, String suffix, String destDirRelativePath) throws IOException {
+    public static String generateThumbnail(ImageHolder image, String destDirRelativePath) throws IOException {
         logger.debug("destDirRelativePath={}", destDirRelativePath);
-        String destFileRelativePath = destDirRelativePath + generateRandomFileName() + suffix;
+        String destFileRelativePath = destDirRelativePath + generateRandomFileName() + image.getSuffix();
         logger.debug("destFileRelativePath={}", destFileRelativePath);
         String destFileAbsolutePath = PathUtil.getImageBaseDirPath() + destFileRelativePath;
         logger.debug("destFileAbsolutePath={}", destFileAbsolutePath);
@@ -49,7 +49,7 @@ public final class ImageUtil {
         InputStream wmIn = null;
         try {
             wmIn = Thread.currentThread().getContextClassLoader().getResourceAsStream("image/watermark.png");
-            Thumbnails.of(imgIn).size(200, 200)
+            Thumbnails.of(image.getInputStream()).size(200, 200)
                     .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(wmIn), 0.5f)
                     .outputQuality(0.8)
                     .toFile(destFile);

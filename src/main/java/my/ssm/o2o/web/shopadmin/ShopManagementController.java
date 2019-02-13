@@ -1,6 +1,5 @@
 package my.ssm.o2o.web.shopadmin;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import my.ssm.o2o.dto.ImageHolder;
 import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.Result;
@@ -172,23 +172,20 @@ public class ShopManagementController {
         shop.setArea(area);
         shop.setOwner(owner);
         
-        InputStream shopImgIn = null;
-        String suffix = null;
+        ImageHolder image = null;
         try {
             if(shopImg != null) {
-                shopImgIn = shopImg.getInputStream();
-                String originalFilename = shopImg.getOriginalFilename();
-                suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+                image = new ImageHolder(shopImg);
                 String[] acceptImageTypes = (String[]) commonService.getImageUploadProps().get("acceptImageTypes");
                 //验证上传的照片格式是否合法
-                if(!CommonUtil.isAcceptedMimeType("image", suffix.substring(1), acceptImageTypes)) {
-                    return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_IMAGE_TYPE, suffix);
+                if(!CommonUtil.isAcceptedMimeType("image", image.getSuffix().substring(1), acceptImageTypes)) {
+                    return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_IMAGE_TYPE, image.getSuffix());
                 }
             }
             if(shopId == null) {
-                shopService.registerShop(shop, shopImgIn, suffix);
+                shopService.registerShop(shop, image);
             } else {
-                shopService.modifyShop(shop, shopImgIn, suffix);
+                shopService.modifyShop(shop, image);
             }
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS);
         } catch (Exception e) {
@@ -196,8 +193,8 @@ public class ShopManagementController {
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_FAILURE, e);
         } finally {
             try {
-                if(null != shopImgIn) {
-                    shopImgIn.close();
+                if(null != image) {
+                    image.close();
                 }
             } catch(Exception e) {
                 logger.error(e.getMessage(), e);

@@ -1,11 +1,9 @@
 package my.ssm.o2o.service.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import my.ssm.o2o.dao.ShopDao;
+import my.ssm.o2o.dto.ImageHolder;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.Shop;
@@ -36,7 +35,7 @@ public class ShopServiceImpl implements ShopService {
     
     @Transactional
     @Override
-    public void registerShop(Shop shop, InputStream imgIn, String suffix) {
+    public void registerShop(Shop shop, ImageHolder image) {
         //1、保存店铺实体
         //把参数校验都放在controller层。为保证运行效率，service层不进行二次校验。
         shop.setPriority(0); //TODO 找一种处理权重的方式
@@ -51,21 +50,21 @@ public class ShopServiceImpl implements ShopService {
         if(shopId == null || shopId <= 0) {
             throw new ShopOperationException("注册店铺失败，未生成有效的店铺ID：" + shopId);
         }
-        if(imgIn == null || StringUtils.isBlank(suffix)) {
-            logger.info("未添加店铺缩略图：shopId={}，shopName={}，ShopImgInputStream={}，suffix={}",
-                    shopId, shop.getShopName(), imgIn, suffix);
+        if(image == null) {
+            logger.info("未添加店铺缩略图：shopId={}，shopName={}，image={}", 
+                    shopId, shop.getShopName(), image);
             return;
         }
-        String thumbnailRelativePath = addThumbnail(shopId, imgIn, suffix);
+        String thumbnailRelativePath = addThumbnail(shopId, image);
         shop.setShopImg(thumbnailRelativePath);
     }
 
     @Transactional
     @Override
-    public String addThumbnail(Long shopId, InputStream imgIn, String suffix) {
+    public String addThumbnail(Long shopId, ImageHolder image) {
         String thumbnailRelativePath = null;
         try {
-            thumbnailRelativePath = ImageUtil.generateThumbnail(imgIn, suffix,
+            thumbnailRelativePath = ImageUtil.generateThumbnail(image,
                     PathUtil.getShopImageDirRelativePath(shopId));
         } catch (IOException e) {
             throw new ShopOperationException(e);
@@ -83,17 +82,17 @@ public class ShopServiceImpl implements ShopService {
     
     @Transactional
     @Override
-    public String updateThumbnail(Long shopId, InputStream imgIn, String suffix) {
+    public String updateThumbnail(Long shopId, ImageHolder image) {
         String oldThumbnailRelativePath = null;
         try {
             oldThumbnailRelativePath = shopDao.findById(shopId).getShopImg();
             ImageUtil.remove(oldThumbnailRelativePath);
         } catch (Exception e) {
-            logger.error("删除旧的店铺缩略图失败：shopId={}，oldThumbnailRelativePath={}，ShopImgInputStream={}，suffix={}",
-                    shopId, oldThumbnailRelativePath, imgIn, suffix);
+            logger.error("删除旧的店铺缩略图失败：shopId={}，oldThumbnailRelativePath={}，shopImgInputStream={}，suffix={}",
+                    shopId, oldThumbnailRelativePath, image.getInputStream(), image.getSuffix());
             throw new ShopOperationException("删除旧的店铺缩略图失败");
         }
-        return addThumbnail(shopId, imgIn, suffix);
+        return addThumbnail(shopId, image);
     }
 
     @Override
@@ -103,7 +102,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Transactional
     @Override
-    public void modifyShop(Shop shop, InputStream imgIn, String suffix) {
+    public void modifyShop(Shop shop, ImageHolder image) {
         //1、修改店铺信息
         shop.setLastEditTime(new Date());
         int effectedRows = shopDao.update(shop);
@@ -112,12 +111,12 @@ public class ShopServiceImpl implements ShopService {
         }
         //2、更新店铺缩略图
         Long shopId = shop.getShopId();
-        if(imgIn == null || StringUtils.isBlank(suffix)) {
-            logger.info("未更新店铺缩略图：shopId={}，shopName={}，ShopImgInputStream={}，suffix={}",
-                    shopId, shop.getShopName(), imgIn, suffix);
+        if(image == null) {
+            logger.info("未更新店铺缩略图：shopId={}，shopName={}，image={}", 
+                    shopId, shop.getShopName(), image);
             return;
         }
-        String thumbnailRelativePath = updateThumbnail(shopId, imgIn, suffix);
+        String thumbnailRelativePath = updateThumbnail(shopId, image);
         shop.setShopImg(thumbnailRelativePath);
     }
 

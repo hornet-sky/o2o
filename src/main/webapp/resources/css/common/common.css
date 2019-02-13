@@ -1,0 +1,27 @@
+.row-title {
+    border: 1px solid #999;
+    padding: .5rem;
+}
+.row-content, .row-paging {
+    border: 1px solid #999;
+    padding: .5rem;
+    border-top: none;
+}
+.no-margin {
+    margin: 0;
+}
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.row .col-46 {
+  width: 42%;
+  margin-left: 4%;
+}
+.hidden {
+    display: none;
+}
+.mb {
+    margin-bottom: .5rem;
+}

@@ -56,12 +56,24 @@ public class ShopAdminRoutingController {
             HttpSession session) {
         Shop currShop = (Shop) session.getAttribute("currShop");
         UserInfo owner = (UserInfo) session.getAttribute("user");
-        
         if(currShop == null || !currShop.getShopId().equals(shopId)) {
             logger.error("productcategorymanagement - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
                     owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
             return "redirect:shoplist";
         }
         return "shop/productcategorymanagement";
+    }
+    
+    @GetMapping("/productmanagement")
+    public String shopList(@RequestParam("shopId") Long shopId,
+            HttpSession session) {
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        UserInfo owner = (UserInfo) session.getAttribute("user");
+        if(currShop == null || !currShop.getShopId().equals(shopId)) {
+            logger.error("productmanagement - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
+                    owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
+            return "redirect:shoplist";
+        }
+        return "shop/productmanagement";
     }
 }

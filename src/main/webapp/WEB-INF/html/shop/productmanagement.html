@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>商品类别管理</title>
+<title>商品管理</title>
 <meta name="description"
 	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
 <meta name="author" content="Wang">
@@ -22,18 +22,18 @@
 <link rel="stylesheet"
     href="../resources/css/common/common.css">
 <link rel="stylesheet"
-    href="../resources/css/shop/productcategorymanagement.css">
+    href="../resources/css/shop/productmanagement.css">
 </head>
 <body>
 	<header class="bar bar-nav">
-        <h1 class="title">商品类别管理</h1>
+        <h1 class="title">商品管理</h1>
     </header>
     <div class="content">
         <div class="content-block">
             <div class="row row-title">
-                <div class="col-40">商品类别</div>
-                <div class="col-40">优先级</div>
-                <div class="col-20">操作</div>
+                <div class="col-33">商品名称</div>
+                <div class="col-20">优先级</div>
+                <div class="col-46 text-center">操作</div>
             </div>
             <div class="content-wrap"></div>
             <div class="row row-paging"></div>
@@ -41,13 +41,10 @@
         <div class="content-block">
             <div class="row">
                 <div class="col-50">
-                    <a href="javascript:void(0);" id="add-btn" class="button button-big button-fill button-success mb">新增</a>
+                    <a href="javascript:history.go(-1);" class="button button-big button-fill button-danger">返回</a>
                 </div>
                 <div class="col-50">
-                    <a href="javascript:void(0);" id="submit-btn" class="button button-big button-fill mb">提交</a>
-                </div>
-                <div class="col-100">
-                    <a href="javascript:history.go(-1);" id="return-btn" class="button button-big button-fill button-danger mb">返回</a>
+                    <a href="productoperation" class="button button-big button-fill button-success">新增</a>
                 </div>
             </div>
         </div>
@@ -59,7 +56,7 @@
 	<script type='text/javascript'
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/shop/productcategorymanagement.js' charset='utf-8'></script>
+        src='../resources/js/shop/productmanagement.js' charset='utf-8'></script>
     <script type='text/javascript'
         src='../resources/js/common/common.js' charset='utf-8'></script>
     <script type='text/javascript'

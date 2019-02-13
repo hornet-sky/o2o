@@ -43,6 +43,10 @@ public class Product {
      */
     private String promotionPrice;
     /**  
+     * <p>奖励积分</p>     
+     */
+    private Long rewardsPoints;
+    /**  
      * <p>权重（影响展示顺序）</p>     
      */
     private Integer priority;

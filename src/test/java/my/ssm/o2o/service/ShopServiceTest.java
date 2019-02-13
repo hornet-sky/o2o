@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import my.ssm.o2o.BaseTest;
+import my.ssm.o2o.dto.ImageHolder;
 import my.ssm.o2o.entity.Area;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.ShopCategory;
@@ -41,7 +42,7 @@ public class ShopServiceTest extends BaseTest {
         shop.setShopName("和平饭店22");
         
         File shopImg = new File("C:\\Users\\Wang\\Desktop\\xiaohuangren.jpg");
-        
-        shopService.registerShop(shop, new FileInputStream(shopImg), ".jpg"); 
+        ImageHolder image = new ImageHolder(new FileInputStream(shopImg), ".jpg");
+        shopService.registerShop(shop, image); 
     }
 }

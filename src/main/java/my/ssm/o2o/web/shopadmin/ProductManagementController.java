@@ -25,6 +25,7 @@ import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.enums.ProductOperStateEnum;
 import my.ssm.o2o.service.ProductCategoryService;
+import my.ssm.o2o.service.ProductService;
 
 /**  
  * <p>商品管理功能控制器</p>
@@ -37,6 +38,47 @@ public class ProductManagementController {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProductCategoryService productCategoryService;
+    @Autowired
+    private ProductService productService;
+    
+    @GetMapping("/getproductlist")
+    @ResponseBody
+    public Result getProductList(@RequestParam("shopId") Long shopId,
+            PagingParams pagingParams, HttpSession session) { //TODO 实现前端分页、筛查
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        UserInfo owner = (UserInfo) session.getAttribute("user");
+        if(currShop == null || !currShop.getShopId().equals(shopId)) {
+            logger.error("getproductlist - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
+                    owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
+        }
+        Product condition = new Product();
+        condition.setShop(currShop);
+        try {
+            return productService.listProduct(condition , pagingParams);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);
+        }
+    }
+    
+    @GetMapping("/shelveproduct")
+    @ResponseBody
+    public Result shelveProduct(@RequestParam("productId") Long productId, 
+            @RequestParam("enableStatus") Integer enableStatus, HttpSession session) {
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        try {
+            int effectedRows = productService.shelveProduct(productId, currShop.getShopId(), enableStatus);
+            if(effectedRows > 0) {
+                return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS);
+            }
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);
+        }
+    }
+    
     @GetMapping("/getproductcategorylist")
     @ResponseBody
     public Result getProductCategoryList(@RequestParam("shopId") Long shopId,

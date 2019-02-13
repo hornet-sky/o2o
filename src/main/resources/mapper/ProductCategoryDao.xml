@@ -23,7 +23,7 @@
 	<if test="pagingParams != null and pagingParams.orderRules != null">
         ORDER BY ${pagingParams.orderRules}
     </if>
-    <if test="pagingParams != null">
+    <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
         LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
     </if>
   </select>

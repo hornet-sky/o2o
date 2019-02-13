@@ -129,42 +129,42 @@ $(function() {
 		if(shopId) { //修改店铺信息
 			formData.append("shopId", shopId);
 		}
-		
+		//验证店铺名称
 		var shopName = $("#shop-name").val();
 		if(!shopName) {
 			$.toast("店铺名称不能为空！");
 			return null;
 		}
 		formData.append("shopName", shopName);
-		
+		//验证店铺分类
 		var shopCategory = $("#shop-category").val();
 		if(!shopCategory) {
 			$.toast("店铺分类不能为空！");
 			return null;
 		}
 		formData.append("shopCategory", shopCategory);
-		
+		//验证店铺所在区域
 		var shopArea = $("#shop-area").val();
 		if(!shopArea) {
 			$.toast("所在区域不能为空！");
 			return null;
 		}
 		formData.append("shopArea", shopArea);
-		
+		//验证详细地址
 		var shopAddr = $("#shop-addr").val();
 		if(!shopAddr) {
 			$.toast("详细地址不能为空！");
 			return null;
 		}
 		formData.append("shopAddr", shopAddr);
-		
+		//验证联系电话
 		var shopPhone = $("#shop-phone").val();
 		if(!shopPhone) {
 			$.toast("联系电话不能为空！");
 			return null;
 		}
 		formData.append("shopPhone", shopPhone);
-		
+		//验证店铺照片
 		var shopImg = $("#shop-img")[0].files[0];
 		if(shopImg) {
 			var imgSize = shopImg.size;
@@ -182,17 +182,16 @@ $(function() {
 			}
 			formData.append("shopImg", shopImg);
 		}
-		
+		//店铺简介
 		var shopDesc = $("#shop-desc").val();
 		formData.append("shopDesc", shopDesc);
-		
+		//验证验证码
 		var verifyCodeActual = $("#kaptcha-ipt").val();
 		if(!verifyCodeActual) {
 			$.toast("验证码不能为空！");
 			return null;
 		}
 		formData.append("verifyCodeActual", verifyCodeActual);
-		
 		return formData;
 	}
 });

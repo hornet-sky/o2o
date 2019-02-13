@@ -1,12 +1,13 @@
 $(function() {
 	var getInitDataUri = "getshoplistinitdata";
 	var getShopListUri = "getshoplist";
+	var paging = initPaging(".row-paging", loadShopList);
 	//初始化页面组件
 	init();
 	
 	function init() {
 		$.getJSON(getInitDataUri, function(data) {
-			console.log("init - returned data", data);
+			console.log("initData - returned data", data);
 			if(data.state < 0) { //请求失败
 				$.toast(data.msg);
 				return;
@@ -23,33 +24,42 @@ $(function() {
 		});
 		
 		//加载店铺列表
+		loadShopList();
+	}
+	
+	function loadShopList() {
+		$.showIndicator();
 		$.ajax({
 			url: getShopListUri,
 			type: "GET",
 			data: {
-				pageNo: 1,
-				pageSize: 10
+				pageNo: paging.pageNo,
+				pageSize: paging.pageSize
 			},
 			//cache: false,
 			dataType: "json",
 			success: function(data, textStatus, jqXHR) {
 				console.log("getShopList - returned data", data);
 				if(data.state < 0) { //请求失败
+					$.hideIndicator();
 					$.toast(data.msg);
 					return;
 				}
+				paging.refreshStatus(data.total);
 				var rowsHtml = "";
 				data.rows.forEach(function(row, index) {
-					rowsHtml += "<div class='row row-shop'><div class='col-40 shop-name'>"
+					rowsHtml += "<div class='row row-content'><div class='col-40 text-ellipsis'>"
 						+ row.shopName + "</div><div class='col-40'>"
 						+ getShopStatusInfo(row.enableStatus)
 						+ "</div><div class='col-20'><a class='button' href='shopmanagement?shopId=" 
 						+ row.shopId + "'>进入</a></div></div>";
 				});
-				$(".show-wrap").html(rowsHtml);
+				$(".content-wrap").html(rowsHtml);
+				$.hideIndicator();
 			},
 			error: function (xhr, textStatus, errorThrown) {
 				printErr(xhr, textStatus, errorThrown);
+				$.hideIndicator();
 			    var result = getParsedResultFromXhr(xhr);
 			    $.toast(result ? result.msg : "服务器出错~");
 			}

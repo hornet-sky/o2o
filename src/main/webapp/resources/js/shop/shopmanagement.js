@@ -15,7 +15,7 @@ $(function() {
 			var $shopInfoBtn = $("#shop-info-btn").attr("href", "shopoperation?shopId=" + shopId);
 			var shop = data.entity;
 			if(shop != null && shop.enableStatus === 1) { //审核通过的店铺
-				var btnsHtml = '<div class="col-50 mb"><a class="button button-big button-fill" href="#">商品管理</a></div>'
+				var btnsHtml = '<div class="col-50 mb"><a class="button button-big button-fill" href="productmanagement?shopId=' + shopId + '">商品管理</a></div>'
 					+ '<div class="col-50 mb"><a class="button button-big button-fill" href="productcategorymanagement?shopId=' + shopId + '">类别管理</a></div>';
 				$shopInfoBtn.parent().after(btnsHtml);
 			}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.ssm.o2o.dao.ProductImgDao">
+  <select id="list" resultType="productImg">
+    SELECT 
+	  `product_img_id`,
+	  `img_addr`,
+	  `img_desc`,
+	  `priority`,
+	  `create_time`,
+	  `product_id` 
+	FROM
+	  `tb_product_img` 
+	<where>
+	   <if test="condition != null and condition.productId != null">
+	      `product_id` = #{condition.productId}
+	   </if>
+	</where>
+	<if test="pagingParams != null and pagingParams.orderRules != null">
+        ORDER BY ${pagingParams.orderRules}
+    </if>
+    <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+        LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+    </if>
+  </select>
+  <delete id="delete">
+    DELETE 
+    FROM 
+      `tb_product_img`
+    <where>
+       <if test="condition != null and condition.productId != null">
+           `product_id` = #{condition.productId}
+       </if>
+       <if test="condition != null and condition.productImgId != null">
+           AND `product_img_id` = #{condition.productImgId}
+       </if>
+    </where> 
+  </delete>
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO `tb_product_img` (
+	  `img_addr`,
+	  `img_desc`,
+	  `priority`,
+	  `create_time`,
+	  `product_id`
+	) 
+	VALUES
+	<foreach collection="productImgList" item="productImg" separator=",">
+	   (
+	     #{productImg.imgAddr},
+	     #{productImg.imgDesc},
+	     #{productImg.priority},
+	     #{productImg.createTime},
+	     #{productImg.productId}
+	   )
+	</foreach>
+  </insert>
+</mapper>

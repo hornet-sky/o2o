@@ -3,7 +3,8 @@ $(function() {
 	var getProductCategoryListUri = "getproductcategorylist";
 	var delProductCategoryUri = "delproductcategory";
 	var batchInsertProductCategoryUri = "batchinsertproductcategory";
-	var $productCategoryWrap = $(".product-category-wrap");
+	var paging = initPaging(".row-paging", loadProductCategoryList);
+	var $contentWrap = $(".content-wrap");
 	//初始化页面组件
 	init();
 	
@@ -12,13 +13,13 @@ $(function() {
 		loadProductCategoryList();
 		
 		//2、绑定删除事件处理函数
-		$productCategoryWrap.on("click", "a.button-del", function() {
+		$contentWrap.on("click", "a.button-del", function() {
 			var $delBtn = $(this); //注意this是“删除”按钮而不是外层的wrap组件
 			var cid = $delBtn.data("cid");
 			var cname = $delBtn.data("cname");
 			console.log("cid=" + cid + ", cname=" + cname);
 			if(!cid) { //直接删除新增的临时条目，不需要询问。
-				$delBtn.parents(".row-product-category").remove();
+				$delBtn.parents(".row-content").remove();
 				return;
 			}
 			$.confirm('确定删除 ' + cname + ' 吗?', function () {
@@ -35,7 +36,7 @@ $(function() {
 							$.toast(data.msg);
 							return;
 						}
-						$delBtn.parents(".row-product-category").remove();
+						loadProductCategoryList();
 					},
 					error: function (xhr, textStatus, errorThrown) {
 						printErr(xhr, textStatus, errorThrown);
@@ -49,11 +50,11 @@ $(function() {
 		
 		//3、绑定新增事件处理函数
 		$("#add-btn").click(function() {
-			var rowHtml = "<div class='row row-product-category temp'>" 
+			var rowHtml = "<div class='row row-content temp'>" 
 				+ "<div class='col-40'><input class='category-input category' type='text' placeholder='类别名'></div>" 
 				+ "<div class='col-40'><input class='category-input priority' type='number' placeholder='优先级'></div>"
 				+ "<div class='col-20'><a class='button button-danger button-del'>删除</a></div></div>";
-			$productCategoryWrap.append(rowHtml);
+			$contentWrap.append(rowHtml);
 		});
 		
 		//4、绑定提交事件处理函数
@@ -92,6 +93,7 @@ $(function() {
 						return;
 					}
 					//reload商品类别列表
+					paging.pageNo = 1;
 					loadProductCategoryList();
 				},
 				error: function (xhr, textStatus, errorThrown) {
@@ -105,32 +107,37 @@ $(function() {
 	}
 	
 	function loadProductCategoryList() {
+		$.showIndicator();
 		$.ajax({
 			url: getProductCategoryListUri,
 			type: "GET",
 			data: {
 				shopId: shopId,
-				pageNo: 1,
-				pageSize: 10
+				pageNo: paging.pageNo,
+				pageSize: paging.pageSize
 			},
 			dataType: "json",
 			success: function(data, textStatus, jqXHR) {
 				console.log("getProductCategoryList - returned data", data);
 				if(data.state < 0) { //请求失败
+					$.hideIndicator();
 					$.toast(data.msg);
 					return;
 				}
+				paging.refreshStatus(data.total);
 				//用加载到的商品类别列表渲染页面
 				var rowsHtml = "";
 				data.rows.forEach(function(row, index) {
-					rowsHtml += "<div class='row row-product-category'><div class='col-40 product-category-name'>"
+					rowsHtml += "<div class='row row-content'><div class='col-40 text-ellipsis'>"
 						+ row.productCategoryName + "</div><div class='col-40'>" + row.priority
 						+ "</div><div class='col-20'><a class='button button-danger button-del' data-cid='" + row.productCategoryId + "' data-cname='" + row.productCategoryName + "' href='javascript:void(0);'>删除</a></div></div>";
 				});
-				$productCategoryWrap.html(rowsHtml);
+				$contentWrap.html(rowsHtml);
+				$.hideIndicator();
 			},
 			error: function (xhr, textStatus, errorThrown) {
 				printErr(xhr, textStatus, errorThrown);
+				$.hideIndicator();
 			    var result = getParsedResultFromXhr(xhr);
 			    $.toast(result ? result.msg : "服务器出错~");
 			}

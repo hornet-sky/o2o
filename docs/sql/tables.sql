@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `tb_product` (
   `img_addr` VARCHAR(2000) COMMENT '缩略图地址',
   `normal_price` VARCHAR(100) COMMENT '正常价格',
   `promotion_price` VARCHAR(100) COMMENT '促销价格',
+  `rewards_points` INT COMMENT '奖励积分',
   `priority` INT NOT NULL COMMENT '权重（影响展示顺序）',
   `create_time` DATETIME NOT NULL COMMENT '创建时间',
   `last_edit_time` DATETIME COMMENT '修改时间',

@@ -35,7 +35,7 @@ public class PagingParams {
         orderRuleMap.put(orderField, direction);
     }
     public Integer getRowIndex() {
-        if(rowIndex == null) {
+        if(rowIndex == null && pageNo != null) {
             if(pageNo < 1) {
                 pageNo = 1;
             }
@@ -44,7 +44,7 @@ public class PagingParams {
         return rowIndex;
     }
     public Integer getRowSize() {
-        if(rowSize == null) {
+        if(rowSize == null && pageSize != null) {
             if(pageSize < 0) {
                 pageSize = 0;
             }

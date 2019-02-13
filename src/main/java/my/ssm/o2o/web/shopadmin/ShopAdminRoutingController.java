@@ -27,7 +27,7 @@ public class ShopAdminRoutingController {
     private ShopService shopService;
     
     @GetMapping("/shopoperation")
-    public String shopRegister() {
+    public String shopOperation() {
         return "shop/shopoperation";
     }
     
@@ -75,5 +75,10 @@ public class ShopAdminRoutingController {
             return "redirect:shoplist";
         }
         return "shop/productmanagement";
+    }
+    
+    @GetMapping("/productoperation")
+    public String productOperation() {
+        return "shop/productoperation";
     }
 }

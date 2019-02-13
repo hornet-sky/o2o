@@ -1,7 +1,10 @@
 package my.ssm.o2o.web.shopadmin;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.PagingParams;
@@ -23,9 +27,12 @@ import my.ssm.o2o.entity.Product;
 import my.ssm.o2o.entity.ProductCategory;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.UserInfo;
+import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ProductOperStateEnum;
+import my.ssm.o2o.service.CommonService;
 import my.ssm.o2o.service.ProductCategoryService;
 import my.ssm.o2o.service.ProductService;
+import my.ssm.o2o.util.KaptchaUtil;
 
 /**  
  * <p>商品管理功能控制器</p>
@@ -40,6 +47,70 @@ public class ProductManagementController {
     private ProductCategoryService productCategoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CommonService commonService;
+    
+    @GetMapping("/getproductoperationinitdata")
+    @ResponseBody
+    public Result getProductOperationInitData(
+            @RequestParam(name = "productId", required = false) Long productId,
+            @RequestParam(name = "shopId") Long shopId,
+            HttpSession session) {
+        logger.debug("productId={}, shopId={}", productId, shopId);
+        //验证是否属于当前登录用户
+        UserInfo owner = (UserInfo) session.getAttribute("user");
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        if(!shopId.equals(currShop.getShopId())) {
+            logger.error("getproductoperationinitdata - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]",
+                    owner.getUserId(), owner.getName(), shopId, currShop.getShopId());
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
+        }
+        Map<String, Object> data = new HashMap<>();
+        if(productId != null) {
+            Product product = productService.findProductById(productId);
+            if(product == null) {
+                return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.PRODUCT_NOT_FOUND, productId.toString());
+            }
+            data.put("product", product);
+        }
+        ProductCategory condition = new ProductCategory();
+        condition.setShopId(shopId);
+        PagingParams pagingParams = new PagingParams(null, null, "priority", Direction.DESC);
+        try {
+            data.put("productCategoryList", productCategoryService.listProductCategory(condition, pagingParams).getRows());
+            data.put("imageUploadProps", commonService.getImageUploadProps());
+            return new OperationResult<Map<String, Object>, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS, data);
+        } catch(Exception e) {
+            logger.error(e.getMessage(), e);
+            return new OperationResult<Map<String, Object>, ProductOperStateEnum>(ProductOperStateEnum.INITIALIZATION_FAILURE, e);
+        }
+    }
+    
+    @PostMapping("/registerormodifyproduct")
+    @ResponseBody
+    public Result registerOrModifyProduct(
+            @RequestParam(name = "productId", required = false) Long productId, 
+            @RequestParam(name = "productName") String productName, 
+            @RequestParam(name = "productCategory") Long productCategory,
+            @RequestParam(name = "priority") Integer priority,
+            @RequestParam(name = "normalPrice", required = false) String normalPrice,
+            @RequestParam(name = "promotionPrice", required = false) String promotionPrice,
+            @RequestParam(name = "rewardsPoints", required = false) String rewardsPoints,
+            @RequestParam(name = "productDesc", required = false) String productDesc,
+            @RequestParam(name = "verifyCodeActual") String verifyCodeActual,
+            @RequestParam(name = "coverImg", required = false) CommonsMultipartFile coverImg,
+            @RequestParam(name = "detailImgs", required = false) CommonsMultipartFile[] detailImgs,
+            HttpSession session) {
+        logger.debug("registerOrModifyProduct - productId={}, productName={}, productCategory={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
+                productId, productName, productCategory, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
+        if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.INVALID_VERIFY_CODE);
+        }
+        
+        //TODO 配置一个最大上传文件个数，应用到前端js和后台
+        
+        return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS);
+    }
     
     @GetMapping("/getproductlist")
     @ResponseBody

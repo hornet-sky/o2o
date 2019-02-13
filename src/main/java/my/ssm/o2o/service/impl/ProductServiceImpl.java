@@ -27,6 +27,10 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
     @Override
+    public Product findProductById(Long productId) {
+        return productDao.findById(productId);
+    }
+    @Override
     public PagingResult<Product> listProduct(Product condition, PagingParams pagingParams) {
         if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
             pagingParams.addOrderRule("product_id", Direction.DESC);
@@ -52,5 +56,4 @@ public class ProductServiceImpl implements ProductService {
         product.setProductId(productId);
         return productDao.update(product);
     }
-    
 }

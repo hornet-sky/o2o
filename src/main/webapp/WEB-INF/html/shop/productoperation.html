@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>店铺信息</title>
+<title>商品信息</title>
 <meta name="description"
 	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
 <meta name="author" content="Wang">
@@ -20,95 +20,114 @@
 <link rel="apple-touch-icon-precomposed" 
     href="/assets/img/apple-touch-icon-114x114.png">
 <link rel="stylesheet"
-    href="../resources/css/shop/shopoperation.css">
+    href="../resources/css/common/common.css">
+<link rel="stylesheet"
+    href="../resources/css/shop/productoperation.css">
 </head>
 <body>
 	<div class="page-group">
 		<div id="page-label-input" class="page">
 			<header class="bar bar-nav">
-			    <!-- 
-				<a class="button button-link button-nav pull-left back"
-					href="javascript:history.go(-1);"> <span class="icon icon-left"></span> 返回
-				</a>
-				 -->
-				<h1 class="title">店铺信息</h1>
+				<h1 class="title">商品信息</h1>
 			</header>
 			<div class="content">
 				<div class="list-block">
 					<ul>
-						<!-- 店铺名称 text -->
+						<!-- 商品名称 text -->
 						<li>
 							<div class="item-content">
 								<div class="item-inner">
-									<div class="item-title label">店铺名称</div>
+									<div class="item-title label">商品名称</div>
 									<div class="item-input">
-										<input type="text" id="shop-name" placeholder="店铺名称（必填）">
+										<input type="text" id="product-name" placeholder="商品名称（必填）">
 									</div>
 								</div>
 							</div>
 						</li>
-						<!-- 店铺类型 select -->
+						<!-- 商品类型 select -->
 						<li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">店铺类型</div>
+                                    <div class="item-title label">商品类型</div>
                                     <div class="item-input">
-                                        <select id="shop-category"></select>
+                                        <select id="product-category"></select>
                                     </div>
                                 </div>
                             </div>
                         </li>
-						<!-- 所在区域 select -->
+						<!-- 优先级 text -->
 						<li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">所在区域</div>
+                                    <div class="item-title label">优先级</div>
                                     <div class="item-input">
-                                        <select id="shop-area"></select>
+                                        <input type="number" id="priority" placeholder="数字越大越靠前显示">
                                     </div>
                                 </div>
                             </div>
                         </li>
-						<!-- 详细地址 text -->
+						<!-- 原价 number -->
 						<li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">详细地址</div>
+                                    <div class="item-title label">原价</div>
                                     <div class="item-input">
-                                        <input type="text" id="shop-addr" placeholder="详细地址（必填）">
+                                        <input type="number" id="normal-price" placeholder="可选">
                                     </div>
                                 </div>
                             </div>
                         </li>
-						<!-- 联系电话 text -->
-						<li>
+                        <!-- 现价 number -->
+                        <li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">联系电话</div>
+                                    <div class="item-title label">现价</div>
                                     <div class="item-input">
-                                        <input type="text" id="shop-phone" placeholder="联系电话（必填）">
+                                        <input type="number" id="promotion-price" placeholder="可选">
                                     </div>
                                 </div>
                             </div>
                         </li>
-						<!-- 店铺照片（缩略图） file -->
-						<li>
+                        <!-- 积分 number -->
+                        <li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">店铺照片</div>
+                                    <div class="item-title label">积分</div>
                                     <div class="item-input">
-                                        <input type="file" id="shop-img" accept="image/*" placeholder="店铺照片">
+                                        <input type="number" id="rewards-points" placeholder="可选">
                                     </div>
                                 </div>
                             </div>
                         </li>
-						<!-- 店铺简介 textarea -->
+						<!-- 封面图  file -->
 						<li>
                             <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title label">店铺简介</div>
+                                    <div class="item-title label">商品封面图</div>
                                     <div class="item-input">
-                                        <textarea id="shop-desc" placeholder="店铺简介"></textarea>
+                                        <input type="file" id="cover-img" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- 详情图  file -->
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">商品详情图</div>
+                                    <div class="item-input" id="detail-img-container">
+                                        <input type="file" class="detail-img" accept="image/*" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+						<!-- 商品描述 textarea -->
+						<li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">商品描述</div>
+                                    <div class="item-input">
+                                        <textarea id="product-desc" placeholder="商品描述"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +166,7 @@
 	<script type='text/javascript'
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/shop/shopoperation.js' charset='utf-8'></script>
+        src='../resources/js/shop/productoperation.js' charset='utf-8'></script>
     <script type='text/javascript'
         src='../resources/js/common/common.js' charset='utf-8'></script>
 </body>

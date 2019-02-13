@@ -22,6 +22,25 @@
         <id column="shop_id" property="shopId"/>
     </association>
   </resultMap>
+  <select id="findById" resultMap="productMap">
+    SELECT 
+      `product_id`,
+      `product_name`,
+      `product_desc`,
+      `img_addr`,
+      `normal_price`,
+      `promotion_price`,
+      `rewards_points`,
+      `priority`,
+      `create_time`,
+      `last_edit_time`,
+      `enable_status`,
+      `product_category_id`,
+      `shop_id` 
+    FROM
+      `tb_product`
+    WHERE `product_id` = #{product_id}
+  </select>
   <select id="list" resultMap="productMap">
     SELECT 
 	  `product_id`,

@@ -25,3 +25,6 @@
 .mb {
     margin-bottom: .5rem;
 }
+#kaptcha-img {
+    cursor: pointer;
+}

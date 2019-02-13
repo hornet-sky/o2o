@@ -49,6 +49,11 @@ $(function() {
 				});
 		    });
 		});
+		
+		//3、给“新增”按钮绑定点击事件处理函数
+		$("#add-btn").click(function() {
+			location.href = "productoperation?shopId=" + shopId;
+		});
 	}
 	
 	function loadProductList() {
@@ -75,7 +80,7 @@ $(function() {
 				data.rows.forEach(function(row, index) {
 					rowsHtml += "<div class='row row-content'><div class='col-33 text-ellipsis'>"
 						+ row.productName + "</div><div class='col-20'>" + row.priority
-						+ "</div><div class='col-46'><p class='buttons-row no-margin'><a class='button' href='productoperation?productId=" 
+						+ "</div><div class='col-46'><p class='buttons-row no-margin'><a class='button' href='productoperation?shopId=" + shopId + "&productId=" 
 						+ row.productId + "'>编辑</a><a class='button button-shelve' data-pid='" 
 						+ row.productId + "' data-pname='" + row.productName  + "' data-enable-status='" + row.enableStatus 
 						+ "' href='javascript:void(0);'>" + (row.enableStatus ? "下架" : "上架") + "</a><a class='button' href='#'>预览</a></p></div></div>";

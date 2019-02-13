@@ -23,7 +23,6 @@ $(function() {
 			}
 			//1、有关图片上传的参数
 			var imageUploadPropsFromServer = data.entity.imageUploadProps;
-			console.log("imageUploadPropsFromServer", imageUploadPropsFromServer);
 			if(imageUploadPropsFromServer) {
 				//替换默认参数
 				if(imageUploadPropsFromServer.maxUploadSize != undefined && imageUploadPropsFromServer.maxUploadSize != null) {
@@ -33,10 +32,11 @@ $(function() {
 					imageUploadProps.acceptImageTypes = imageUploadPropsFromServer.acceptImageTypes;
 				}
 			}
-			//2、初始化“店铺分类”下拉框
+			//2、初始化“店铺类型”下拉框
 			var shopCategoryList = data.entity.shopCategoryList;
 			if(!$.isArray(shopCategoryList) || shopCategoryList.length == 0) {
-				$.toast("未找到任何店铺分类");
+				$.toast("未找到任何店铺类型");
+				setTimeout("location.href='shoplist'", 1500);
 				return;
 			}
 			var $shopCategory = $("#shop-category");
@@ -47,6 +47,7 @@ $(function() {
 			var areaList = data.entity.areaList;
 			if(!$.isArray(areaList) || areaList.length == 0) {
 				$.toast("未找到任何区域信息");
+				setTimeout("location.href='shoplist'", 1500);
 				return;
 			}
 			var $shopArea = $("#shop-area");
@@ -136,10 +137,10 @@ $(function() {
 			return null;
 		}
 		formData.append("shopName", shopName);
-		//验证店铺分类
+		//验证店铺类型
 		var shopCategory = $("#shop-category").val();
 		if(!shopCategory) {
-			$.toast("店铺分类不能为空！");
+			$.toast("店铺类型不能为空！");
 			return null;
 		}
 		formData.append("shopCategory", shopCategory);

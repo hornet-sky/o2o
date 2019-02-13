@@ -147,7 +147,7 @@ public class ShopManagementController {
             @RequestParam(name = "verifyCodeActual") String verifyCodeActual,
             @RequestParam(name = "shopImg", required = false) CommonsMultipartFile shopImg,
             HttpSession session) {
-        logger.debug("registershop - shopId={}, shopName={}, shopCategory={}, shopArea={}, shopAddr={}, shopPhone={}, shopDesc={}, verifyCodeActual={}, shopImg={}",
+        logger.debug("registerOrModifyShop - shopId={}, shopName={}, shopCategory={}, shopArea={}, shopAddr={}, shopPhone={}, shopDesc={}, verifyCodeActual={}, shopImg={}",
                 shopId, shopName, shopCategoryId, shopAreaId, shopAddr, shopPhone, shopDesc, verifyCodeActual, shopImg);
         if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_VERIFY_CODE);

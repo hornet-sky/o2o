@@ -33,7 +33,7 @@ function humanizeByteSize(size) {
 /**
  * 获得解析后的ajax结果（application/json）
  * @param xhr XMLHttpRequest
- * @returns 解析后的ajax结果
+ * @returns 解析后的结果
  */
 function getParsedResultFromXhr(xhr) {
 	if(!xhr || !xhr.responseText) {
@@ -43,7 +43,7 @@ function getParsedResultFromXhr(xhr) {
 		return $.parseJSON(xhr.responseText);
 	} catch(e) {
 		console.error(e);
-		return null;
+		return xhr.responseText;
 	}
 }
 

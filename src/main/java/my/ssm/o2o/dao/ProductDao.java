@@ -14,6 +14,12 @@ import my.ssm.o2o.entity.Product;
  */  
 public interface ProductDao {
     /**  
+     * <p>查询指定ID的商品信息</p>  
+     * @param productId 商品ID
+     * @return  商品信息
+     */  
+    Product findById(Long productId);
+    /**  
      * <p>查找指定条件及分页参数的商品信息</p>  
      * @param condition 查询条件
      * @param pagingParams 分页参数

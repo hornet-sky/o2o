@@ -19,16 +19,28 @@ import my.ssm.o2o.service.CommonService;
 @Service
 public class CommonServiceImpl implements CommonService {
     private Logger logger = LoggerFactory.getLogger(getClass());
+    /**  
+     * <p>单个上传文件的大小，单位B</p>     
+     */
     @Value("#{prop['upload.maxUploadSize']}")
     private Long maxUploadSize;
+    /**  
+     * <p>允许上传的图片类型，例如“image/jpg”</p>     
+     */
     @Value("#{prop['upload.acceptImageTypes']}")
     private String[] acceptImageTypes;
+    /**  
+     * <p>一次提交中上传图片的最大个数</p>     
+     */
+    @Value("#{prop['upload.maxImageCount']}")
+    private Integer maxImageCount;
     @Override
     public Map<String, Object> getImageUploadProps() {
         logger.debug("maxUploadSize={}, acceptImageTypes={}", maxUploadSize, Arrays.toString(acceptImageTypes));
         Map<String, Object> props = new HashMap<>();
         props.put("maxUploadSize", maxUploadSize);
         props.put("acceptImageTypes", acceptImageTypes);
+        props.put("maxImageCount", maxImageCount);
         return props;
     }
 

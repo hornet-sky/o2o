@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import my.ssm.o2o.dto.ImageHolder;
 import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.Result;
@@ -29,9 +30,11 @@ import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ProductOperStateEnum;
+import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.service.CommonService;
 import my.ssm.o2o.service.ProductCategoryService;
 import my.ssm.o2o.service.ProductService;
+import my.ssm.o2o.util.CommonUtil;
 import my.ssm.o2o.util.KaptchaUtil;
 
 /**  
@@ -86,9 +89,9 @@ public class ProductManagementController {
         }
     }
     
-    @PostMapping("/registerormodifyproduct")
+    @PostMapping("/addormodifyproduct")
     @ResponseBody
-    public Result registerOrModifyProduct(
+    public Result addOrModifyProduct(
             @RequestParam(name = "productId", required = false) Long productId, 
             @RequestParam(name = "productName") String productName, 
             @RequestParam(name = "productCategory") Long productCategory,
@@ -101,14 +104,32 @@ public class ProductManagementController {
             @RequestParam(name = "coverImg", required = false) CommonsMultipartFile coverImg,
             @RequestParam(name = "detailImgs", required = false) CommonsMultipartFile[] detailImgs,
             HttpSession session) {
-        logger.debug("registerOrModifyProduct - productId={}, productName={}, productCategory={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
+        logger.debug("addOrModifyProduct - productId={}, productName={}, productCategory={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
                 productId, productName, productCategory, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
         if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
             return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.INVALID_VERIFY_CODE);
         }
+        Map<String, Object> imageUploadProps = commonService.getImageUploadProps();
+        
+        ImageHolder image = null;
+        /*if(coverImg != null) {
+            image = new ImageHolder(coverImg);
+            String[] acceptImageTypes = (String[]) commonService.getImageUploadProps().get("acceptImageTypes");
+            //验证上传的照片格式是否合法
+            if(!CommonUtil.isAcceptedMimeType("image", image.getSuffix().substring(1), acceptImageTypes)) {
+                return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_IMAGE_TYPE, image.getSuffix());
+            }
+        }*/
+        
+        //TODO 把currShop设置进product里
+        
+        
+        
         
         //TODO 配置一个最大上传文件个数，应用到前端js和后台
         
+        
+        Integer maxImageCount = (Integer) imageUploadProps.get("maxImageCount");
         return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS);
     }
     

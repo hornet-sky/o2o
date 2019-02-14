@@ -38,13 +38,13 @@ public final class PathUtil {
     }
     
     /**  
-     * <p>获取店铺图片所在目录的相对路径</p>  
+     * <p>获取保存图片的相对路径</p>  
      * @param shopId 店铺ID
      * @return  相对于基础路径的相对路径
      */  
-    public static String getShopImageDirRelativePath(long shopId) {
+    public static String getImageRelativeDirPath(long shopId) {
         String relativePath = "upload/item/shop/" + shopId + "/";
-        logger.debug("shopImageDirRelativePath={}", relativePath);
+        logger.debug("imageRelativeDirPath={}", relativePath);
         return relativePath;
     }
 }

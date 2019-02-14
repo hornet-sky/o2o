@@ -2,10 +2,11 @@ $(function() {
 	var productId = getQueryStrValByName("productId");
 	var shopId = getQueryStrValByName("shopId");
 	var getInitDataUri = "getproductoperationinitdata";
-	var submitProductInfoUri = "registerormodifyproduct";
+	var submitProductInfoUri = "addormodifyproduct";
 	var imageUploadProps = { //有关图片上传的默认参数，比如允许图片的大小、格式等。
 		maxUploadSize: 6291456, //6MB
 		acceptImageTypes: ["image/jpg", "image/jpeg", "image/png", "image/bmp", "image/gif"],
+		maxImageCount: 6
 	}; 
 	//初始化页面组件
 	init();
@@ -31,6 +32,9 @@ $(function() {
 				if($.isArray(imageUploadPropsFromServer.acceptImageTypes)) {
 					imageUploadProps.acceptImageTypes = imageUploadPropsFromServer.acceptImageTypes;
 				}
+				if(imageUploadPropsFromServer.maxImageCount != undefined && imageUploadPropsFromServer.maxImageCount != null) {
+					imageUploadProps.maxImageCount = imageUploadPropsFromServer.maxImageCount;
+				}
 			}
 			//2、初始化“商品类型”下拉框
 			var productCategoryList = data.entity.productCategoryList;
@@ -55,7 +59,7 @@ $(function() {
 			var $detailImgContainer = $("#detail-img-container");
 			$detailImgContainer.on("change", ".detail-img:last-child", function() {
 				var detailImgs = $detailImgContainer.children();
-				if(detailImgs.length >= 6) {
+				if(detailImgs.length >= imageUploadProps.maxImageCount) {
 					return;
 				}
 				$detailImgContainer.append('<input type="file" class="detail-img" accept="image/*" />');
@@ -96,7 +100,7 @@ $(function() {
 						return;
 					}
 					$.toast(data.msg);
-					//setTimeout("location.href='productmanagement?shopId=" + shopId + "'", 1500);
+					setTimeout("location.href='productmanagement?shopId=" + shopId + "'", 1500);
 				},
 				error: function (xhr, textStatus, errorThrown) {
 					printErr(xhr, textStatus, errorThrown);

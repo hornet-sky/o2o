@@ -29,13 +29,38 @@ public final class ImageUtil {
     private ImageUtil() {}
     
     /**  
-     * <p>给上传的图片生成缩略图</p>  
+     * <p>生成封面图</p>  
      * @param image  图片文件持有器。其内部包含了图片文件的输入流和文件名等信息。
-     * @param destDirRelativePath 缩略图所在目录的相对路径
-     * @return  缩略图的相对路径
+     * @param destDirRelativePath 封面图所在目录的相对路径
+     * @return  封面图的相对路径
      * @throws IOException 转换过程中的IO异常
      */  
-    public static String generateThumbnail(ImageHolder image, String destDirRelativePath) throws IOException {
+    public static String generateCoverImage(ImageHolder image, String destDirRelativePath) throws IOException {
+        return generateThumbnail(image, destDirRelativePath, 200, 200, 0.8);
+    }
+    
+    /**  
+     * <p>生成详情图</p>  
+     * @param image  图片文件持有器。其内部包含了图片文件的输入流和文件名等信息。
+     * @param destDirRelativePath 详情图所在目录的相对路径
+     * @return  详情图的相对路径
+     * @throws IOException 转换过程中的IO异常
+     */  
+    public static String generateDetailImage(ImageHolder image, String destDirRelativePath) throws IOException {
+        return generateThumbnail(image, destDirRelativePath, 640, 337, 0.9);
+    }
+    
+    /**  
+     * <p>保存成缩略图</p>  
+     * @param image 待保存的图片
+     * @param destDirRelativePath 缩略图所在目录的相对路径
+     * @param width 缩略图的宽度
+     * @param height 缩略图的高度
+     * @param quality 缩略图的质量
+     * @return 缩略图的相对路径
+     * @throws IOException  保存过程中出现异常
+     */  
+    public static String generateThumbnail(ImageHolder image, String destDirRelativePath, int width, int height, double quality) throws IOException {
         logger.debug("destDirRelativePath={}", destDirRelativePath);
         String destFileRelativePath = destDirRelativePath + generateRandomFileName() + image.getSuffix();
         logger.debug("destFileRelativePath={}", destFileRelativePath);
@@ -49,9 +74,9 @@ public final class ImageUtil {
         InputStream wmIn = null;
         try {
             wmIn = Thread.currentThread().getContextClassLoader().getResourceAsStream("image/watermark.png");
-            Thumbnails.of(image.getInputStream()).size(200, 200)
+            Thumbnails.of(image.getInputStream()).size(width, height)
                     .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(wmIn), 0.5f)
-                    .outputQuality(0.8)
+                    .outputQuality(quality)
                     .toFile(destFile);
         } finally {
             if(wmIn != null)

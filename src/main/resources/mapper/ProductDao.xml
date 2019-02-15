@@ -39,7 +39,8 @@
       `shop_id` 
     FROM
       `tb_product`
-    WHERE `product_id` = #{product_id}
+    WHERE `product_id` = #{productId}
+    AND `shop_id` = #{shopId}
   </select>
   <select id="list" resultMap="productMap">
     SELECT 
@@ -136,5 +137,12 @@
       <if test="shop != null and shop.shopId != null">`shop_id` = #{shop.shopId}</if>
     </set> 
     WHERE `product_id` = #{productId}
+  </update>
+  <update id="updateProductCategoryToNull" parameterType="long">
+    UPDATE 
+      `tb_product` 
+    SET `product_category_id` = NULL,
+        `enable_status` = 0
+    WHERE `product_category_id` = #{product_category_id}
   </update>
 </mapper>

@@ -17,7 +17,6 @@ import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.Product;
 import my.ssm.o2o.entity.ProductImg;
-import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ProductOperStateEnum;
 import my.ssm.o2o.exception.ProductOperationException;
@@ -37,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductImgDao productImgDao;
     @Override
-    public Product findProductById(Long productId) {
-        return productDao.findById(productId);
+    public Product findProductById(Long productId, Long shopId) {
+        return productDao.findById(productId, shopId);
     }
     @Override
     public PagingResult<Product> listProduct(Product condition, PagingParams pagingParams) {
@@ -52,19 +51,18 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public int shelveProduct(Long productId, Long shopId, Integer enableStatus) {
-        Shop shop = new Shop();
-        shop.setShopId(shopId);
-        Product condition = new Product();
-        condition.setShop(shop);
-        condition.setProductId(productId);
-        if(productDao.count(condition) == 0) {
+        Product product = productDao.findById(productId, shopId);
+        if(product == null) {
             throw new ProductOperationException("所" + (ProductOperStateEnum.UNSHELVE.getState().equals(enableStatus) ? "下架" : "上架") + "的商品不存在");
         }
-        Product product = new Product();
-        product.setEnableStatus(enableStatus);
-        product.setLastEditTime(new Date());
-        product.setProductId(productId);
-        return productDao.update(product);
+        if(product.getProductCategory() == null || product.getProductCategory().getProductCategoryId() == null) {
+            throw new ProductOperationException("请先给该商品分类");
+        }
+        Product condition = new Product();
+        condition.setEnableStatus(enableStatus);
+        condition.setLastEditTime(new Date());
+        condition.setProductId(productId);
+        return productDao.update(condition);
     }
     @Transactional
     @Override
@@ -198,7 +196,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String updateCoverImg(Long shopId, Long productId, ImageHolder image) {
         try {
-            String oldRelativePath = productDao.findById(productId).getImgAddr();
+            String oldRelativePath = productDao.findById(productId, shopId).getImgAddr();
             ImageUtil.remove(oldRelativePath);
         } catch (Exception e) {
             throw new ProductOperationException("删除旧的商品封面图失败");

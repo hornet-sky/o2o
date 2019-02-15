@@ -71,7 +71,7 @@ public class ProductManagementController {
         }
         Map<String, Object> data = new HashMap<>();
         if(productId != null) {
-            Product product = productService.findProductById(productId);
+            Product product = productService.findProductById(productId, shopId);
             if(product == null) {
                 return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.PRODUCT_NOT_FOUND, productId.toString());
             }
@@ -213,7 +213,7 @@ public class ProductManagementController {
             return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE.getState(), e.getMessage());
         }
     }
     

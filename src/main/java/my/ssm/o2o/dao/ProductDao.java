@@ -16,9 +16,10 @@ public interface ProductDao {
     /**  
      * <p>查询指定ID的商品信息</p>  
      * @param productId 商品ID
+     * @param shopId 店铺ID
      * @return  商品信息
      */  
-    Product findById(Long productId);
+    Product findById(@Param("productId") Long productId, @Param("shopId") Long shopId);
     /**  
      * <p>查找指定条件及分页参数的商品信息</p>  
      * @param condition 查询条件
@@ -44,4 +45,10 @@ public interface ProductDao {
      * @return  影响的行数
      */  
     int update(Product product);
+    /**  
+     * <p>将指定商品类别的商品其所属的商品类别置为空</p>  
+     * @param ProductCategoryId 商品类别ID
+     * @return  影响的行数
+     */  
+    int updateProductCategoryToNull(Long ProductCategoryId);
 }

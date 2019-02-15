@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import my.ssm.o2o.dao.ProductCategoryDao;
+import my.ssm.o2o.dao.ProductDao;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.entity.ProductCategory;
@@ -22,6 +23,8 @@ import my.ssm.o2o.service.ProductCategoryService;
 public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Autowired
     private ProductCategoryDao productCategoryDao;
+    @Autowired
+    private ProductDao productDao;
     @Override
     public PagingResult<ProductCategory> listProductCategory(ProductCategory condition, PagingParams pagingParams) {
         if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
@@ -34,7 +37,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Transactional
     @Override
     public int delProductCategory(ProductCategory condition) {
-        //TODO 将该类别下的商品的外键置为null
+        //先将该类别下的商品的外键置为null
+        productDao.updateProductCategoryToNull(condition.getProductCategoryId());
+        //然后再删除该类别
         return productCategoryDao.delete(condition);
     }
     @Transactional

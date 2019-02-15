@@ -84,8 +84,10 @@ $(function() {
 				var $promotionPrice = $("#promotion-price").val(product.promotionPrice);
 				var $rewardsPoints = $("#rewards-points").val(product.rewardsPoints);
 				var $productDesc = $("#product-desc").val(product.productDesc);
-				$productCategory.find("option[value='" + product.productCategory.productCategoryId + "']")
-					.attr("selected", "selected");
+				if(product.productCategory) {
+					$productCategory.find("option[value='" + product.productCategory.productCategoryId + "']")
+						.attr("selected", "selected");
+				}
 			}
 		});
 	}

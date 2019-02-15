@@ -17,9 +17,10 @@ public interface ProductService {
     /**  
      * <p>查询指定ID的商品信息</p>  
      * @param productId 商品ID
+     * @param shopId 店铺ID
      * @return  商品信息
      */  
-    Product findProductById(Long productId);
+    Product findProductById(Long productId, Long shopId);
     /**  
      * <p>查找指定条件及分页参数的商品类别信息</p>  
      * @param condition 查询条件

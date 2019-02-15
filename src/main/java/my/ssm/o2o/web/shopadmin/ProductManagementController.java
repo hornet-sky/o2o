@@ -1,5 +1,7 @@
 package my.ssm.o2o.web.shopadmin;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +33,9 @@ import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ProductOperStateEnum;
-import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.service.CommonService;
 import my.ssm.o2o.service.ProductCategoryService;
 import my.ssm.o2o.service.ProductService;
-import my.ssm.o2o.util.CommonUtil;
 import my.ssm.o2o.util.KaptchaUtil;
 
 /**  
@@ -60,7 +61,7 @@ public class ProductManagementController {
             @RequestParam(name = "shopId") Long shopId,
             HttpSession session) {
         logger.debug("productId={}, shopId={}", productId, shopId);
-        //验证是否属于当前登录用户
+        //验证是否是当前操作的店铺
         UserInfo owner = (UserInfo) session.getAttribute("user");
         Shop currShop = (Shop) session.getAttribute("currShop");
         if(!shopId.equals(currShop.getShopId())) {
@@ -92,45 +93,90 @@ public class ProductManagementController {
     @PostMapping("/addormodifyproduct")
     @ResponseBody
     public Result addOrModifyProduct(
+            @RequestParam(name = "shopId", required = true) Long shopId, 
             @RequestParam(name = "productId", required = false) Long productId, 
             @RequestParam(name = "productName") String productName, 
-            @RequestParam(name = "productCategory") Long productCategory,
+            @RequestParam(name = "productCategory") Long productCategoryId,
             @RequestParam(name = "priority") Integer priority,
             @RequestParam(name = "normalPrice", required = false) String normalPrice,
             @RequestParam(name = "promotionPrice", required = false) String promotionPrice,
-            @RequestParam(name = "rewardsPoints", required = false) String rewardsPoints,
+            @RequestParam(name = "rewardsPoints", required = false) Long rewardsPoints,
             @RequestParam(name = "productDesc", required = false) String productDesc,
             @RequestParam(name = "verifyCodeActual") String verifyCodeActual,
             @RequestParam(name = "coverImg", required = false) CommonsMultipartFile coverImg,
             @RequestParam(name = "detailImgs", required = false) CommonsMultipartFile[] detailImgs,
             HttpSession session) {
-        logger.debug("addOrModifyProduct - productId={}, productName={}, productCategory={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
-                productId, productName, productCategory, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
+        logger.debug("addOrModifyProduct - shopId={}, productId={}, productName={}, productCategoryId={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
+                shopId, productId, productName, productCategoryId, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
         if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
             return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.INVALID_VERIFY_CODE);
         }
+        //验证是否是当前操作的店铺
+        UserInfo owner = (UserInfo) session.getAttribute("user");
+        Shop currShop = (Shop) session.getAttribute("currShop");
+        if(!shopId.equals(currShop.getShopId())) {
+            logger.error("addormodifyproduct - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]",
+                    owner.getUserId(), owner.getName(), shopId, currShop.getShopId());
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
+        }
+        
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setProductCategoryId(productCategoryId);
+        Product product = new Product();
+        product.setProductId(productId);
+        product.setProductName(productName);
+        product.setProductDesc(productDesc);
+        product.setNormalPrice(normalPrice);
+        product.setPromotionPrice(promotionPrice);
+        product.setRewardsPoints(rewardsPoints);
+        product.setPriority(priority);
+        product.setShop(currShop);
+        product.setProductCategory(productCategory);
+        
         Map<String, Object> imageUploadProps = commonService.getImageUploadProps();
-        
-        ImageHolder image = null;
-        /*if(coverImg != null) {
-            image = new ImageHolder(coverImg);
-            String[] acceptImageTypes = (String[]) commonService.getImageUploadProps().get("acceptImageTypes");
-            //验证上传的照片格式是否合法
-            if(!CommonUtil.isAcceptedMimeType("image", image.getSuffix().substring(1), acceptImageTypes)) {
-                return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.INVALID_IMAGE_TYPE, image.getSuffix());
-            }
-        }*/
-        
-        //TODO 把currShop设置进product里
-        
-        
-        
-        
-        //TODO 配置一个最大上传文件个数，应用到前端js和后台
-        
-        
         Integer maxImageCount = (Integer) imageUploadProps.get("maxImageCount");
-        return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS);
+        List<ImageHolder> detailImgHolderList = new ArrayList<>();
+        ImageHolder coverImgHolder = null;
+        try {
+            if(ArrayUtils.isNotEmpty(detailImgs) && maxImageCount != null && maxImageCount > 0) {
+                CommonsMultipartFile detailImg;
+                for(int i = 0, len = detailImgs.length; i < len && detailImgHolderList.size() < maxImageCount; i++) {
+                    detailImg = detailImgs[i];
+                    if(detailImg != null) {
+                        detailImgHolderList.add(new ImageHolder(detailImg));
+                    }
+                }
+            }
+            if(coverImg != null) {
+                coverImgHolder = new ImageHolder(coverImg);
+            }
+            if(productId == null) { //新增
+                productService.addProduct(product, coverImgHolder, detailImgHolderList);
+            } else { //修改
+                productService.modifyProduct(product, coverImgHolder, detailImgHolderList);
+            }
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_SUCCESS);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);
+        } finally {
+            try {
+                if(null != coverImgHolder) {
+                    coverImgHolder.close();
+                }
+            } catch(Exception e) {
+                logger.error(e.getMessage(), e);
+                return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);
+            } finally {
+                detailImgHolderList.forEach(detailImgHolder -> {
+                    try {
+                        detailImgHolder.close();
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                });
+            }
+        }
     }
     
     @GetMapping("/getproductlist")

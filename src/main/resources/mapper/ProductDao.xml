@@ -130,7 +130,6 @@
       <if test="promotionPrice != null">`promotion_price` = #{promotionPrice},</if>
       <if test="rewardsPoints != null">`rewards_points` = #{rewardsPoints},</if>
       <if test="priority != null">`priority` = #{priority},</if>
-      <if test="createTime != null">`create_time` = #{createTime},</if>
       <if test="lastEditTime != null">`last_edit_time` = #{lastEditTime},</if>
       <if test="enableStatus != null">`enable_status` = #{enableStatus},</if>
       <if test="productCategory != null and productCategory.productCategoryId != null">`product_category_id` = #{productCategory.productCategoryId},</if>

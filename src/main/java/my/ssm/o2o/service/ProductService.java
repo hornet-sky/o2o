@@ -59,11 +59,11 @@ public interface ProductService {
     /**  
      * <p>更新商品封面图（缩略图）</p>  
      * @param shopId 店铺ID，主要用于生成存放图片的目录
-     * @param oldRelativePath 旧的封面图相对路径
+     * @param productId 商品ID
      * @param image 新的封面图
      * @return 新的封面图相对路径
      */  
-    String updateCoverImg(Long shopId, String oldRelativePath, ImageHolder image);
+    String updateCoverImg(Long shopId, Long productId, ImageHolder image);
     /**  
      * <p>添加商品详情图</p>  
      * @param shopId 店铺ID，主要用于生成存放图片的目录

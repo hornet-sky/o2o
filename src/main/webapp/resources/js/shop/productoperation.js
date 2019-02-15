@@ -47,15 +47,26 @@ $(function() {
 			productCategoryList.forEach(function(item, index) {
 				$productCategory.append("<option value='" + item.productCategoryId + "'>" + item.productCategoryName + "</option>");
 			});
-			//3、初始化“提交”按钮
+			//3、绑定“积分”输入事件处理函数
+			var $rewardsPoints = $("#rewards-points").on("input", function() {
+				var val = this.value;
+				if(val) {
+					val = parseInt(val.replace(/[^\d]/g, ""));
+					if(val > 99999) {
+						val = 99999;
+					}
+				}
+				this.value = val;
+			});
+			//4、初始化“提交”按钮
 			var $submitBtn = $("#submit-btn").click(function() {
 				submitProductInfo();
 			});
-			//4、绑定“验证码”图片点击事件
+			//5、绑定“验证码”图片点击事件处理函数
 			var $kaptchaImg = $("#kaptcha-img").click(function() {
 				changeVerifyCode(this); //changeVerifyCode方法来自common.js
 			});
-			//5、可添加多个商品详情图
+			//6、可添加多个商品详情图
 			var $detailImgContainer = $("#detail-img-container");
 			$detailImgContainer.on("change", ".detail-img:last-child", function() {
 				var detailImgs = $detailImgContainer.children();
@@ -64,7 +75,7 @@ $(function() {
 				}
 				$detailImgContainer.append('<input type="file" class="detail-img" accept="image/*" />');
 			});
-			//6、如果是修改产品信息，则还需要一些特殊的处理
+			//7、如果是修改产品信息，则还需要一些特殊的处理
 			if(productId) {
 				var product = data.entity.product;
 				var $productName = $("#product-name").val(product.productName);

@@ -128,11 +128,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void modifyProduct(Product product, ImageHolder coverImg, List<ImageHolder> detailImgs) {
         Long shopId = product.getShop().getShopId();
+        Long productId = product.getProductId();
         //1、更新商品封面图
         String thumbnailRelativePath = null;
         if(coverImg != null) {
             try {
-                thumbnailRelativePath = updateCoverImg(shopId, product.getImgAddr(), coverImg);
+                thumbnailRelativePath = updateCoverImg(shopId, productId, coverImg);
                 product.setImgAddr(thumbnailRelativePath);
             } catch (Exception e) {
                 throw new ProductOperationException("更新商品封面图失败", e);
@@ -154,7 +155,6 @@ public class ProductServiceImpl implements ProductService {
         if(detailImgs.isEmpty()) {
             return;
         }
-        Long productId = product.getProductId();
         List<ProductImg> productDetailImageContainer = new ArrayList<>();
         String detailImgRelativePath = null;
         ProductImg productDetailImage = null;
@@ -196,8 +196,9 @@ public class ProductServiceImpl implements ProductService {
     }
     @Transactional
     @Override
-    public String updateCoverImg(Long shopId, String oldRelativePath, ImageHolder image) {
+    public String updateCoverImg(Long shopId, Long productId, ImageHolder image) {
         try {
+            String oldRelativePath = productDao.findById(productId).getImgAddr();
             ImageUtil.remove(oldRelativePath);
         } catch (Exception e) {
             throw new ProductOperationException("删除旧的商品封面图失败");

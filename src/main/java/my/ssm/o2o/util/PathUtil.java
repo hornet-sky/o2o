@@ -25,26 +25,26 @@ public final class PathUtil {
                     String osName = System.getProperty("os.name");
                     String userHome = System.getProperty("user.home");
                     String separator = System.getProperty("file.separator");
-                    String projectName = ((Properties) SpringContextUtils.getBeanById("prop")).getProperty("project.name");
-                    logger.debug("os.name={}, user.home={}, file.separator={}, project.name={}", 
-                            osName, userHome, separator, projectName); //os.name=Windows 10, user.home=C:\Users\Wang, file.separator=\, project.name=o2o-webapp
-                    imageBaseDirPath = userHome + separator + projectName + separator + "image" + separator;
-                    logger.debug("imageBaseDirPath={}", imageBaseDirPath); //C:\Users\Wang\o2o-webapp\image\
+                    Properties props = (Properties) SpringContextUtils.getBeanById("prop");
+                    String projectName = props.getProperty("project.name");
+                    imageBaseDirPath = props.getProperty("upload.baseDir");
+                    logger.debug("os.name={}, user.home={}, file.separator={}, project.name={}, upload.baseDir={}", 
+                            osName, userHome, separator, projectName, imageBaseDirPath); //os.name=Windows 10, user.home=C:\Users\Wang, file.separator=\, project.name=o2o_webapp, C:\Users\Wang\static__resources\
                 }
             }
         }
-        
         return imageBaseDirPath;
     }
     
     /**  
-     * <p>获取保存图片的相对路径</p>  
+     * <p>获取保存店铺相关图片的相对路径</p>  
      * @param shopId 店铺ID
      * @return  相对于基础路径的相对路径
      */  
-    public static String getImageRelativeDirPath(long shopId) {
-        String relativePath = "upload/item/shop/" + shopId + "/";
-        logger.debug("imageRelativeDirPath={}", relativePath);
-        return relativePath;
+    public static String getShopImageRelativeDirPath(long shopId) {
+        Properties props = (Properties) SpringContextUtils.getBeanById("prop");
+        String shopImageRelativeDir = props.getProperty("upload.relativeDir") + "shop/" +  + shopId;
+        logger.debug("shopImageRelativeDirPath={}", shopImageRelativeDir);
+        return shopImageRelativeDir;
     }
 }

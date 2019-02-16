@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**  
- * <p>头条</p>
+ * <p>头条（前端滚动条）</p>
  * <p>Date: 2019年2月3日</p>
  * @author Wanghui    
  */  

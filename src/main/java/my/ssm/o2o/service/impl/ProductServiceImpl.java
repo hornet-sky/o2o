@@ -187,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
     public String addCoverImg(Long shopId, ImageHolder image) {
         try {
             return ImageUtil.generateCoverImage(image,
-                    PathUtil.getImageRelativeDirPath(shopId));
+                    PathUtil.getShopImageRelativeDirPath(shopId));
         } catch (IOException e) {
             throw new ProductOperationException(e);
         }
@@ -208,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
     public String addDetailImg(Long shopId, ImageHolder image) {
         try {
             return ImageUtil.generateDetailImage(image,
-                    PathUtil.getImageRelativeDirPath(shopId));
+                    PathUtil.getShopImageRelativeDirPath(shopId));
         } catch (IOException e) {
             throw new ProductOperationException(e);
         }

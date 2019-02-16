@@ -119,12 +119,8 @@ public class ShopManagementController {
             }
             data.put("shop", shop);
         }
-        ShopCategory condition = new ShopCategory();
-        ShopCategory parent = new ShopCategory();
-        parent.setShopCategoryId(parentShopCategoryId);
-        condition.setParent(parent);
         try {
-            data.put("shopCategoryList", shopCategoryService.findByCondition(condition));
+            data.put("shopCategoryList", shopCategoryService.findAllSubCategory());
             data.put("areaList", areaService.findAll());
             data.put("imageUploadProps", commonService.getImageUploadProps());
             return new OperationResult<Map<String, Object>, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, data);

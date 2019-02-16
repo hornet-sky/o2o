@@ -22,4 +22,35 @@
 	</where>
 	ORDER BY `priority` DESC
   </select>
+  <select id="findAllSub" resultType="shopCategory">
+    SELECT 
+      s.`shop_category_id`,
+      s.`shop_category_name`,
+      s.`shop_category_desc`,
+      s.`shop_category_img`,
+      s.`priority`,
+      s.`create_time`,
+      s.`last_edit_time`,
+      s.`parent_id` 
+    FROM
+      `tb_shop_category` s
+      JOIN `tb_shop_category` p 
+      ON s.`parent_id` = p.`shop_category_id`
+    ORDER BY p.`priority` DESC, s.`priority` DESC
+  </select>
+  <select id="findRoot" resultType="shopCategory">
+    SELECT 
+      `shop_category_id`,
+      `shop_category_name`,
+      `shop_category_desc`,
+      `shop_category_img`,
+      `priority`,
+      `create_time`,
+      `last_edit_time`,
+      `parent_id` 
+    FROM
+      `tb_shop_category` 
+    WHERE `parent_id` IS NULL
+    ORDER BY `priority` DESC
+  </select>
 </mapper>

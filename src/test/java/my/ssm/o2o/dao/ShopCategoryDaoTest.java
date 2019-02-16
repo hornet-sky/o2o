@@ -21,4 +21,16 @@ public class ShopCategoryDaoTest extends BaseTest {
         List<ShopCategory> shopCategorys = shopCategoryDao.findByCondition(condition);
         shopCategorys.forEach(System.out::println);
     }
+    
+    @Test
+    public void testFindRoot() {
+        List<ShopCategory> shopCategorys = shopCategoryDao.findRoot();
+        shopCategorys.forEach(System.out::println);
+    }
+    
+    @Test
+    public void testFindSub() {
+        List<ShopCategory> shopCategorys = shopCategoryDao.findAllSub();
+        shopCategorys.forEach(System.out::println);
+    }
 }

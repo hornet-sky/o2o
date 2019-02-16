@@ -34,6 +34,11 @@ public class CommonServiceImpl implements CommonService {
      */
     @Value("#{prop['upload.maxImageCount']}")
     private Integer maxImageCount;
+    /**  
+     * <p>上传资源的物理基础路径，例如“C:/Users/Wang/static__resources/”</p>     
+     */
+    @Value("#{prop['upload.baseDir']}")
+    private String uploadBaseDir;
     @Override
     public Map<String, Object> getImageUploadProps() {
         logger.debug("maxUploadSize={}, acceptImageTypes={}", maxUploadSize, Arrays.toString(acceptImageTypes));
@@ -42,6 +47,15 @@ public class CommonServiceImpl implements CommonService {
         props.put("acceptImageTypes", acceptImageTypes);
         props.put("maxImageCount", maxImageCount);
         return props;
+    }
+    @Override
+    public String getResourcesServerContextPath() {
+        logger.debug("uploadBaseDir={}", uploadBaseDir);
+        String basePath = uploadBaseDir;
+        if(basePath.endsWith("/")) {
+            basePath = basePath.substring(0, basePath.length() - 1);
+        }
+        return basePath.substring(basePath.lastIndexOf("/"));
     }
 
 }

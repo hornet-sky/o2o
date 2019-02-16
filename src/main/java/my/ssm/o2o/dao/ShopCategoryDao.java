@@ -11,4 +11,6 @@ import my.ssm.o2o.entity.ShopCategory;
  */  
 public interface ShopCategoryDao {
     List<ShopCategory> findByCondition(ShopCategory condition);
+    List<ShopCategory> findRoot();
+    List<ShopCategory> findAllSub();
 }

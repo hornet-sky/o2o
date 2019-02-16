@@ -23,5 +23,15 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     public List<ShopCategory> findByCondition(ShopCategory condition) {
         return shopCategoryDao.findByCondition(condition);
     }
+
+    @Override
+    public List<ShopCategory> findRootCategory() {
+        return shopCategoryDao.findRoot();
+    }
+
+    @Override
+    public List<ShopCategory> findAllSubCategory() {
+        return shopCategoryDao.findAllSub();
+    }
     
 }

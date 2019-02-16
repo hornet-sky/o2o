@@ -65,7 +65,7 @@ public class ShopServiceImpl implements ShopService {
         String thumbnailRelativePath = null;
         try {
             thumbnailRelativePath = ImageUtil.generateCoverImage(image,
-                    PathUtil.getImageRelativeDirPath(shopId));
+                    PathUtil.getShopImageRelativeDirPath(shopId));
         } catch (IOException e) {
             throw new ShopOperationException(e);
         }

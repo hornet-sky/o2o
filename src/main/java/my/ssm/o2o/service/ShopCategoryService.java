@@ -16,4 +16,14 @@ public interface ShopCategoryService {
      * @return  店铺类别列表
      */  
     List<ShopCategory> findByCondition(ShopCategory condition);
+    /**  
+     * <p>查询所有根类别</p>  
+     * @return  店铺根类别列表
+     */  
+    List<ShopCategory> findRootCategory();
+    /**  
+     * <p>查询所有子类别</p>  
+     * @return  店铺子类别列表
+     */  
+    List<ShopCategory> findAllSubCategory();
 }

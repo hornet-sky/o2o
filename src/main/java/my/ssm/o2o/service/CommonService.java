@@ -13,4 +13,9 @@ public interface CommonService {
      * @return  参数
      */  
     Map<String, Object> getImageUploadProps();
+    /**  
+     * <p>获取资源服务器上下文路径</p>  
+     * @return  上下文路径
+     */  
+    String getResourcesServerContextPath();
 }

@@ -9,4 +9,10 @@ public class UtilTest extends BaseTest {
     public void testImageUtilRemove() {
         ImageUtil.remove("upload/item/shop/8");
     }
+    
+    @Test
+    public void testPathUtil() {
+        System.out.println(PathUtil.getImageBaseDirPath());
+        System.out.println(PathUtil.getShopImageRelativeDirPath(11));
+    }
 }

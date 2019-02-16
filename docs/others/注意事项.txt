@@ -1,0 +1,4 @@
+如果当前项目的config.properties里配置了如下参数
+upload.baseDir=@user.home@/static__resources/
+则需要在tomcat的server.xml尾部Host标签里配置
+<Context docBase="${user.home}/static__resources" path="/static__resources" />

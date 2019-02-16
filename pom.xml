@@ -9,7 +9,7 @@
   <version>0.1.0</version>
   <packaging>war</packaging>
 
-  <name>o2o-webapp</name>
+  <name>o2o_webapp</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

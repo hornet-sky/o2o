@@ -76,7 +76,7 @@ public class ShopManagementController {
             UserInfo owner = (UserInfo) session.getAttribute("user");
             Shop condition = new Shop();
             condition.setOwner(owner);
-            return shopService.list(condition, pagingParams);
+            return shopService.list(condition, null, pagingParams);
         } catch(Exception e) {
             logger.error(e.getMessage(), e);
             return new OperationResult<UserInfo, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_FAILURE, e);

@@ -43,7 +43,7 @@ public final class PathUtil {
      */  
     public static String getShopImageRelativeDirPath(long shopId) {
         Properties props = (Properties) SpringContextUtils.getBeanById("prop");
-        String shopImageRelativeDir = props.getProperty("upload.relativeDir") + "shop/" +  + shopId;
+        String shopImageRelativeDir = props.getProperty("upload.relativeDir") + "shop/" + shopId + "/";
         logger.debug("shopImageRelativeDirPath={}", shopImageRelativeDir);
         return shopImageRelativeDir;
     }

@@ -121,12 +121,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public PagingResult<Shop> list(Shop condition, PagingParams pagingParams) {
+    public PagingResult<Shop> list(Shop condition, String searchKey, PagingParams pagingParams) {
         if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
             pagingParams.addOrderRule("shop_id", Direction.DESC);
         }
-        List<Shop> list = shopDao.list(condition, pagingParams);
-        long count = shopDao.count(condition);
+        List<Shop> list = shopDao.list(condition, searchKey, pagingParams);
+        long count = shopDao.count(condition, searchKey);
         return new PagingResult<Shop>(list, count);
     }
 }

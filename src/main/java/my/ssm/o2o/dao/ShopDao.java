@@ -22,16 +22,18 @@ public interface ShopDao {
     /**  
      * <p>查找指定条件及分页参数的店铺信息</p>  
      * @param condition 查询条件
+     * @param searchKey 关键字
      * @param pagingParams 分页参数
      * @return  店铺信息列表
      */  
-    List<Shop> list(@Param("condition") Shop condition, @Param("pagingParams") PagingParams pagingParams);
+    List<Shop> list(@Param("condition") Shop condition, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
     /**  
      * <p>统计指定条件的店铺数量</p>  
      * @param condition 查询条件
+     * @param searchKey 关键字
      * @return  店铺数量
      */  
-    long count(@Param("condition") Shop condition);
+    long count(@Param("condition") Shop condition, @Param("searchKey") String searchKey);
     /**  
      * <p>保存店铺</p>  
      * @param shop 待保存的店铺

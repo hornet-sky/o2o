@@ -1,0 +1,12 @@
+.row {
+	margin-bottom: .5rem;
+}
+.select {
+    border: 1px solid #0894ec;
+    color: #0894ec;
+    background-color: #efeff4;
+    width: 100%;
+    height: 1.5rem;
+    font-size: .8rem;
+    padding-left: .5rem;
+}

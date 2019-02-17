@@ -33,7 +33,7 @@ public class ShopDaoTest extends BaseTest {
         PagingParams pagingParams = new PagingParams();
         pagingParams.setPageNo(2);
         pagingParams.setPageSize(2);
-        List<Shop> shops = shopDao.list(condition, pagingParams);
+        List<Shop> shops = shopDao.list(condition, null, pagingParams);
         shops.forEach(System.out::println);
     }
     

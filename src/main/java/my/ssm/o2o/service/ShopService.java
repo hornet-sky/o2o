@@ -20,10 +20,11 @@ public interface ShopService {
     /**  
      * <p>查找指定条件及分页参数的店铺信息</p>  
      * @param condition 查询条件
+     * @param searchKey 查询关键字
      * @param pagingParams 分页参数
      * @return  查询结果
      */  
-    PagingResult<Shop> list(Shop condition, PagingParams pagingParams);
+    PagingResult<Shop> list(Shop condition, String searchKey, PagingParams pagingParams);
     /**  
      * <p>注册店铺</p>  
      * @param shop 店铺

@@ -33,7 +33,7 @@ $(function() {
 						+ "  <div class='list-block media-list'>"
 						+ "    <ul>"
 						+ "      <li>"
-						+ "        <a href='#' class='item-link item-content'>"
+						+ "        <a href='shoplist?parentShopCategoryId=" + category.shopCategoryId + "' class='item-link item-content' external>"
 						+ "          <div class='item-media'><img src='" + ctxPath + "/" + category.shopCategoryImg + "' style='width: 2.2rem;'></div>"
 						+ "          <div class='item-inner'>"
 						+ "            <div class='item-title-row'>"

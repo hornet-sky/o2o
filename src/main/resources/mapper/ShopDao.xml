@@ -80,6 +80,9 @@
         <if test="condition.shopCategory != null and condition.shopCategory.shopCategoryId != null">
             AND s.`shop_category_id` = #{condition.shopCategory.shopCategoryId}
         </if>
+        <if test="condition.shopCategory != null and condition.shopCategory.parent != null and condition.shopCategory.parent.shopCategoryId != null">
+            AND s.`shop_category_id` IN (SELECT `shop_category_id` FROM `tb_shop` WHERE `parent_id` = #{condition.shopCategory.parent.shopCategoryId})
+        </if>
         <if test="condition.owner != null and condition.owner.userId != null">
             AND s.`owner_id` = #{condition.owner.userId}
         </if>
@@ -88,6 +91,9 @@
         </if>
         <if test="condition.shopName != null">
             AND s.`shop_name` LIKE CONCAT("%", #{condition.shopName}, "%")
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            AND (s.`shop_name` LIKE CONCAT("%", #{searchKey}, "%") OR s.`shop_desc` LIKE CONCAT("%", #{searchKey}, "%"))
         </if>
     </where>
     <if test="pagingParams.orderRules != null">
@@ -110,6 +116,9 @@
         <if test="condition.shopCategory != null and condition.shopCategory.shopCategoryId != null">
             AND s.`shop_category_id` = #{condition.shopCategory.shopCategoryId}
         </if>
+        <if test="condition.shopCategory != null and condition.shopCategory.parent != null and condition.shopCategory.parent.shopCategoryId != null">
+            AND s.`shop_category_id` IN (SELECT `shop_category_id` FROM `tb_shop` WHERE `parent_id` = #{condition.shopCategory.parent.shopCategoryId})
+        </if>
         <if test="condition.owner != null and condition.owner.userId != null">
             AND s.`owner_id` = #{condition.owner.userId}
         </if>
@@ -118,6 +127,9 @@
         </if>
         <if test="condition.shopName != null">
             AND s.`shop_name` LIKE CONCAT("%", #{condition.shopName}, "%")
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            AND (s.`shop_name` LIKE CONCAT("%", #{searchKey}, "%") OR s.`shop_desc` LIKE CONCAT("%", #{searchKey}, "%"))
         </if>
     </where>
   </select>

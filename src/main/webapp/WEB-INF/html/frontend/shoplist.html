@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>首页</title>
+<title>店铺列表</title>
 <meta name="description"
 	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
 <meta name="author" content="Wang">
@@ -20,17 +20,28 @@
 <link rel="apple-touch-icon-precomposed" 
     href="/assets/img/apple-touch-icon-114x114.png">
 <link rel="stylesheet"
-    href="../resources/css/frontend/index.css">
+    href="../resources/css/frontend/shoplist.css">
 </head>
 <body>
-	<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group">
-        <!-- 单个page ,第一个.page默认被展示-->
         <div class="page">
             <!-- 标题栏 -->
             <header class="bar bar-nav">
-                <h1 class="title">My School O2O</h1>
+                <a class="button button-link button-nav pull-left" href="index" external>
+				    <span class="icon icon-left"></span> 返回
+				</a>
+                <h1 class="title">店铺列表</h1>
             </header>
+            <!-- 搜索栏 -->
+            <div class="bar bar-header-secondary">
+              <div class="searchbar">
+                <a class="searchbar-cancel">取消</a>
+                <div class="search-input">
+                  <label class="icon icon-search" for="search"></label>
+                  <input type="search" id='search' placeholder='输入关键字...'/>
+                </div>
+              </div>
+            </div>
 
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
@@ -46,18 +57,21 @@
 
             <!-- 这里是页面内容区 -->
             <div class="content">
-			    <!-- 轮播图 -->
-			    <div class="swiper-container">
-			        <div class="swiper-wrapper"></div>
-			        <div class="swiper-pagination"></div>
+			    <div class="content-padded">
+			      <!-- 店铺类别：异步加载 -->
+			      
+                  <!-- 区域列表 -->
+                  <div class="row">
+                    <div class="col-100">
+                      <select class="select">
+                        <option value="">全部区域</option>
+                        <!-- 区域信息：异步加载 -->
+                      </select>
+                    </div>
+                  </div>
 			    </div>
-			    <!-- 全类查询 -->
-                <div class='all-shop'>
-                    <span></span>
-                    <a href="shoplist" external>全部商店</a>
-                </div>
-                <!-- 一级类别展示区域 -->
-                <div class="row"></div>
+                <!-- 店铺列表：异步加载 -->
+                <div class="cards"></div>
             </div>
         </div>
     </div>
@@ -79,6 +93,8 @@
 	<script type='text/javascript'
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/frontend/index.js' charset='utf-8'></script>
+        src='../resources/js/common/common.js' charset='utf-8'></script>
+    <script type='text/javascript'
+        src='../resources/js/frontend/shoplist.js' charset='utf-8'></script>
 </body>
 </html>

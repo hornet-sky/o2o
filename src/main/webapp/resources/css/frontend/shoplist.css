@@ -10,3 +10,8 @@
     font-size: .8rem;
     padding-left: .5rem;
 }
+.list-container {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}

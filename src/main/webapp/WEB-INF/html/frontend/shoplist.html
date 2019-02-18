@@ -35,7 +35,7 @@
             <!-- 搜索栏 -->
             <div class="bar bar-header-secondary">
               <div class="searchbar">
-                <a class="searchbar-cancel">取消</a>
+                <a href="javascript:void(0);" class="searchbar-cancel">取消</a>
                 <div class="search-input">
                   <label class="icon icon-search" for="search"></label>
                   <input type="search" id='search' placeholder='输入关键字...'/>
@@ -56,7 +56,7 @@
             </nav>
 
             <!-- 这里是页面内容区 -->
-            <div class="content">
+            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
 			    <div class="content-padded">
 			      <!-- 店铺类别：异步加载 -->
 			      
@@ -71,7 +71,11 @@
                   </div>
 			    </div>
                 <!-- 店铺列表：异步加载 -->
-                <div class="cards"></div>
+                <ul class="list-container"></ul>
+	            <!-- 加载提示符 -->
+	            <div class="infinite-scroll-preloader">
+	                <div class="preloader"></div>
+	            </div>
             </div>
         </div>
     </div>

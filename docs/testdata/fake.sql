@@ -51,6 +51,45 @@ INSERT  INTO `tb_shop`(`shop_id`,`owner_id`,`area_id`,`shop_category_id`,`shop_n
 (16,1,4,15,'千峰棋牌','休闲放松的最佳选择','南苑后院','o2o_webapp/upload/images/shop/16/201902181141391761052.jpg','13677889900',0,'2019-02-18 11:41:39',NULL,1,NULL),
 (17,1,4,16,'星辉电影','暑假特惠','南苑109号','o2o_webapp/upload/images/shop/17/201902181328462516238.jpg','133123556699',0,'2019-02-18 13:28:46',NULL,1,NULL);
 
+#商品类别
+INSERT  INTO `tb_product_category`(`product_category_id`,`product_category_name`,`priority`,`create_time`,`shop_id`) VALUES 
+(1,'油条',10,'2019-02-18 21:19:38',7),
+(2,'包子',11,'2019-02-18 21:19:38',7),
+(3,'豆浆',9,'2019-02-18 21:19:38',7),
+(4,'鸡蛋',8,'2019-02-18 21:48:03',7),
+(5,'卷饼',7,'2019-02-18 21:48:03',7);
+
+#商品
+INSERT  INTO `tb_product`(`product_id`,`product_name`,`product_desc`,`img_addr`,`normal_price`,`promotion_price`,`rewards_points`,`priority`,`create_time`,`last_edit_time`,`enable_status`,`product_category_id`,`shop_id`) VALUES 
+(1,'白菜包子','松弹可口，鲜香诱人','o2o_webapp/upload/images/shop/7/201902182128270216286.jpg','3','2.5',2,99,'2019-02-18 21:28:27','2019-02-18 21:30:03',1,2,7),
+(2,'牛肉包子','','o2o_webapp/upload/images/shop/7/201902182129319017965.jpg','4','3',3,2,'2019-02-18 21:29:32',NULL,1,2,7),
+(3,'羊肉包子','','o2o_webapp/upload/images/shop/7/201902182130519645205.jpg','3.5','3',3,3,'2019-02-18 21:30:52',NULL,1,2,7),
+(4,'芹菜包子','','o2o_webapp/upload/images/shop/7/201902182131316949820.jpg','2.5','2',2,4,'2019-02-18 21:31:32',NULL,1,2,7),
+(5,'油条','酥脆可口','o2o_webapp/upload/images/shop/7/201902182137026202078.jpg','3','2.5',2,88,'2019-02-18 21:37:03',NULL,1,1,7),
+(6,'豆浆（小）','现磨豆浆，营养美味','o2o_webapp/upload/images/shop/7/201902182141403542891.jpg','5','3',3,77,'2019-02-18 21:41:40',NULL,1,3,7),
+(7,'豆浆（大）','现磨豆浆，营养美味','o2o_webapp/upload/images/shop/7/201902182142579942076.jpg','6','5',5,76,'2019-02-18 21:42:58',NULL,1,3,7),
+(8,'白鸡蛋','滑嫩可口','o2o_webapp/upload/images/shop/7/201902182210594648436.jpg','2','1.5',1,10,'2019-02-18 22:10:59',NULL,1,4,7),
+(9,'茶叶蛋','鲜香入味','o2o_webapp/upload/images/shop/7/201902182212194051459.jpg','2.5','2',2,15,'2019-02-18 22:12:19',NULL,1,4,7),
+(10,'黑椒牛肉卷','非常可口','o2o_webapp/upload/images/shop/7/201902182216040639231.jpg','7','6',6,21,'2019-02-18 22:16:04',NULL,1,5,7),
+(11,'茶沙蔬菜卷','美味可口','o2o_webapp/upload/images/shop/7/201902182217315214784.jpg','7','6',6,33,'2019-02-18 22:17:32',NULL,1,5,7),
+(12,'土豆丝卷','','o2o_webapp/upload/images/shop/7/201902182218442595182.jpg','6','5',5,32,'2019-02-18 22:18:44',NULL,1,5,7);
+
+#商品详情图
+INSERT  INTO `tb_product_img`(`product_img_id`,`img_addr`,`img_desc`,`priority`,`create_time`,`product_id`) VALUES 
+(1,'o2o_webapp/upload/images/shop/7/201902182128272101921.jpg',NULL,2,'2019-02-18 21:28:27',1),
+(2,'o2o_webapp/upload/images/shop/7/201902182128272955083.jpg',NULL,1,'2019-02-18 21:28:27',1),
+(3,'o2o_webapp/upload/images/shop/7/201902182137026743463.jpg',NULL,3,'2019-02-18 21:37:03',5),
+(4,'o2o_webapp/upload/images/shop/7/201902182137027325992.jpg',NULL,2,'2019-02-18 21:37:03',5),
+(5,'o2o_webapp/upload/images/shop/7/201902182137027898169.jpg',NULL,1,'2019-02-18 21:37:03',5),
+(6,'o2o_webapp/upload/images/shop/7/201902182141403926552.jpg',NULL,2,'2019-02-18 21:41:40',6),
+(7,'o2o_webapp/upload/images/shop/7/201902182141404356929.jpg',NULL,1,'2019-02-18 21:41:40',6),
+(8,'o2o_webapp/upload/images/shop/7/201902182142580438777.jpg',NULL,3,'2019-02-18 21:42:58',7),
+(9,'o2o_webapp/upload/images/shop/7/201902182142581066497.jpg',NULL,2,'2019-02-18 21:42:58',7),
+(10,'o2o_webapp/upload/images/shop/7/201902182142581517223.jpg',NULL,1,'2019-02-18 21:42:58',7),
+(11,'o2o_webapp/upload/images/shop/7/201902182210594933141.jpg',NULL,1,'2019-02-18 22:10:59',8),
+(12,'o2o_webapp/upload/images/shop/7/201902182212194525867.jpg',NULL,2,'2019-02-18 22:12:19',9),
+(13,'o2o_webapp/upload/images/shop/7/201902182212194989327.jpg',NULL,1,'2019-02-18 22:12:19',9);
+
 #滚动条（头条）
 INSERT INTO `o2o`.`tb_head_line` (
   `line_id`, `line_name`, `line_link`, `line_img`, `enable_status`, `priority`, `create_time`, `last_edit_time`

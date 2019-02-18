@@ -60,12 +60,15 @@
 	FROM
 	  `tb_product` 
 	<where>
-	   <if test="condition != null and condition.productName != null">
-	       `product_name` LIKE CONCAT('%', #{condition.productName}, '%')
-	   </if>
 	   <if test="condition != null and condition.shop != null and condition.shop.shopId != null">
-	       AND `shop_id` = #{condition.shop.shopId}
+	       `shop_id` = #{condition.shop.shopId}
 	   </if>
+	   <if test="condition != null and condition.productCategory != null and condition.productCategory.productCategoryId != null">
+           AND `product_category_id` = #{condition.productCategory.productCategoryId}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`product_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_desc` LIKE CONCAT('%', #{searchKey}, '%'))
+       </if>
 	</where>
 	<if test="pagingParams != null and pagingParams.orderRules != null">
         ORDER BY ${pagingParams.orderRules}
@@ -80,14 +83,14 @@
     FROM
       `tb_product` 
     <where>
-       <if test="condition != null and condition.productId != null">
-           `product_id` = #{condition.productId}
-       </if>
-       <if test="condition != null and condition.productName != null">
-           AND `product_name` LIKE CONCAT('%', #{condition.productName}, '%')
-       </if>
        <if test="condition != null and condition.shop != null and condition.shop.shopId != null">
-           AND `shop_id` = #{condition.shop.shopId}
+           `shop_id` = #{condition.shop.shopId}
+       </if>
+       <if test="condition != null and condition.productCategory != null and condition.productCategory.productCategoryId != null">
+           AND `product_category_id` = #{condition.productCategory.productCategoryId}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`product_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_desc` LIKE CONCAT('%', #{searchKey}, '%'))
        </if>
     </where>
   </select>

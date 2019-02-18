@@ -24,10 +24,11 @@ public interface ProductService {
     /**  
      * <p>查找指定条件及分页参数的商品类别信息</p>  
      * @param condition 查询条件
+     * @param searchKey 查询关键字
      * @param pagingParams 分页参数
      * @return  查询结果
      */  
-    PagingResult<Product> listProduct(Product condition, PagingParams pagingParams);
+    PagingResult<Product> listProduct(Product condition, String searchKey, PagingParams pagingParams);
     /**  
      * <p>上架或下架指定商品</p>  
      * @param productId 待操作的商品ID

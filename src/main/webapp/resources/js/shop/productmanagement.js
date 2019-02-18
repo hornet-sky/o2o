@@ -54,6 +54,11 @@ $(function() {
 		$("#add-btn").click(function() {
 			location.href = "productoperation?shopId=" + shopId;
 		});
+		
+		//4、给“返回”按钮绑定点击事件处理函数
+		$("#return-btn").click(function() {
+			location.href = "shopmanagement?shopId=" + shopId;
+		});
 	}
 	
 	function loadProductList() {

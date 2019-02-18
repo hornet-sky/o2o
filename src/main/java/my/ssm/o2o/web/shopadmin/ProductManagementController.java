@@ -193,7 +193,7 @@ public class ProductManagementController {
         Product condition = new Product();
         condition.setShop(currShop);
         try {
-            return productService.listProduct(condition , pagingParams);
+            return productService.listProduct(condition , null, pagingParams);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.OPERATION_FAILURE, e);

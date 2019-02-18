@@ -34,6 +34,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         long count = productCategoryDao.count(condition);
         return new PagingResult<ProductCategory>(list, count);
     }
+    @Override
+    public List<ProductCategory> listProductCategory(ProductCategory condition) {
+        PagingParams pagingParams = new PagingParams();
+        pagingParams.addOrderRule("priority", Direction.DESC);
+        pagingParams.setPageNo(null);
+        pagingParams.setPageSize(null);
+        return productCategoryDao.list(condition, pagingParams);
+    }
     @Transactional
     @Override
     public int delProductCategory(ProductCategory condition) {

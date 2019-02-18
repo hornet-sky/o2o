@@ -5,6 +5,9 @@ $(function() {
 	var pageNo = 1, pageSize = 10;
 	var loading = false;
 	var $cardsContainer = $(".list-container");
+	var $infiniteScroll = $('.infinite-scroll-bottom');
+	var $infiniteScrollPreloader = $('.infinite-scroll-preloader');
+	var infiniteScrollEnabled = true;
 	var ctxPath;
 	//初始化页面组件
 	init();
@@ -74,10 +77,19 @@ $(function() {
 				$searchIpt.val("");
 				appendShopItemsFirstPage();
 			});
-			//5、注册'infinite'事件处理函数
-			$(document).on('infinite', '.infinite-scroll-bottom', function() {
-				console.log("滚动触发请求数据...");
-				appendShopItems();
+			//5、店铺卡片点击事件
+			$cardsContainer.on("click", "li.card", function() {
+				var currShopId = $(this).data("shopId");
+				if(currShopId) {
+					location.href="productlist?shopId=" + currShopId;
+				}
+			});
+			//6、注册'infinite'事件处理函数
+			$infiniteScroll.on('infinite', function() {
+				console.log("滚动触发请求数据...", infiniteScrollEnabled);
+				if(infiniteScrollEnabled) {
+					appendShopItems();
+				}
 			});
 			//初次查询店铺列表并以卡片的形式在页面展示
 			appendShopItems();
@@ -87,6 +99,10 @@ $(function() {
 	function appendShopItemsFirstPage() {
 		if(loading) {
 			return;
+		}
+		if(!infiniteScrollEnabled) {
+			infiniteScrollEnabled = true;
+			$infiniteScrollPreloader.show();
 		}
 		$cardsContainer.empty();
 		pageNo = 1;
@@ -117,11 +133,13 @@ $(function() {
 					cardsHtml += generateCardHtml(row);
 				});
 				$cardsContainer.append(cardsHtml);
+				console.log("li.card", $('.list-container > li.card'));
 				if($('.list-container > li.card').length >= data.total) {
 	            	//所有数据加载完毕，则注销无限加载事件，以防不必要的加载
-	            	$.detachInfiniteScroll($('.infinite-scroll-bottom'));
-	            	//删除加载提示符
-	            	$('.infinite-scroll-preloader').remove();
+	            	//$.detachInfiniteScroll($infiniteScroll);
+					infiniteScrollEnabled = false;
+	            	//隐藏加载提示符
+	            	$infiniteScrollPreloader.hide();
 	            	return;
 	            }
 				$.refreshScroller();
@@ -165,7 +183,7 @@ $(function() {
 	}
 	
 	function generateCardHtml(row) {
-		return  '<li class="card">'
+		return  '<li class="card" data-shop-id="' + row.shopId + '">'
 			+ '    <div class="card-header">' + row.shopName + '</div>'
 			+ '    <div class="card-content">'
 			+ '      <div class="list-block media-list">'

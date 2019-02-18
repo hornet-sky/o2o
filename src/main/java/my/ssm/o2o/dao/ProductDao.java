@@ -23,16 +23,18 @@ public interface ProductDao {
     /**  
      * <p>查找指定条件及分页参数的商品信息</p>  
      * @param condition 查询条件
+     * @param searchKey 查询关键字
      * @param pagingParams 分页参数
      * @return  商品信息列表
      */  
-    List<Product> list(@Param("condition") Product condition, @Param("pagingParams") PagingParams pagingParams);
+    List<Product> list(@Param("condition") Product condition, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
     /**  
      * <p>统计指定条件的商品信息数量</p>  
      * @param condition 查询条件
+     * @param searchKey 查询关键字
      * @return  商品信息数量
      */  
-    long count(@Param("condition") Product condition);
+    long count(@Param("condition") Product condition, @Param("searchKey") String searchKey);
     /**  
      * <p>保存商品信息</p>  
      * @param shop 待保存的商品

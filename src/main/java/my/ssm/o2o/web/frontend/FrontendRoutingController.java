@@ -26,4 +26,9 @@ public class FrontendRoutingController {
     public String shopList() {
         return "frontend/shoplist";
     }
+    
+    @GetMapping({"/productlist"})
+    public String productList() {
+        return "frontend/productlist";
+    }
 }

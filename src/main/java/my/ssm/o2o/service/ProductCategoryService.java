@@ -20,6 +20,12 @@ public interface ProductCategoryService {
      */  
     PagingResult<ProductCategory> listProductCategory(ProductCategory condition, PagingParams pagingParams);
     /**  
+     * <p>查找指定条件的商品类别信息</p>  
+     * @param condition 查询条件
+     * @return  查询结果
+     */  
+    List<ProductCategory> listProductCategory(ProductCategory condition);
+    /**  
      * <p>删除指定条件的商品类别信息</p>  
      * @param condition  条件
      */  

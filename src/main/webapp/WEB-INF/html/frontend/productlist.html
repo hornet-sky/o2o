@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>商品列表</title>
+<meta name="description"
+	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
+<meta name="author" content="Wang">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="../resources/image/favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="stylesheet"
+	href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<link rel="stylesheet"
+	href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+<link rel="apple-touch-icon-precomposed" 
+    href="/assets/img/apple-touch-icon-114x114.png">
+<link rel="stylesheet"
+    href="../resources/css/frontend/productlist.css">
+</head>
+<body>
+    <div class="page-group">
+        <div class="page">
+            <!-- 标题栏 -->
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left" href="javascript:history.go(-1);" external>
+				    <span class="icon icon-left"></span> 返回
+				</a>
+                <h1 class="title"></h1>
+            </header>
+
+            <!-- 工具栏 -->
+            <nav class="bar bar-tab">
+                <a class="tab-item external active" href="index">
+                    <span class="icon icon-home"></span>
+                    <span class="tab-label">首页</span>
+                </a>
+                <a class="tab-item external" href="javascript:void(0);">
+                    <span class="icon icon-me open-panel"></span>
+                    <span class="tab-label">我</span>
+                </a>
+            </nav>
+
+            <!-- 这里是页面内容区 -->
+            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
+			  <div class="card demo-card-header-pic">
+			    <div valign="bottom" class="card-header color-white no-border no-padding">
+			      <img class='card-cover' src="" alt="">
+			    </div>
+			    <div class="card-content">
+			      <div class="card-content-inner">
+			        <p class="color-gray"></p>
+			        <p></p>
+			      </div>
+			    </div>
+			    <div class="card-footer">
+			      <span></span>
+			      <span></span>
+			    </div>
+			  </div>
+			  <div class="content-padded">
+			    <!-- 商品类别：异步加载 -->
+			      
+                <!-- 搜索栏 -->
+                <div class="row">
+                  <div class="col-100">
+                      <div class="searchbar">
+					    <a href="javascript:void(0);" class="searchbar-cancel">取消</a>
+					    <div class="search-input">
+					      <label class="icon icon-search" for="search"></label>
+					      <input type="search" id='search' placeholder='输入关键字...'/>
+					    </div>
+					  </div>
+                  </div>
+                </div>
+			  </div>
+              <!-- 商品列表：异步加载 -->
+              <ul class="list-container"></ul>
+	          <!-- 加载提示符 -->
+	          <div class="infinite-scroll-preloader">
+	            <div class="preloader"></div>
+	          </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-overlay"></div>
+    <!-- Right Panel with Reveal effect -->
+    <div class="panel panel-right panel-reveal">
+        <div class="content-block">
+            <p><a href="javascript:void(0);" class="close-panel">消费记录</a></p>
+            <p><a href="javascript:void(0);" class="close-panel">我的积分</a></p>
+            <p><a href="javascript:void(0);" class="close-panel">兑换记录</a></p>
+        </div>
+    </div>
+
+	<script type='text/javascript'
+		src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+	<script type='text/javascript'
+		src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+	<script type='text/javascript'
+		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript'
+        src='../resources/js/common/common.js' charset='utf-8'></script>
+    <script type='text/javascript'
+        src='../resources/js/frontend/productlist.js' charset='utf-8'></script>
+</body>
+</html>

@@ -91,7 +91,7 @@ public class ProductDaoTest extends BaseTest {
         Product condition = new Product();
         condition.setShop(shop);
         PagingParams pagingParams = null;
-        List<Product> list = productDao.list(condition, pagingParams);
+        List<Product> list = productDao.list(condition, null, pagingParams);
         list.forEach(System.out::println);
     }
 }

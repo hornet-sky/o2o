@@ -25,7 +25,7 @@ $(function() {
 			ctxPath = data.entity.resourcesServerContextPath;
 			//初始化店铺详情卡片
 			$("header > h1.title").text(shop.shopName);
-			$(".content > .card img.card-cover").attr("src", ctxPath + "/" + shop.shopImg)
+			$(".content > .card img.card-cover").attr("src", shop.shopImg ? ctxPath + "/" + shop.shopImg : "../resources/image/noimage.ico")
 				.attr("alt", shop.shopName);
 			$cardContentItems = $(".content > .card .card-content-inner > p");
 			$cardContentItems.eq(0).text(shop.lastEditTime ? new Date(shop.lastEditTime).format('yyyy-MM-dd') + ' 更新' : new Date(shop.createTime).format('yyyy-MM-dd') + ' 入驻');
@@ -75,7 +75,14 @@ $(function() {
 				$searchIpt.val("");
 				appendProductItemsFirstPage();
 			});
-			//5、注册'infinite'事件处理函数
+			//5、店铺卡片点击事件
+			$cardsContainer.on("click", "li.card", function() {
+				var currProductId = $(this).data("productId");
+				if(currProductId) {
+					location.href="productdetail?productId=" + currProductId;
+				}
+			});
+			//6、注册'infinite'事件处理函数
 			$infiniteScroll.on('infinite', function() {
 				console.log("滚动触发请求数据...");
 				if(infiniteScrollEnabled) {
@@ -171,7 +178,7 @@ $(function() {
 			+ '        <ul>'
 			+ '          <li class="item-content">'
 			+ '            <div class="item-media">'
-			+ '              <img src="' + ctxPath + '/' + row.imgAddr + '" width="60">'
+			+ '              <img src="' + (row.imgAddr ? ctxPath + '/' + row.imgAddr : '../resources/image/noimage.ico') + '" width="60">'
 			+ '            </div>'
 			+ '            <div class="item-inner">'
 			+ '              <div class="item-title-row">'

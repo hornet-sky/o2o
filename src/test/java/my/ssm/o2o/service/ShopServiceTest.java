@@ -2,7 +2,7 @@ package my.ssm.o2o.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService;
     @Test
-    public void testRegister() throws FileNotFoundException {
+    public void testRegister() throws IOException {
         UserInfo owner = new UserInfo();
         owner.setUserId(1L);
         

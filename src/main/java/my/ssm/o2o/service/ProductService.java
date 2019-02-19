@@ -22,6 +22,12 @@ public interface ProductService {
      */  
     Product findProductById(Long productId, Long shopId);
     /**  
+     * <p>查询指定ID的商品信息（带相关的详情图）</p>  
+     * @param productId 商品ID
+     * @return  商品信息（带相关的详情图）
+     */  
+    Product findOverloadedProductById(Long productId);
+    /**  
      * <p>查找指定条件及分页参数的商品类别信息</p>  
      * @param condition 查询条件
      * @param searchKey 查询关键字

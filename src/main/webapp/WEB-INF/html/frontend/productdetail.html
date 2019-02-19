@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>商品列表</title>
+<title>商品详情</title>
 <meta name="description"
 	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
 <meta name="author" content="Wang">
@@ -20,7 +20,7 @@
 <link rel="apple-touch-icon-precomposed" 
     href="/assets/img/apple-touch-icon-114x114.png">
 <link rel="stylesheet"
-    href="../resources/css/frontend/productlist.css">
+    href="../resources/css/frontend/productdetail.css">
 </head>
 <body>
     <div class="page-group">
@@ -46,44 +46,33 @@
             </nav>
 
             <!-- 这里是页面内容区 -->
-            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
+            <div class="content" data-distance="50">
 			  <div class="card demo-card-header-pic">
 			    <div valign="bottom" class="card-header color-white no-border no-padding">
 			      <img class="card-cover" src="" alt="">
 			    </div>
 			    <div class="card-content">
 			      <div class="card-content-inner">
-			        <p class="color-gray"></p>
-			        <p></p>
+			        <p class="color-gray">
+			          <span id="operation-date"></span>
+			          <span id="rewards-points" class="pull-right"></span>
+			        </p>
+			        <p>
+                      <span id="promotion-price"></span>
+			          <span id="normal-price" class="normal-price"></span>
+			        </p>
+			        <p id="product-desc"></p>
 			      </div>
 			    </div>
+			    <!-- 
 			    <div class="card-footer">
 			      <span></span>
 			      <span></span>
 			    </div>
+			     -->
 			  </div>
-			  <div class="content-padded">
-			    <!-- 商品类别：异步加载 -->
-			      
-                <!-- 搜索栏 -->
-                <div class="row">
-                  <div class="col-100">
-                      <div class="searchbar">
-					    <a href="javascript:void(0);" class="searchbar-cancel">取消</a>
-					    <div class="search-input">
-					      <label class="icon icon-search" for="search"></label>
-					      <input type="search" id='search' placeholder='输入关键字...'/>
-					    </div>
-					  </div>
-                  </div>
-                </div>
-			  </div>
-              <!-- 商品列表：异步加载 -->
+              <!-- 商品详情图列表：异步加载 -->
               <ul class="list-container"></ul>
-	          <!-- 加载提示符 -->
-	          <div class="infinite-scroll-preloader">
-	            <div class="preloader"></div>
-	          </div>
             </div>
         </div>
     </div>
@@ -107,6 +96,6 @@
     <script type='text/javascript'
         src='../resources/js/common/common.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/frontend/productlist.js' charset='utf-8'></script>
+        src='../resources/js/frontend/productdetail.js' charset='utf-8'></script>
 </body>
 </html>

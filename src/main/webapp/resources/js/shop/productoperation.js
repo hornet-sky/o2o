@@ -154,6 +154,10 @@ $(function() {
 		formData.append("priority", priority);
 		//商品原价
 		var normalPrice = $("#normal-price").val();
+		if(!normalPrice) {
+			$.toast("商品原价不能为空！");
+			return null;
+		}
 		formData.append("normalPrice", normalPrice);
 		//商品现价
 		var promotionPrice = $("#promotion-price").val();

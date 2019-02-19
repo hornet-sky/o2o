@@ -31,4 +31,9 @@ public class FrontendRoutingController {
     public String productList() {
         return "frontend/productlist";
     }
+    
+    @GetMapping({"/productdetail"})
+    public String productDetail() {
+        return "frontend/productdetail";
+    }
 }

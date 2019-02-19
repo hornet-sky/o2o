@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import my.ssm.o2o.dto.ImageHolder;
+import my.ssm.o2o.enums.PhoneOrientationEnum;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 
@@ -47,7 +48,10 @@ public final class ImageUtil {
      * @throws IOException 转换过程中的IO异常
      */  
     public static String generateDetailImage(ImageHolder image, String destDirRelativePath) throws IOException {
-        return generateThumbnail(image, destDirRelativePath, 640, 337, 0.9);
+        if(image.getOrientation() == PhoneOrientationEnum.VERTICAL) {
+            return generateThumbnail(image, destDirRelativePath, 480, 640, 0.9);
+        }
+        return generateThumbnail(image, destDirRelativePath, 640, 480, 0.9);
     }
     
     /**  
@@ -74,7 +78,7 @@ public final class ImageUtil {
         InputStream wmIn = null;
         try {
             wmIn = Thread.currentThread().getContextClassLoader().getResourceAsStream("image/watermark.png");
-            Thumbnails.of(image.getInputStream()).size(width, height)
+            Thumbnails.of(image.getBufferedImage()).size(width, height)
                     .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(wmIn), 0.5f)
                     .outputQuality(quality)
                     .toFile(destFile);

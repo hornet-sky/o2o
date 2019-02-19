@@ -40,6 +40,10 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findById(productId, shopId);
     }
     @Override
+    public Product findOverloadedProductById(Long productId) {
+        return productDao.findOverloadedOneById(productId);
+    }
+    @Override
     public PagingResult<Product> listProduct(Product condition, String searchKey, PagingParams pagingParams) {
         if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
             pagingParams.addOrderRule("product_id", Direction.DESC);

@@ -190,7 +190,7 @@ $(function() {
 			+ '        <ul>'
 			+ '          <li class="item-content">'
 			+ '            <div class="item-media">'
-			+ '              <img src="' + ctxPath + '/' + row.shopImg + '" width="60">'
+			+ '              <img src="' + (row.shopImg ? ctxPath + '/' + row.shopImg : '../resources/image/noimage.ico') + '" width="60">'
 			+ '            </div>'
 			+ '            <div class="item-inner">'
 			+ '              <div class="item-title-row">'

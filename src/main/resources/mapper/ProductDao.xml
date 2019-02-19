@@ -22,6 +22,32 @@
         <id column="shop_id" property="shopId"/>
     </association>
   </resultMap>
+  <resultMap id="overloadedProductMap" type="product">
+    <id column="product_id" property="productId"/>
+    <result column="product_name" property="productName"/>
+    <result column="product_desc" property="productDesc"/>
+    <result column="img_addr" property="imgAddr"/>
+    <result column="normal_price" property="normalPrice"/>
+    <result column="promotion_price" property="promotionPrice"/>
+    <result column="rewards_points" property="rewardsPoints"/>
+    <result column="priority" property="priority"/>
+    <result column="create_time" property="createTime"/>
+    <result column="last_edit_time" property="lastEditTime"/>
+    <result column="enable_status" property="enableStatus"/>
+    <association property="productCategory" javaType="my.ssm.o2o.entity.ProductCategory">
+        <id column="product_category_id" property="productCategoryId"/>
+    </association>
+    <association property="shop" javaType="my.ssm.o2o.entity.Shop">
+        <id column="shop_id" property="shopId"/>
+    </association>
+    <collection property="productImgList" ofType="productImg">
+        <id column="detail_img_id" property="productImgId"/>
+        <result column="detail_img_addr" property="imgAddr"/>
+        <result column="detail_img_desc" property="imgDesc"/>
+        <result column="detail_img_priority" property="priority"/>
+        <result column="detail_img_create_time" property="createTime"/>
+    </collection>
+  </resultMap>
   <select id="findById" resultMap="productMap">
     SELECT 
       `product_id`,
@@ -40,7 +66,36 @@
     FROM
       `tb_product`
     WHERE `product_id` = #{productId}
-    AND `shop_id` = #{shopId}
+    <if test="shopId != null">
+        AND `shop_id` = #{shopId}
+    </if>
+  </select>
+  <select id="findOverloadedOneById" resultMap="overloadedProductMap">
+    SELECT 
+      p.`product_id`,
+      p.`product_name`,
+      p.`product_desc`,
+      p.`img_addr`,
+      p.`normal_price`,
+      p.`promotion_price`,
+      p.`rewards_points`,
+      p.`priority`,
+      p.`create_time`,
+      p.`last_edit_time`,
+      p.`enable_status`,
+      p.`product_category_id`,
+      p.`shop_id`,
+      pi.`product_img_id` AS `detail_img_id`,
+      pi.`img_addr` AS `detail_img_addr`,
+      pi.`img_desc` AS `detail_img_desc`,
+      pi.`priority` AS `detail_img_priority`,
+      pi.`create_time` AS `detail_img_create_time`
+    FROM
+      `tb_product` p
+      LEFT JOIN `tb_product_img` pi
+      ON p.`product_id` = pi.`product_id`
+    WHERE p.`product_id` = #{productId}
+    ORDER BY pi.`priority` DESC
   </select>
   <select id="list" resultMap="productMap">
     SELECT 

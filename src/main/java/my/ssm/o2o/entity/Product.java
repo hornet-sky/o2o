@@ -63,7 +63,7 @@ public class Product {
      */
     private Integer enableStatus;
     /**  
-     * <p>商品图片</p>     
+     * <p>商品详情图</p>     
      */
     private List<ProductImg> productImgList;
     /**  

@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `tb_user_info` (
   `profile_img` VARCHAR(1024) COMMENT '头像',
   `email` VARCHAR(1024) COMMENT '电子邮件',
   `gender` TINYINT(1) COMMENT '性别：0 女，1 男，9 秘密',
-  `enable_status` TINYINT(2) NOT NULL COMMENT '用户状态：0 禁止使用本商城，1 允许使用本商城',
-  `user_type` TINYINT(2) NOT NULL COMMENT '用户类型：1 顾客，2 店家，9 超级管理员 ',
+  `enable_status` TINYINT(2) NOT NULL COMMENT '用户状态：0 禁止使用本商城，1 允许使用本商城，2 审核中',
+  `user_type` TINYINT(2) NOT NULL COMMENT '用户类型：1 顾客，2 店家，8 超级管理员',
   `create_time` DATETIME NOT NULL COMMENT '创建时间',
   `last_edit_time` DATETIME COMMENT '修改时间'
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户信息';
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `tb_local_auth` (
 CREATE TABLE IF NOT EXISTS `tb_head_line` (
   `line_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '头条ID（主键）',
   `line_name` VARCHAR(1000) COMMENT '头条名称',
-  `line_link` VARCHAR(2000) NOT NULL COMMENT '头条链接',
+  `line_link` VARCHAR(2000) COMMENT '头条链接',
   `line_img` VARCHAR(2000) NOT NULL COMMENT '头条图片',
   `enable_status` TINYINT(2) NOT NULL COMMENT '头条状态：0 不可用，1 可用',
   `priority` INT NOT NULL COMMENT '权重（影响展示顺序）',

@@ -38,11 +38,11 @@ public class UserInfo {
      */
     private Integer gender;
     /**  
-     * <p>用户状态：0 禁止使用本商城，1 允许使用本商城</p>     
+     * <p>用户状态：0 禁止使用本商城，1 允许使用本商城，2 审核中</p>     
      */
     private Integer enableStatus;
     /**  
-     * <p>用户类型：1 顾客，2 店家，9 超级管理员 </p>     
+     * <p>用户类型：1 顾客，2 店家，8 超级管理员 </p>     
      */
     private Integer userType;
     /**  

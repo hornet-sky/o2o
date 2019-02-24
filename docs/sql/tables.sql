@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `tb_user_info` (
   `name` VARCHAR(200) NOT NULL COMMENT '用户名',
   `profile_img` VARCHAR(1024) COMMENT '头像',
   `email` VARCHAR(1024) COMMENT '电子邮件',
-  `gender` TINYINT(1) COMMENT '性别：0 女，1 男，9 秘密',
+  `gender` TINYINT(1) COMMENT '性别：1 男，2 女，0 未知',
   `enable_status` TINYINT(2) NOT NULL COMMENT '用户状态：0 禁止使用本商城，1 允许使用本商城，2 审核中',
   `user_type` TINYINT(2) NOT NULL COMMENT '用户类型：1 顾客，2 店家，8 超级管理员',
   `create_time` DATETIME NOT NULL COMMENT '创建时间',

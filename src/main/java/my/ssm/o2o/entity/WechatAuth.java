@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**  
- * <p>微信授权</p>
+ * <p>微信授权信息（即微信用户与当前系统用户的一对一关联关系）</p>
  * <p>Date: 2019年2月3日</p>
  * @author Wanghui    
  */  

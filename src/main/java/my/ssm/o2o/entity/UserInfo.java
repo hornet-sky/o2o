@@ -34,7 +34,7 @@ public class UserInfo {
      */
     private String email;
     /**  
-     * <p>性别：0 女性，1 男性， 9 秘密</p>     
+     * <p>性别：1 男，2 女，0 未知</p>     
      */
     private Integer gender;
     /**  

@@ -1,10 +1,14 @@
 package my.ssm.o2o.dto;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import my.ssm.o2o.entity.UserInfo;
+import my.ssm.o2o.exception.WechatException;
 
 /**  
  * <p>微信用户信息</p>
@@ -26,10 +30,10 @@ public class WechatUserInfo {
     @JsonProperty("nickname")
     private String nickname;
     /**  
-     * <p>性别</p>     
+     * <p>性别：1 男，2 女，0 未知</p>     
      */
     @JsonProperty("sex")
-    private String sex;
+    private Integer sex;
     /**  
      * <p>所在省份</p>     
      */
@@ -60,4 +64,25 @@ public class WechatUserInfo {
      */
     @JsonProperty("privilege")
     private String[] privilege;
+    
+    /**  
+     * <p>转换成本地系统用户</p>  
+     * @return  本地系统用户
+     */  
+    public UserInfo toLocalUserInfo(Integer localUserType) {
+        UserInfo local = new UserInfo();
+        local.setGender(this.sex);
+        local.setName(this.nickname);
+        local.setProfileImg(this.headImgUrl);
+        local.setUserType(localUserType);
+        local.setCreateTime(new Date());
+        if(localUserType == 1) { //用户类型：1 顾客，2 店家
+            local.setEnableStatus(1); //用户状态：0 禁止使用本商城，1 允许使用本商城，2 审核中
+        } else if(localUserType == 2) {
+            local.setEnableStatus(2);
+        } else {
+            throw new WechatException("非法用户类型");
+        }
+        return local;
+    }
 }

@@ -1,9 +1,7 @@
 package my.ssm.o2o.web.wechat;
 
-import java.io.PrintWriter;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import my.ssm.o2o.dto.WechatAccessToken;
 import my.ssm.o2o.dto.WechatUserInfo;
@@ -42,18 +41,18 @@ public class WechatController {
      * @param timestamp 时间戳
      * @param nonce 随机数
      * @param echostr  随机字符串，用于回显
-     */  
-    @GetMapping("/checkAuthorization")
-    public void checkAuthorization(String signature, String timestamp, String nonce, String echostr, 
-            HttpServletResponse response) {
+     */
+    @ResponseBody
+    @GetMapping(value="/checkauthorization", produces="application/json;charset=utf-8")
+    public String checkAuthorization(String signature, String timestamp, String nonce, String echostr) {
         try {
             if(wechatService.checkSignature(signature, timestamp, nonce)) { //如果校验成功，则回显echostr
-                PrintWriter writer = response.getWriter();
-                writer.print(echostr);
+                return echostr;
             }
         } catch (Exception e) {
             logger.error("验证授权时发生异常", e);
         }
+        return null;
     }
     
     /**  
@@ -70,6 +69,7 @@ public class WechatController {
         try {
             //1、获取微信用户信息
             WechatAccessToken wechatAccessToken = wechatRemoteApiService.loadAccessToken(code);
+            // TODO access_token在2小时内有效，过期需要重新获取，但1天内获取次数有限，开发者需自行存储
             logger.debug("wechatAccessToken={}", wechatAccessToken);
             String openId = wechatAccessToken.getOpenId();
             WechatUserInfo wechatUserInfo = wechatRemoteApiService.loadWechatUserInfo(wechatAccessToken.getAccessToken(), 

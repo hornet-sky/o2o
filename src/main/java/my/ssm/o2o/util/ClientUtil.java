@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -102,9 +101,10 @@ public final class ClientUtil {
         StringBuilder queryStr = new StringBuilder();
         for(Entry<String, String> param : requestParameters.entrySet()) {
             (queryStr.length() == 0 ? queryStr.append("?") : queryStr.append("&")) 
-                .append(param.getKey()).append("=").append(param.getValue());
+                .append(URLEncoderUtil.encode(param.getKey())).append("=")
+                .append(URLEncoderUtil.encode(param.getValue()));
         }
-        return URLEncoder.encode(queryStr.toString(), "UTF-8");
+        return queryStr.toString();
     }
     
     private static class X509TrustManagerImpl implements X509TrustManager {

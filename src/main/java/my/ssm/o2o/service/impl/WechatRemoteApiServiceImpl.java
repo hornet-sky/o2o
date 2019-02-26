@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import my.ssm.o2o.dto.WechatAccessToken;
+import my.ssm.o2o.dto.WechatError;
 import my.ssm.o2o.dto.WechatUserInfo;
 import my.ssm.o2o.exception.WechatException;
 import my.ssm.o2o.service.WechatRemoteApiService;
@@ -39,9 +40,13 @@ public class WechatRemoteApiServiceImpl implements WechatRemoteApiService {
         parameters.put("grant_type", "authorization_code");
         try {
             String accessTokenJsonStr = ClientUtil.sslGet(accessTokenUrl, parameters , null);
+            if(accessTokenJsonStr.contains("errcode")) {
+                WechatError error = JacksonUtil.parse(accessTokenJsonStr, WechatError.class);
+                throw new WechatException("加载令牌期间产生异常 [ " + error.toString() + " ]");
+            }
             return JacksonUtil.parse(accessTokenJsonStr, WechatAccessToken.class);
         } catch (Exception e) {
-            throw new WechatException("加载令牌期间产生异常", e);
+            throw new WechatException("加载令牌期间产生异常 [ " + e.getMessage() + " ]", e);
         }
     }
     @Override
@@ -52,9 +57,13 @@ public class WechatRemoteApiServiceImpl implements WechatRemoteApiService {
         parameters.put("lang", lang);
         try {
             String wechatUserInfoJsonStr = ClientUtil.sslGet(wechatUserInfoUrl, parameters , null);
+            if(wechatUserInfoJsonStr.contains("errcode")) {
+                WechatError error = JacksonUtil.parse(wechatUserInfoJsonStr, WechatError.class);
+                throw new WechatException("加载微信用户信息期间产生异常 [ " + error.toString() + " ]");
+            }
             return JacksonUtil.parse(wechatUserInfoJsonStr, WechatUserInfo.class);
         } catch (Exception e) {
-            throw new WechatException("加载微信用户信息期间产生异常", e);
+            throw new WechatException("加载微信用户信息期间产生异常 [ " + e.getMessage() + " ]", e);
         }
     }
     

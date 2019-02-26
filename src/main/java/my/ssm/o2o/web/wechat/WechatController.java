@@ -64,7 +64,7 @@ public class WechatController {
      */  
     @GetMapping("/login")
     public String login(@RequestParam("code") String code, 
-            @RequestParam("local_user_type") Integer localUserType,
+            @RequestParam("state") Integer localUserType,
             HttpSession session) {
         try {
             //1、获取微信用户信息

@@ -55,10 +55,12 @@ public class ShopManagementController {
     public Result getShopListInitData(HttpSession session) {
         try {
             //TODO 先在session里放一个user用于测试，最后别忘了去掉
+            /*
             UserInfo user = new UserInfo();
             user.setUserId(1L);
             user.setName("Jack");
             session.setAttribute("user", user);
+            */
             //---- end ----
             UserInfo owner = (UserInfo) session.getAttribute("user");
             return new OperationResult<UserInfo, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, owner);

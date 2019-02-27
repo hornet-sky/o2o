@@ -86,13 +86,15 @@ public class WechatController {
                 wechatAuth.setUserInfo(userInfo);
                 wechatService.save(wechatAuth);
                 logger.debug("已添加新用户：{}", wechatAuth);
-                session.setAttribute("user", userInfo);
-                session.setAttribute("openId", openId);
                 if(localUserType == 1) { //顾客
+                    session.setAttribute("user", userInfo);
+                    session.setAttribute("openId", openId);
                     return "redirect:/frontend/index";
                 }
                 if(localUserType == 2) { //店家
-                    return "redirect:/shop/shoplist";
+                    session.setAttribute("user", userInfo);
+                    session.setAttribute("openId", openId);
+                    return "redirect:/shopadmin/shoplist";
                 }
                 return generateRedirectErrorPageStr("无法访问~", "您的身份未能识别！");
             }
@@ -119,6 +121,8 @@ public class WechatController {
                     wechatAuth.setUserInfo(forUpdate);
                     wechatService.updateLocalUserOnly(wechatAuth);
                 }
+                session.setAttribute("user", userInfo);
+                session.setAttribute("openId", openId);
                 return "redirect:/frontend/index";
             }
             if(localUserType == 2) { //当前访问者的身份是店家
@@ -137,7 +141,9 @@ public class WechatController {
                     wechatAuth.setUserInfo(forUpdate);
                     wechatService.updateLocalUserOnly(wechatAuth);
                 }
-                return "redirect:/shop/shoplist";
+                session.setAttribute("user", userInfo);
+                session.setAttribute("openId", openId);
+                return "redirect:/shopadmin/shoplist";
             }
             return generateRedirectErrorPageStr("无法访问~", "您的身份未能识别！");
         } catch (Exception e) {

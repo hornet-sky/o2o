@@ -16,12 +16,17 @@
         <property name="initialPoolSize" value="${c3p0.initial_pool_size}"></property>
         <property name="maxPoolSize" value="${c3p0.max_pool_size}"></property>
         <property name="minPoolSize" value="${c3p0.min_pool_size}"></property>
+        <property name="maxIdleTime" value="${c3p0.max_idle_time}"></property>
+        <property name="acquireIncrement" value="${c3p0.acquire_increment}"></property>
+        <property name="idleConnectionTestPeriod" value="${c3p0.idle_connection_test_period}"></property>
+        <property name="testConnectionOnCheckout" value="${c3p0.test_connection_on_checkout}"></property>
         <!-- 关闭连接后是否自动commit -->
         <property name="autoCommitOnClose" value="${c3p0.auto_commit_on_close}"></property>
         <!-- 获取连接超时时间 -->
         <property name="checkoutTimeout" value="${c3p0.checkout_timeout}"></property>
         <!-- 获取连接失败后重试次数 -->
         <property name="acquireRetryAttempts" value="${c3p0.acquire_retry_attempts}"></property>
+        <property name="acquireRetryDelay" value="${c3p0.acquire_retry_delay}"></property>
     </bean>
     <!-- 主库，主要是写操作 -->
     <bean id="master" parent="abstractDataSource">

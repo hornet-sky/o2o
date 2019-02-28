@@ -52,7 +52,7 @@ $(function() {
 						+ row.shopName + "</div><div class='col-40'>"
 						+ getShopStatusInfo(row.enableStatus)
 						+ "</div><div class='col-20'><a class='button' href='shopmanagement?shopId=" 
-						+ row.shopId + "'>进入</a></div></div>";
+						+ row.shopId + "' external>进入</a></div></div>";
 				});
 				$(".content-wrap").html(rowsHtml);
 				$.hideIndicator();

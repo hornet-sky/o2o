@@ -33,7 +33,14 @@
     <context:component-scan base-package="my.ssm.o2o.web,my.ssm.o2o.component" />
     
     <!-- 6、引入一些配置参数 -->
-    <util:properties id="prop" location="classpath:config.properties"/>
+    <!-- <util:properties id="prop" location="classpath:config.properties"/> -->
+    <bean id="prop" class="my.ssm.o2o.component.DecryptProperties">
+        <constructor-arg>
+            <list>
+                <value>classpath:config.properties</value>
+            </list>
+        </constructor-arg>
+    </bean>
     
     <!-- 7、直接转发到指定页面，不需要显式定义控制器 -->
     <mvc:view-controller path="/common/error" view-name="common/error"/>

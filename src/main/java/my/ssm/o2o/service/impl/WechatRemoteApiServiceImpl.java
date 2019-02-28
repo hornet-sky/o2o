@@ -24,7 +24,7 @@ public class WechatRemoteApiServiceImpl implements WechatRemoteApiService {
     @Value("#{prop['wechat.appid']}")
     private String appId;
     @Value("#{prop['wechat.secret']}")
-    private String appSecret; //TODO 做混淆加密（包括数据库密码）
+    private String appSecret;
     @Value("#{prop['wechat.sns.accesstoken.url']}")
     private String accessTokenUrl;
     @Value("#{prop['wechat.sns.userinfo.url']}")
@@ -66,5 +66,5 @@ public class WechatRemoteApiServiceImpl implements WechatRemoteApiService {
             throw new WechatException("加载微信用户信息期间产生异常 [ " + e.getMessage() + " ]", e);
         }
     }
-    
+
 }

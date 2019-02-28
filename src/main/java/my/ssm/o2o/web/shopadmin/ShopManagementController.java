@@ -93,7 +93,7 @@ public class ShopManagementController {
         if(shop == null || !shopId.equals(shop.getShopId())) {
             UserInfo owner = (UserInfo) session.getAttribute("user");
             logger.error("getshopmanagementinitdata - 非法操作：用户[{} - {}] 请求店铺[{} - {}]",
-                    owner.getUserId(), owner.getName(), shopId, shop == null ? null : shop.getShopName());
+                    owner.getUserId(), owner.getName(), shopId, shop == null ? null : shop.getShopId());
             return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.ILLEGAL_OPERATION);
         }
         return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, shop);

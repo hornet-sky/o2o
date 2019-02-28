@@ -44,7 +44,7 @@ public class ShopAdminRoutingController {
         Shop shop = shopService.findShopById(shopId);
         if(shop == null || !shop.getOwner().getUserId().equals(owner.getUserId())) {
             logger.error("shopmanagement - 非法操作：用户[{} - {}] 请求店铺[{} - {}]", 
-                    owner.getUserId(), owner.getName(), shopId, shop == null ? null : shop.getShopName());
+                    owner.getUserId(), owner.getName(), shopId, shop == null ? null : shop.getShopId());
             return "redirect:shoplist";
         }
         session.setAttribute("currShop", shop); //存放到session里避免后续操作反复查询数据库

@@ -27,7 +27,7 @@ public final class PathUtil {
                     String separator = System.getProperty("file.separator");
                     Properties props = (Properties) SpringContextUtils.getBeanById("prop");
                     String projectName = props.getProperty("project.name");
-                    imageBaseDirPath = props.getProperty("upload.baseDir");
+                    imageBaseDirPath = userHome + props.getProperty("upload.baseDir");
                     logger.debug("os.name={}, user.home={}, file.separator={}, project.name={}, upload.baseDir={}", 
                             osName, userHome, separator, projectName, imageBaseDirPath); //os.name=Windows 10, user.home=C:\Users\Wang, file.separator=\, project.name=o2o_webapp, C:\Users\Wang\static__resources\
                 }

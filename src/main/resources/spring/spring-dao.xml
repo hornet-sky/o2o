@@ -10,6 +10,7 @@
         <property name="locations">
             <list>
                 <value>classpath:db.properties</value>
+                <value>classpath:redis.properties</value>
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"></property>
@@ -77,4 +78,6 @@
         <!-- 指明需要扫描的接口包的基础路径 -->
         <property name="basePackage" value="my.ssm.o2o.dao"></property>
     </bean>
+    <!-- 5、扫描指定位置的Dao组件 -->
+    <context:component-scan base-package="my.ssm.o2o.dao.cache" />
 </beans>

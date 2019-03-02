@@ -10,6 +10,8 @@ import my.ssm.o2o.entity.ShopCategory;
  * @author Wanghui    
  */  
 public interface ShopCategoryService {
+    String ROOT_SHOP_CATEGORY_LIST = "rootshopcategorylist";
+    String SUB_SHOP_CATEGORY_LIST = "subshopcategorylist";
     /**  
      * <p>根据条件查询店铺类别列表</p>  
      * @param condition 条件
@@ -26,4 +28,10 @@ public interface ShopCategoryService {
      * @return  店铺子类别列表
      */  
     List<ShopCategory> findAllSubCategory();
+    /**  
+     * <p>根据父类别查询其下所有子类别</p>  
+     * @param parentShopCategoryId 父类别ID
+     * @return  该父类别其下所有的子类别
+     */  
+    List<ShopCategory> findSubCategoryByParentId(Long parentShopCategoryId);
 }

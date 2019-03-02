@@ -10,6 +10,7 @@ import my.ssm.o2o.entity.Area;
  * @author Wanghui    
  */  
 public interface AreaService {
+    String AREA_LIST = "arealist";
     /**  
      * <p>查找全部的区域</p>  
      * @return  区域集合

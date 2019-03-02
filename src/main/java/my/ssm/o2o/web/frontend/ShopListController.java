@@ -52,11 +52,7 @@ public class ShopListController {
             if(parentShopCategoryId == null) { //获得全部根类别
                 result.put("shopCategoryList", shopCategoryService.findRootCategory());
             } else { //获得指定根类别下的子类别
-                ShopCategory parent = new ShopCategory();
-                parent.setShopCategoryId(parentShopCategoryId);
-                ShopCategory condition = new ShopCategory();
-                condition.setParent(parent);
-                result.put("shopCategoryList", shopCategoryService.findByCondition(condition));
+                result.put("shopCategoryList", shopCategoryService.findSubCategoryByParentId(parentShopCategoryId));
             }
         } catch (Exception e) {
             logger.error("初始化店铺类别失败", e);

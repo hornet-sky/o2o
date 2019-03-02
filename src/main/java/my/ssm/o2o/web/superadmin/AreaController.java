@@ -33,12 +33,12 @@ public class AreaController {
     @ResponseBody
     public Result listArea() {
         try {
-            //TODO 需要修改成分页操作
+            //TODO 如果修改成分页操作（注意处理缓存CacheDao），或者直接就不分页了
             List<Area> areaList = areaService.findAll();
             return new PagingResult<Area>(areaList, new Long(areaList.size()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return new OperationResult<Area, AreaOperStateEnum>(AreaOperStateEnum.OPERATION_FAILURE, e);
+            return new OperationResult<Area, AreaOperStateEnum>(AreaOperStateEnum.OPERATION_FAILURE, e.getMessage());
         }
     }
 }

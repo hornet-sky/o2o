@@ -10,6 +10,7 @@ import my.ssm.o2o.entity.HeadLine;
  * @author Wanghui    
  */  
 public interface HeadLineService {
+    String HEAD_LINE_LIST = "headlinelist";
     /**  
      * <p>根据条件查询前端滚动条列表</p>  
      * @param condition 条件

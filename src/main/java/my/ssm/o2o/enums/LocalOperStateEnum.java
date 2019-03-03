@@ -8,6 +8,7 @@ package my.ssm.o2o.enums;
 public enum LocalOperStateEnum implements OperStateEnum {
     BIND_SUCCESS(1098, "绑定成功"), 
     OPERATION_SUCCESS(1099, "操作成功"), 
+    LEGAL_PARAMETER(-1001, "不合法的参数"),
     LEGAL_ACCOUNT(-1002, "不合法的账号"),
     LEGAL_PASSWORD(-1003, "不合法的密码"),
     INVALID_VERIFY_CODE(-1004, "无效的验证码"),

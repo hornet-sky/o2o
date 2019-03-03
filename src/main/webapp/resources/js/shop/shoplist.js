@@ -13,18 +13,11 @@ $(function() {
 				return;
 			}
 			$("#user-name").text(data.entity.owner.name);
-			if(data.entity.existsLocalAuth) {
-				var btnsHtml = '<div class="col-50"><a href="javascript:void(0);" id="logout-btn" class="button button-big button-fill button-danger">退出系统</a></div>'
-					+ '<div class="col-50"><a href="javascript:void(0);" id="change-password-btn" class="button button-big button-fill button-success">修改密码</a></div>';
+			var account = data.entity.account;
+			if(account) {
+				var btnsHtml = '<div class="col-50"><a href="../local/logout" class="button button-big button-fill button-danger" external>退出系统</a></div>'
+					+ '<div class="col-50"><a href="../local/changepassword?account=' + account + '" class="button button-big button-fill button-success" external>修改密码</a></div>';
 				$("#btns").html(btnsHtml);
-				//初始化“退出系统”按钮
-				$("#logout-btn").click(function() {
-					$.toast("“退出系统”正在建设中");
-				});
-				//初始化“修改密码”按钮
-				$("#change-password-btn").click(function() {
-					$.toast("“修改密码”正在建设中");
-				});
 				return;
 			}
 			var btnsHtml = '<div class="col-100"><a href="../local/auth" class="button button-big button-fill" external>绑定本地账号</a></div>';

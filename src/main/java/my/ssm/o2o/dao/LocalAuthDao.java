@@ -17,6 +17,13 @@ public interface LocalAuthDao {
      */  
     LocalAuth findByUserId(Long userId);
     /**  
+     * <p>查找指定账号和密码的本地授权信息</p>  
+     * @param account 账号
+     * @param password 密码
+     * @return  本地授权信息
+     */  
+    LocalAuth findByAccountAndPassword(@Param("account") String account, @Param("password") String password);
+    /**  
      * <p>判断指定条件的本地授权信息是否存在</p>  
      * @param condition 指定条件
      * @return  如果存在则返回true

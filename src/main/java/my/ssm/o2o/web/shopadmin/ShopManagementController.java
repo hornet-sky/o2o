@@ -21,6 +21,7 @@ import my.ssm.o2o.dto.OperationResult;
 import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.Result;
 import my.ssm.o2o.entity.Area;
+import my.ssm.o2o.entity.LocalAuth;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.ShopCategory;
 import my.ssm.o2o.entity.UserInfo;
@@ -58,16 +59,23 @@ public class ShopManagementController {
     public Result getShopListInitData(HttpSession session) {
         try {
             //TODO 先在session里放一个user用于测试，最后别忘了去掉
-            
+            /*
             UserInfo user = new UserInfo();
             user.setUserId(1L);
             user.setName("Jack");
             session.setAttribute("user", user);
-            
+            */
             //---- end ----
             Map<String, Object> result = new HashMap<>();
             UserInfo owner = (UserInfo) session.getAttribute("user");
-            result.put("existsLocalAuth", localService.existsLocalAuth(owner.getUserId()));
+            LocalAuth localAuth = (LocalAuth) session.getAttribute("localAuth");
+            if(localAuth == null) { //如果通过微信公众号登录店铺管理系统，localAuth可能为空
+                localAuth = localService.findLocalAuthByUserId(owner.getUserId());
+            }
+            if(localAuth != null) {
+                session.setAttribute("localAuth", localAuth);
+                result.put("account", localAuth.getAccount());
+            }
             result.put("owner", owner);
             return new OperationResult<Map<String, Object>, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, result);
         } catch(Exception e) {

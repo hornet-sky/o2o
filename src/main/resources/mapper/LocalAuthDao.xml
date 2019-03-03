@@ -7,7 +7,6 @@
     <id column="local_auth_id" property="localAuthId" />
     <result column="account" property="account" />
     <result column="password" property="password" />
-    <result column="user_id" property="userId" />
     <result column="auth_create_time" property="createTime" />
     <result column="auth_last_edit_time" property="lastEditTime" />
     <result column="last_login_time" property="lastLoginTime" />
@@ -41,11 +40,36 @@
       u.`create_time`,
       u.`last_edit_time` 
 	FROM
-	  `tb_local_auth` a,
+	  `tb_local_auth` a
 	  JOIN `tb_user_info` u
 	  ON a.`user_id` = u.`user_id`
 	WHERE 
 	  a.`user_id` = #{userId}
+  </select>
+  <select id="findByAccountAndPassword" resultMap="localAuthMap">
+    SELECT 
+      a.`local_auth_id`,
+      a.`account`,
+      a.`password`,
+      a.`create_time` AS `auth_create_time`,
+      a.`last_edit_time` AS `auth_last_edit_time`,
+      a.`last_login_time`,
+      u.`user_id`,
+      u.`name`,
+      u.`profile_img`,
+      u.`email`,
+      u.`gender`,
+      u.`enable_status`,
+      u.`user_type`,
+      u.`create_time`,
+      u.`last_edit_time` 
+    FROM
+      `tb_local_auth` a
+      JOIN `tb_user_info` u
+      ON a.`user_id` = u.`user_id`
+    WHERE 
+      a.`account` = #{account}
+      AND a.`password` = #{password}
   </select>
   <select id="exists" parameterType="localAuth" resultType="boolean">
     SELECT 
@@ -54,16 +78,16 @@
       `tb_local_auth`
     <where>
        <if test="localAuthId != null">
-           `local_auth_id` = ${localAuthId}
+           `local_auth_id` = #{localAuthId}
        </if>
        <if test="userInfo != null and userInfo.userId != null">
-           AND `user_id` = ${userInfo.userId}
+           AND `user_id` = #{userInfo.userId}
        </if>
        <if test="account != null">
-           AND `account` = ${account}
+           AND `account` = #{account}
        </if>
        <if test="password != null">
-           AND `password` = ${password}
+           AND `password` = #{password}
        </if>
     </where>
     LIMIT 1
@@ -88,27 +112,27 @@
 	  `tb_local_auth` 
 	<set>
 	   <if test="newProperties.password != null">
-	       `password` = ${newProperties.password},
+	       `password` = #{newProperties.password},
 	   </if>
 	   <if test="newProperties.lastEditTime != null">
-           `last_edit_time` = ${newProperties.lastEditTime},
+           `last_edit_time` = #{newProperties.lastEditTime},
        </if>
        <if test="newProperties.lastLoginTime != null">
-           `last_login_time` = ${newProperties.lastLoginTime}
+           `last_login_time` = #{newProperties.lastLoginTime}
        </if>
 	</set>
 	<where>
 	   <if test="condition.localAuthId != null">
-	       `local_auth_id` = ${condition.localAuthId}
+	       `local_auth_id` = #{condition.localAuthId}
 	   </if>
 	   <if test="condition.userInfo != null and condition.userInfo.userId != null">
-           AND `user_id` = ${condition.userInfo.userId}
+           AND `user_id` = #{condition.userInfo.userId}
        </if>
        <if test="condition.account != null">
-           AND `account` = ${condition.account}
+           AND `account` = #{condition.account}
        </if>
        <if test="condition.password != null">
-           AND `password` = ${condition.password}
+           AND `password` = #{condition.password}
        </if>
 	</where>
   </update>

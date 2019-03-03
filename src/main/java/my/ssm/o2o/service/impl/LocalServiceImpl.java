@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import my.ssm.o2o.dao.LocalAuthDao;
 import my.ssm.o2o.entity.LocalAuth;
 import my.ssm.o2o.entity.UserInfo;
+import my.ssm.o2o.exception.LocalAuthException;
 import my.ssm.o2o.service.LocalService;
 import my.ssm.o2o.util.MD5Util;
 
@@ -35,7 +36,9 @@ public class LocalServiceImpl implements LocalService {
 
     @Override
     public LocalAuth findLocalAuthByUserId(Long userId) {
-        return localAuthDao.findByUserId(userId);
+        LocalAuth localAuth = localAuthDao.findByUserId(userId);
+        localAuth.setPassword(null);
+        return localAuth;
     }
 
     @Override
@@ -45,6 +48,53 @@ public class LocalServiceImpl implements LocalService {
         LocalAuth condition = new LocalAuth();
         condition.setUserInfo(userInfo);
         return localAuthDao.exists(condition);
+    }
+
+    @Transactional
+    @Override
+    public LocalAuth login(String account, String password) {
+        LocalAuth localAuth = localAuthDao.findByAccountAndPassword(account, MD5Util.encrypt(password));
+        if(localAuth == null) {
+            throw new LocalAuthException("账号或密码错误");
+        }
+        Integer enableStatus = localAuth.getUserInfo().getEnableStatus();
+        if(enableStatus == 0) {
+            throw new LocalAuthException("该账号已被禁用");
+        }
+        if(enableStatus == 2) {
+            throw new LocalAuthException("该账号正在审核中");
+        }
+        LocalAuth newProperties = new LocalAuth();
+        newProperties.setLastLoginTime(new Date());
+        LocalAuth condition = new LocalAuth();
+        condition.setAccount(account);
+        condition.setPassword(password);
+        localAuthDao.update(newProperties, condition);
+        localAuth.setPassword(null);
+        return localAuth;
+    }
+
+    @Transactional
+    @Override
+    public LocalAuth changePassword(String account, String oldPassword, String newPassword) {
+        oldPassword = MD5Util.encrypt(oldPassword);
+        LocalAuth localAuth = localAuthDao.findByAccountAndPassword(account, oldPassword);
+        if(localAuth == null) {
+            throw new LocalAuthException("旧密码错误");
+        }
+        newPassword = MD5Util.encrypt(newPassword);
+        Date now = new Date();
+        LocalAuth newProperties = new LocalAuth();
+        newProperties.setPassword(newPassword);
+        newProperties.setLastEditTime(now);
+        LocalAuth condition = new LocalAuth();
+        condition.setAccount(account);
+        condition.setPassword(oldPassword);
+        localAuthDao.update(newProperties, condition);
+        //返回修改后的本地授权信息
+        localAuth.setPassword(null);
+        localAuth.setLastEditTime(now);
+        return localAuth;
     }
 
 }

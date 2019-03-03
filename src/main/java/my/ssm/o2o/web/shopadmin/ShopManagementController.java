@@ -71,9 +71,9 @@ public class ShopManagementController {
             LocalAuth localAuth = (LocalAuth) session.getAttribute("localAuth");
             if(localAuth == null) { //如果通过微信公众号登录店铺管理系统，localAuth可能为空
                 localAuth = localService.findLocalAuthByUserId(owner.getUserId());
+                session.setAttribute("localAuth", localAuth);
             }
             if(localAuth != null) {
-                session.setAttribute("localAuth", localAuth);
                 result.put("account", localAuth.getAccount());
             }
             result.put("owner", owner);

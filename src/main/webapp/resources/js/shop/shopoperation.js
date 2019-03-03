@@ -12,7 +12,6 @@ $(function() {
 	
 	function init() {
 		$.getJSON(getInitDataUri, {
-			parentShopCategoryId: 1, //TODO 目前先写死1，即父类是“美食”
 			shopId: shopId
 		}, function(data) {
 			console.log("init - returned data", data);

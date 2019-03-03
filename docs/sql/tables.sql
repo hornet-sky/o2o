@@ -37,10 +37,12 @@ CREATE TABLE IF NOT EXISTS `tb_wechat_auth` (
 #创建本地授权表
 CREATE TABLE IF NOT EXISTS `tb_local_auth` (
   `local_auth_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '本地授权ID（主键）',
-  `username` VARCHAR(128) NOT NULL UNIQUE COMMENT '用户名',
+  `account` VARCHAR(128) NOT NULL UNIQUE COMMENT '账号',
   `password` VARCHAR(128) NOT NULL COMMENT '密码',
   `user_id` INT NOT NULL COMMENT '用户ID',
   `create_time` DATETIME NOT NULL COMMENT '创建时间',
+  `last_edit_time` DATETIME COMMENT '修改时间',
+  `last_login_time` DATETIME COMMENT '最后登录时间',
    CONSTRAINT fk_local_auth_profile FOREIGN KEY(`user_id`) REFERENCES `tb_user_info`(`user_id`)
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本地授权';
 

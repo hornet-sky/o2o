@@ -72,10 +72,4 @@ public final class DESUtil {
             throw new DESException("解密过程中产生了异常", e);
         }
     }
-    
-    public static void main(String[] args) {
-        System.out.println(encrypt("family"));
-        System.out.println(encrypt("wx3d92800b0e711fa3"));
-        System.out.println(encrypt("3af7401fd3f670b2c26679ad0d1d6984"));
-    }
 }

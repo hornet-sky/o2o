@@ -27,6 +27,7 @@ import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.service.AreaService;
 import my.ssm.o2o.service.CommonService;
+import my.ssm.o2o.service.LocalService;
 import my.ssm.o2o.service.ShopCategoryService;
 import my.ssm.o2o.service.ShopService;
 import my.ssm.o2o.util.CommonUtil;
@@ -48,6 +49,8 @@ public class ShopManagementController {
     @Autowired
     private AreaService areaService;
     @Autowired
+    private LocalService localService;
+    @Autowired
     private CommonService commonService;
     
     @GetMapping("/getshoplistinitdata")
@@ -55,18 +58,21 @@ public class ShopManagementController {
     public Result getShopListInitData(HttpSession session) {
         try {
             //TODO 先在session里放一个user用于测试，最后别忘了去掉
-            /*
+            
             UserInfo user = new UserInfo();
             user.setUserId(1L);
             user.setName("Jack");
             session.setAttribute("user", user);
-            */
+            
             //---- end ----
+            Map<String, Object> result = new HashMap<>();
             UserInfo owner = (UserInfo) session.getAttribute("user");
-            return new OperationResult<UserInfo, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, owner);
+            result.put("existsLocalAuth", localService.existsLocalAuth(owner.getUserId()));
+            result.put("owner", owner);
+            return new OperationResult<Map<String, Object>, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, result);
         } catch(Exception e) {
             logger.error(e.getMessage(), e);
-            return new OperationResult<UserInfo, ShopOperStateEnum>(ShopOperStateEnum.INITIALIZATION_FAILURE, e);
+            return new OperationResult<Map<String, Object>, ShopOperStateEnum>(ShopOperStateEnum.INITIALIZATION_FAILURE, e);
         }
     }
     
@@ -101,11 +107,9 @@ public class ShopManagementController {
     
     @GetMapping("/getshopoperationinitdata")
     @ResponseBody
-    public Result getShopOperationInitData(
-            @RequestParam(name = "parentShopCategoryId") Long parentShopCategoryId,
-            @RequestParam(name = "shopId", required = false) Long shopId,
+    public Result getShopOperationInitData(@RequestParam(name = "shopId", required = false) Long shopId,
             HttpSession session) {
-        logger.debug("parentShopCategoryId={}, shopId={}", parentShopCategoryId, shopId);
+        logger.debug("shopId={}", shopId);
         Map<String, Object> data = new HashMap<>();
         if(shopId != null) {
             Shop shop = shopService.findShopById(shopId);

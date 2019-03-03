@@ -22,9 +22,9 @@ public class LocalAuth {
      */
     private Integer localAuthId;
     /**  
-     * <p>用户名</p>     
+     * <p>账号</p>     
      */
-    private String username;
+    private String account;
     /**  
      * <p>密码</p>     
      */
@@ -37,4 +37,12 @@ public class LocalAuth {
      * <p>创建时间</p>     
      */
     private Date createTime;
+    /**  
+     * <p>最后修改时间</p>     
+     */
+    private Date lastEditTime;
+    /**  
+     * <p>最后登录时间</p>     
+     */
+    private Date lastLoginTime;
 }

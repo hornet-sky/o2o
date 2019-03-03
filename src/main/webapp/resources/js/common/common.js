@@ -43,7 +43,6 @@ function getParsedResultFromXhr(xhr) {
 		return $.parseJSON(xhr.responseText);
 	} catch(e) {
 		console.error(e);
-		return xhr.responseText;
 	}
 }
 

@@ -28,3 +28,10 @@
 #kaptcha-img {
     cursor: pointer;
 }
+.tip {
+	display: inline-block;
+	line-height: 2.2rem;
+	font-size: .7rem;
+	padding-left: 1.3rem;
+	background: url(../../image/tip.ico) no-repeat 0 .4rem;
+}

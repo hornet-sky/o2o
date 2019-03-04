@@ -44,7 +44,7 @@ public class MainPageController {
     
     @GetMapping("/listmainpageinfo")
     @ResponseBody
-    public Result listMainPageInfo(HttpSession session) {
+    public Result listMainPageInfo() {
         Map<String, Object> result = new HashMap<>();
         HeadLine condition = new HeadLine();
         condition.setEnableStatus(1); //头条状态：0 不可用，1 可用
@@ -66,6 +66,13 @@ public class MainPageController {
             logger.error("获取资源服务器上下文路径失败", e);
             new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.INITIALIZATION_FAILURE.getState(), "获取资源服务器上下文路径失败");
         }
+        return new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.OPERATION_SUCCESS, result);
+    }
+    
+    @GetMapping("/getlogininfo")
+    @ResponseBody
+    public Result getLoginInfo(HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
         UserInfo userInfo = (UserInfo) session.getAttribute("user");
         if(userInfo != null) {
             result.put("user", "user");

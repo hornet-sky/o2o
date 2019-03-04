@@ -5,6 +5,8 @@ $(function() {
 	var ctxPath;
 	//初始化页面组件
 	init();
+	constructBottomToolbar();
+	constructRightPanel();
 	
 	function init() {
 		$.getJSON(getProductDetailUri, {productId: productId}, function(data) {

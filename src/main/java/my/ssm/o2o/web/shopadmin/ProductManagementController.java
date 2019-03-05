@@ -30,7 +30,6 @@ import my.ssm.o2o.dto.Result;
 import my.ssm.o2o.entity.Product;
 import my.ssm.o2o.entity.ProductCategory;
 import my.ssm.o2o.entity.Shop;
-import my.ssm.o2o.entity.UserInfo;
 import my.ssm.o2o.enums.Direction;
 import my.ssm.o2o.enums.ProductOperStateEnum;
 import my.ssm.o2o.service.CommonService;
@@ -61,14 +60,6 @@ public class ProductManagementController {
             @RequestParam(name = "shopId") Long shopId,
             HttpSession session) {
         logger.debug("productId={}, shopId={}", productId, shopId);
-        //验证是否是当前操作的店铺
-        UserInfo owner = (UserInfo) session.getAttribute("user");
-        Shop currShop = (Shop) session.getAttribute("currShop");
-        if(!shopId.equals(currShop.getShopId())) {
-            logger.error("getproductoperationinitdata - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]",
-                    owner.getUserId(), owner.getName(), shopId, currShop.getShopId());
-            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
-        }
         Map<String, Object> data = new HashMap<>();
         if(productId != null) {
             Product product = productService.findProductById(productId, shopId);
@@ -93,7 +84,6 @@ public class ProductManagementController {
     @PostMapping("/addormodifyproduct")
     @ResponseBody
     public Result addOrModifyProduct(
-            @RequestParam(name = "shopId", required = true) Long shopId, 
             @RequestParam(name = "productId", required = false) Long productId, 
             @RequestParam(name = "productName") String productName, 
             @RequestParam(name = "productCategory") Long productCategoryId,
@@ -106,18 +96,10 @@ public class ProductManagementController {
             @RequestParam(name = "coverImg", required = false) CommonsMultipartFile coverImg,
             @RequestParam(name = "detailImgs", required = false) CommonsMultipartFile[] detailImgs,
             HttpSession session) {
-        logger.debug("addOrModifyProduct - shopId={}, productId={}, productName={}, productCategoryId={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
-                shopId, productId, productName, productCategoryId, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
+        logger.debug("addOrModifyProduct - productId={}, productName={}, productCategoryId={}, priority={}, normalPrice={}, promotionPrice={}, rewardsPoints={}, productDesc={}, verifyCodeActual={}, coverImg={}, detailImgs={}",
+                productId, productName, productCategoryId, priority, normalPrice, promotionPrice, rewardsPoints, productDesc, verifyCodeActual, coverImg, detailImgs == null ? null : Arrays.toString(detailImgs));
         if(!KaptchaUtil.checkVerifyCode(verifyCodeActual, session)) {
             return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.INVALID_VERIFY_CODE);
-        }
-        //验证是否是当前操作的店铺
-        UserInfo owner = (UserInfo) session.getAttribute("user");
-        Shop currShop = (Shop) session.getAttribute("currShop");
-        if(!shopId.equals(currShop.getShopId())) {
-            logger.error("addormodifyproduct - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]",
-                    owner.getUserId(), owner.getName(), shopId, currShop.getShopId());
-            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
         }
         
         ProductCategory productCategory = new ProductCategory();
@@ -130,7 +112,7 @@ public class ProductManagementController {
         product.setPromotionPrice(promotionPrice);
         product.setRewardsPoints(rewardsPoints);
         product.setPriority(priority);
-        product.setShop(currShop);
+        product.setShop((Shop) session.getAttribute("currShop"));
         product.setProductCategory(productCategory);
         
         Map<String, Object> imageUploadProps = commonService.getImageUploadProps();
@@ -181,17 +163,9 @@ public class ProductManagementController {
     
     @GetMapping("/getproductlist")
     @ResponseBody
-    public Result getProductList(@RequestParam("shopId") Long shopId,
-            PagingParams pagingParams, HttpSession session) { //TODO 实现前端分页、筛查
-        Shop currShop = (Shop) session.getAttribute("currShop");
-        UserInfo owner = (UserInfo) session.getAttribute("user");
-        if(currShop == null || !currShop.getShopId().equals(shopId)) {
-            logger.error("getproductlist - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
-                    owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
-            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
-        }
+    public Result getProductList(PagingParams pagingParams, HttpSession session) {
         Product condition = new Product();
-        condition.setShop(currShop);
+        condition.setShop((Shop) session.getAttribute("currShop"));
         try {
             return productService.listProduct(condition , null, pagingParams);
         } catch (Exception e) {
@@ -220,14 +194,7 @@ public class ProductManagementController {
     @GetMapping("/getproductcategorylist")
     @ResponseBody
     public Result getProductCategoryList(@RequestParam("shopId") Long shopId,
-            PagingParams pagingParams, HttpSession session) { //TODO 实现前端分页、筛查
-        Shop currShop = (Shop) session.getAttribute("currShop");
-        UserInfo owner = (UserInfo) session.getAttribute("user");
-        if(currShop == null || !currShop.getShopId().equals(shopId)) {
-            logger.error("getproductcategorylist - 非法操作：用户[{} - {}] 请求店铺ID[{}] 缓存店铺ID[{}]", 
-                    owner.getUserId(), owner.getName(), shopId, currShop == null ? null : currShop.getShopId());
-            return new OperationResult<Product, ProductOperStateEnum>(ProductOperStateEnum.ILLEGAL_OPERATION);
-        }
+            PagingParams pagingParams, HttpSession session) {
         ProductCategory condition = new ProductCategory();
         condition.setShopId(shopId);
         try {

@@ -2,6 +2,10 @@ $(function() {
 	var getInitDataUri = "getshoplistinitdata";
 	var getShopListUri = "getshoplist";
 	var paging = initPaging(".row-paging", loadShopList);
+	var msg = getQueryStrValByName("msg");
+	if(msg) {
+		$.alert(msg);
+	}
 	//初始化页面组件
 	init();
 	

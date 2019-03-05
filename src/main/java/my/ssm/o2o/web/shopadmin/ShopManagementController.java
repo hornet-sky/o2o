@@ -101,15 +101,8 @@ public class ShopManagementController {
     
     @GetMapping("/getshopmanagementinitdata")
     @ResponseBody
-    public Result getShopManagementInitData(@RequestParam(name = "shopId") Long shopId, 
-            HttpSession session) {
+    public Result getShopManagementInitData(HttpSession session) {
         Shop shop = (Shop) session.getAttribute("currShop");
-        if(shop == null || !shopId.equals(shop.getShopId())) {
-            UserInfo owner = (UserInfo) session.getAttribute("user");
-            logger.error("getshopmanagementinitdata - 非法操作：用户[{} - {}] 请求店铺[{} - {}]",
-                    owner.getUserId(), owner.getName(), shopId, shop == null ? null : shop.getShopId());
-            return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.ILLEGAL_OPERATION);
-        }
         return new OperationResult<Shop, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_SUCCESS, shop);
     }
     

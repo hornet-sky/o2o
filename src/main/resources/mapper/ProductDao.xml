@@ -121,6 +121,9 @@
 	   <if test="condition != null and condition.productCategory != null and condition.productCategory.productCategoryId != null">
            AND `product_category_id` = #{condition.productCategory.productCategoryId}
        </if>
+       <if test="condition != null and condition.enableStatus != null">
+           AND `enable_status` = #{condition.enableStatus}
+       </if>
        <if test="searchKey != null and searchKey != ''">
            AND (`product_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_desc` LIKE CONCAT('%', #{searchKey}, '%'))
        </if>
@@ -143,6 +146,9 @@
        </if>
        <if test="condition != null and condition.productCategory != null and condition.productCategory.productCategoryId != null">
            AND `product_category_id` = #{condition.productCategory.productCategoryId}
+       </if>
+       <if test="condition != null and condition.enableStatus != null">
+           AND `enable_status` = #{condition.enableStatus}
        </if>
        <if test="searchKey != null and searchKey != ''">
            AND (`product_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_desc` LIKE CONCAT('%', #{searchKey}, '%'))

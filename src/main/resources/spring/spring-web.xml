@@ -54,6 +54,16 @@
             <mvc:mapping path="/shopadmin/**"/>
             <bean class="my.ssm.o2o.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/shopadmin/getshopmanagementinitdata"/>
+            <mvc:mapping path="/shopadmin/productcategorymanagement"/>
+            <mvc:mapping path="/shopadmin/productmanagement"/>
+            <mvc:mapping path="/shopadmin/getproductoperationinitdata"/>
+            <mvc:mapping path="/shopadmin/addormodifyproduct"/>
+            <mvc:mapping path="/shopadmin/getproductlist"/>
+            <mvc:mapping path="/shopadmin/getproductcategorylist"/>
+            <bean class="my.ssm.o2o.web.interceptor.ShopPermissionInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
     
     <!-- 9、其他 -->

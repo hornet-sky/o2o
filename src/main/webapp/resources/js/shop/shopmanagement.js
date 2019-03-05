@@ -4,12 +4,13 @@ $(function() {
 	init();
 	function init() {
 		$.getJSON(getInitDataUri, {
-			shopId: shopId
+			shopId: shopId //用于拦截器校验
 		}, function(data) {
 			console.log("init - returned data", data);
 			if(data.state < 0) { //请求失败
-				$.toast(data.msg);
-				setTimeout("location.href='shoplist'", 1500);
+				$.alert(data.msg, function() {
+					location.href='shoplist';
+				});
 				return;
 			}
 			var $shopInfoBtn = $("#shop-info-btn").attr("href", "shopoperation?shopId=" + shopId);

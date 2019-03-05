@@ -9,9 +9,14 @@ $(function() {
 	var passwordRegExp = /^[\x20-\x7E]{6,}$/; //0x20 - 0x7E 可见的拉丁字符
 	var loginFailureCount = 0;
 	var maxFailureCount = 3;
-	var defaultAccount = getQueryStrValByName("account");
+	var defaultAccount = getQueryStrValByName("account"); //用于本地账号输入框反显
+	var msg = getQueryStrValByName("msg"); //登录前显示的消息
+	var targetUri = getQueryStrValByName("targetUri"); //用户登录成功后重定向到指定路径
 	if(defaultAccount) {
 		$accountIpt.val(defaultAccount);
+	}
+	if(msg) {
+		$.alert(msg);
 	}
 	$("#login-btn").on("click", function() {
 		if(!isLegalInput()) {
@@ -41,6 +46,10 @@ $(function() {
 					if(++loginFailureCount >= maxFailureCount && $kaptchaLi.is(".hidden")) {
 						$kaptchaLi.removeClass("hidden");
 					}
+					return;
+				}
+				if(targetUri) {
+					location.href = targetUri;
 					return;
 				}
 				var auth = data.entity;

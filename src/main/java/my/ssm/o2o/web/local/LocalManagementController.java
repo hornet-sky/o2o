@@ -76,7 +76,7 @@ public class LocalManagementController {
             return new OperationResult<LocalAuth, LocalOperStateEnum>(LocalOperStateEnum.LEGAL_PASSWORD);
         }
         try {
-            LocalAuth localAuth = localService.login(account, password);
+            LocalAuth localAuth = localService.login(account, password); //login方法内部进行了用户状态的校验
             session.setAttribute("localAuth", localAuth);
             session.setAttribute("user", localAuth.getUserInfo());
             return new OperationResult<LocalAuth, LocalOperStateEnum>(LocalOperStateEnum.OPERATION_SUCCESS, localAuth);

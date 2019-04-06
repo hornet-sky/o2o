@@ -62,6 +62,11 @@
             <mvc:mapping path="/shopadmin/addormodifyproduct"/>
             <mvc:mapping path="/shopadmin/getproductlist"/>
             <mvc:mapping path="/shopadmin/getproductcategorylist"/>
+            <mvc:mapping path="/shopadmin/awardmanagement"/>
+            <mvc:mapping path="/shopadmin/awardoperation"/>
+            <mvc:mapping path="/shopadmin/getawardoperationinitdata"/>
+            <mvc:mapping path="/shopadmin/addormodifyaward"/>
+            
             <bean class="my.ssm.o2o.web.interceptor.ShopPermissionInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

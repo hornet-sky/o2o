@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>商品管理</title>
+<title>奖品详情</title>
 <meta name="description"
 	content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
 <meta name="author" content="Wang">
@@ -20,35 +20,39 @@
 <link rel="apple-touch-icon-precomposed" 
     href="/assets/img/apple-touch-icon-114x114.png">
 <link rel="stylesheet"
-    href="../resources/css/common/common.css">
-<link rel="stylesheet"
-    href="../resources/css/shop/productmanagement.css">
+    href="../resources/css/shop/awarddetail.css">
 </head>
 <body>
-	<header class="bar bar-nav">
-        <h1 class="title">商品管理</h1>
-    </header>
-    <div class="content">
-        <div class="content-block">
-            <div class="row row-title">
-                <div class="col-33">商品名称</div>
-                <div class="col-20">积分</div>
-                <div class="col-46 text-center">操作</div>
-            </div>
-            <div class="content-wrap"></div>
-            <div class="row row-paging"></div>
-        </div>
-        <div class="content-block">
-            <div class="row">
-                <div class="col-50">
-                    <a id="return-btn" href="javascript:void(0);" class="button button-big button-fill button-danger">返回</a>
-                </div>
-                <div class="col-50">
-                    <a id="add-btn" href="javascript:void(0);" class="button button-big button-fill button-success">新增</a>
-                </div>
+    <div class="page-group">
+        <div class="page">
+            <!-- 标题栏 -->
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left" href="javascript:history.go(-1);" external>
+				    <span class="icon icon-left"></span> 返回
+				</a>
+                <h1 class="title"></h1>
+            </header>
+
+            <!-- 这里是页面内容区 -->
+            <div class="content">
+			  <div class="card demo-card-header-pic">
+			    <div valign="bottom" class="card-header color-white no-border no-padding">
+			      <img class="card-img" src="" alt="">
+			    </div>
+			    <div class="card-content">
+			      <div class="card-content-inner">
+			        <p class="color-gray">
+			          <span id="operation-date"></span>
+			          <span id="spend-points" class="pull-right"></span>
+			        </p>
+			        <p id="award-desc"></p>
+			      </div>
+			    </div>
+			  </div>
             </div>
         </div>
     </div>
+
 	<script type='text/javascript'
 		src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 	<script type='text/javascript'
@@ -56,10 +60,8 @@
 	<script type='text/javascript'
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/shop/productmanagement.js' charset='utf-8'></script>
-    <script type='text/javascript'
         src='../resources/js/common/common.js' charset='utf-8'></script>
     <script type='text/javascript'
-        src='../resources/js/common/paging.js' charset='utf-8'></script>
+        src='../resources/js/shop/awarddetail.js' charset='utf-8'></script>
 </body>
 </html>

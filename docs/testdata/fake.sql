@@ -1,12 +1,13 @@
 #测试数据
 #用户
-INSERT INTO `o2o`.`tb_user_info` 
+INSERT INTO `tb_user_info` 
   (`user_id`, `name`, `profile_img`, `email`, `gender`, `enable_status`, `user_type`, `create_time`)
 VALUES
-  (1, 'Jack', NULL, 'jack@test.com', 1, 1, 2, NOW()) ;
+  (1,'Jack',NULL,'jack@test.com','1','1','3','2019-02-18 11:24:49',NULL),
+  (2,'Tom','https://ws1.sinaimg.cn/large/a15b4afegy1fhsfdznep4j2020020web2.jpg',NULL,'2','1','3','2019-02-24 22:02:57','2019-02-24 22:13:48');
 
 #店铺所属区域
-INSERT INTO `o2o`.`tb_area` 
+INSERT INTO `tb_area` 
   (`area_id`, `area_name`, `priority`, `create_time`) 
 VALUES
   (1, '东苑', 1, NOW()), (2, '西苑', 2, NOW()), (3, '北苑', 3, NOW()), (4, '南苑', 4, NOW()),(5, '暂不填写', 0, NOW()) ;
@@ -104,3 +105,44 @@ VALUES
   (3, '头条3', '', 'o2o_webapp/upload/images/headLine/2017061320393452772.jpg', '1', '2', NOW(), NULL),
   (4, '头条4', '', 'o2o_webapp/upload/images/headLine/2017061320400198256.jpg', '1', '1', NOW(), NULL);
 
+#本地权限
+INSERT INTO `tb_local_auth` (`local_auth_id`, `account`, `password`, `user_id`, `create_time`, `last_edit_time`, `last_login_time`) VALUES('4','tone','rg5hwrr7lo5iigoigri7gr5ho559h65o','1','2019-03-03 22:52:52','2019-03-05 00:07:24',NULL);
+INSERT INTO `tb_local_auth` (`local_auth_id`, `account`, `password`, `user_id`, `create_time`, `last_edit_time`, `last_login_time`) VALUES('5','sky','rg5hwrr7lo5iigoigri7gr5ho559h65o','2','2019-05-01 13:56:58',NULL,NULL);
+ 
+#微信权限
+INSERT INTO `tb_wechat_auth` (`wechat_auth_id`, `open_id`, `user_id`, `create_time`) VALUES('1','1001','2','2019-02-24 22:03:57');
+
+#奖品
+INSERT INTO `tb_award` (`award_id`, `award_name`, `award_desc`, `award_img`, `points`, `priority`, `create_time`, `last_edit_time`, `enable_status`, `shop_id`) VALUES('1','豆沙包','美味可口的豆沙包，是你的早餐首选。','o2o_webapp/upload/images/shop/7/201904061007564171172.jpg','16','9','2019-04-06 10:07:57','2019-04-06 11:30:27','1','7');
+INSERT INTO `tb_award` (`award_id`, `award_name`, `award_desc`, `award_img`, `points`, `priority`, `create_time`, `last_edit_time`, `enable_status`, `shop_id`) VALUES('2','南瓜饼','很好吃','o2o_webapp/upload/images/shop/7/201904061026275532323.jpg','15','2','2019-04-06 10:26:28',NULL,'1','7');
+INSERT INTO `tb_award` (`award_id`, `award_name`, `award_desc`, `award_img`, `points`, `priority`, `create_time`, `last_edit_time`, `enable_status`, `shop_id`) VALUES('3','豆沙包2','美味可口','o2o_webapp/upload/images/shop/7/201904061131235152021.jpg','10','8','2019-04-06 11:31:24','2019-04-06 11:31:31','0','7');
+
+#积分记录
+INSERT INTO `tb_points_record` (
+  `record_id`, `consumer_id`, `consumer_name`, `shop_id`, `shop_name`, `product_id`, `product_name`, `points`, `oper_type`, `create_time`, `consumer_visible`, `shopkeeper_visible`, `valid`
+) 
+VALUES
+  (1, 2, 'Tom', 7, '校友早餐', 1, '白菜包子', 2, 1, '2019-03-11 11:20:12', b'1', b'1', b'1'), 
+  (2, 2, 'Tom', 7, '校友早餐', 2, '牛肉包子', 3, 1, '2019-03-12 10:10:22', b'1', b'1', b'1'), 
+  (3, 2, 'Tom', 7, '校友早餐', 3, '羊肉包子', 3, 1, '2019-04-06 15:21:23', b'1', b'1', b'1'), 
+  (4, 1, 'Jack', 7, '校友早餐', 4, '芹菜包子', 2, 1, '2019-02-10 13:20:14', b'1', b'1', b'1'), 
+  (5, 2, 'Tom', 7, '校友早餐', 5, '油条包子', 2, 1, '2019-04-05 7:13:27', b'1', b'1', b'1'), 
+  (6, 2, 'Tom', 10, '小张二手书', 13, '加薪秘籍', 50, 1, '2019-04-05 12:25:29', b'1', b'1', b'1'), 
+  (7, 2, 'Tom', 7, '校友早餐', 1, '豆沙包', 16, -1, '2019-03-15 15:22:27', b'1', b'1', b'1'),
+  (8, 2, 'Tom', 7, '校友早餐', 2, '南瓜饼', 10, -1, '2019-04-03 17:55:12', b'1', b'1', b'1');
+
+#消费记录
+INSERT INTO `tb_consumption_record` (
+  `record_id`, `consumer_id`, `consumer_name`, `shop_id`, `shop_name`, `product_id`, `product_name`, `expenditure`, `create_time`, `consumer_visible`, `shopkeeper_visible`, `valid`
+) 
+VALUES
+  (1, 2, 'Tom', 7, '校友早餐', 1, '白菜包子', 2.5, '2019-03-11 11:20:12', b'1', b'1', b'1'), 
+  (2, 2, 'Tom', 7, '校友早餐', 2, '牛肉包子', 3, '2019-03-12 10:10:22', b'1', b'1', b'1'), 
+  (3, 2, 'Tom', 7, '校友早餐', 3, '羊肉包子', 3, '2019-04-06 15:21:23', b'1', b'1', b'1'), 
+  (4, 1, 'Jack', 7, '校友早餐', 4, '芹菜包子', 2, '2019-02-10 13:20:14', b'1', b'1', b'1'), 
+  (5, 2, 'Tom', 7, '校友早餐', 5, '油条', 2.5, '2019-04-05 7:13:27', b'1', b'1', b'1'), 
+  (6, 2, 'Tom', 10, '小张二手书', 13, '加薪秘籍', 50, '2019-04-05 12:25:29', b'1', b'1', b'1'),
+  (7, 2, 'Tom', 7, '校友早餐', 5, '油条', 2.5, '2019-04-06 12:35:43', b'1', b'1', b'1'),
+  (8, 2, 'Tom', 7, '校友早餐', 2, '牛肉包子', 3, '2019-03-11 11:12:3', b'1', b'1', b'1');
+  
+  

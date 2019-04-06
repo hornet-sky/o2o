@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.ssm.o2o.dao.ConsumptionRecordDao">
+  <select id="list" resultType="consumptionRecord">
+    SELECT 
+	  `record_id`,
+	  `consumer_id`,
+	  `consumer_name`,
+	  `shop_id`,
+	  `shop_name`,
+	  `product_id`,
+	  `product_name`,
+	  `expenditure`,
+	  `create_time`,
+	  `consumer_visible`,
+	  `shopkeeper_visible`,
+	  `valid` 
+	FROM
+	  `tb_consumption_record`
+	<where>
+	   <if test="condition != null and condition.consumerId != null">
+           `consumer_id` = #{condition.consumerId}
+       </if>
+       <if test="condition != null and condition.shopId != null">
+           AND `shop_id` = #{condition.shopId}
+       </if>
+	   <if test="condition != null and condition.productId != null">
+	       AND `product_id` = #{condition.productId}
+	   </if>
+       <if test="condition != null and condition.consumerVisible != null">
+           AND `consumer_visible` = #{condition.consumerVisible}
+       </if>
+       <if test="condition != null and condition.shopkeeperVisible != null">
+           AND `shopkeeper_visible` = #{condition.shopkeeperVisible}
+       </if>
+       <if test="condition != null and condition.valid != null">
+           AND `valid` = #{condition.valid}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`consumer_name` LIKE CONCAT('%', #{searchKey}, '%') OR `shop_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_name` LIKE CONCAT('%', #{searchKey}, '%'))
+       </if>
+	</where>
+	<if test="pagingParams != null and pagingParams.orderRules != null">
+        ORDER BY ${pagingParams.orderRules}
+    </if>
+    <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+        LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+    </if>
+  </select>
+  <select id="count" resultType="long">
+    SELECT 
+      COUNT(1)
+    FROM
+      `tb_consumption_record`
+    <where>
+       <if test="condition != null and condition.consumerId != null">
+           `consumer_id` = #{condition.consumerId}
+       </if>
+       <if test="condition != null and condition.shopId != null">
+           AND `shop_id` = #{condition.shopId}
+       </if>
+       <if test="condition != null and condition.productId != null">
+           AND `product_id` = #{condition.productId}
+       </if>
+       <if test="condition != null and condition.consumerVisible != null">
+           AND `consumer_visible` = #{condition.consumerVisible}
+       </if>
+       <if test="condition != null and condition.shopkeeperVisible != null">
+           AND `shopkeeper_visible` = #{condition.shopkeeperVisible}
+       </if>
+       <if test="condition != null and condition.valid != null">
+           AND `valid` = #{condition.valid}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`consumer_name` LIKE CONCAT('%', #{searchKey}, '%') OR `shop_name` LIKE CONCAT('%', #{searchKey}, '%') OR `product_name` LIKE CONCAT('%', #{searchKey}, '%'))
+       </if>
+    </where>
+  </select>
+  <insert id="save" useGeneratedKeys="true" keyColumn="record_id" keyProperty="recordId" parameterType="consumptionRecord">
+    INSERT INTO `tb_consumption_record` (
+	  `consumer_id`,
+	  `consumer_name`,
+	  `shop_id`,
+	  `shop_name`,
+	  `product_id`,
+	  `product_name`,
+	  `expenditure`,
+	  `create_time`,
+	  `consumer_visible`,
+	  `shopkeeper_visible`,
+	  `valid`
+	) 
+	VALUES
+	  (
+	    #{consumerId},
+	    #{consumerName},
+	    #{shopId},
+	    #{shopName},
+	    #{productId},
+	    #{productName},
+	    #{expenditure},
+	    #{createTime},
+	    #{consumerVisible},
+	    #{shopkeeperVisible},
+	    #{valid}
+	  )
+  </insert>
+</mapper>

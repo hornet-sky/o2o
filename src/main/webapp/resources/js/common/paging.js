@@ -35,6 +35,9 @@ function initPaging(pagingComponentSelector, loadDataListFun) {
 			$pagingComponent.removeClass("hidden");
 		}
 	};
-	
+	paging.reset = function() {
+		$pagingComponent.addClass("hidden");
+		paging = {pageNo: 1, pageSize: 6, totalRows: 0, totalPages: 0};
+	};
 	return paging;
 }

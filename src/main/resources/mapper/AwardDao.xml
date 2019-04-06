@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="my.ssm.o2o.dao.AwardDao">
+  <select id="findById" resultType="award">
+    SELECT 
+	  `award_id`,
+	  `award_name`,
+	  `award_desc`,
+	  `award_img`,
+	  `points`,
+	  `priority`,
+	  `create_time`,
+	  `last_edit_time`,
+	  `enable_status`,
+	  `shop_id` 
+	FROM
+	  `tb_award` 
+	WHERE `award_id` = #{awardId}
+  </select>
+  <select id="list" resultType="award">
+    SELECT 
+      `award_id`,
+      `award_name`,
+      `award_desc`,
+      `award_img`,
+      `points`,
+      `priority`,
+      `create_time`,
+      `last_edit_time`,
+      `enable_status`,
+      `shop_id` 
+    FROM
+      `tb_award` 
+	<where>
+	   <if test="condition != null and condition.shopId != null">
+	       `shop_id` = #{condition.shopId}
+	   </if>
+       <if test="condition != null and condition.enableStatus != null">
+           AND `enable_status` = #{condition.enableStatus}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`award_name` LIKE CONCAT('%', #{searchKey}, '%') OR `award_desc` LIKE CONCAT('%', #{searchKey}, '%'))
+       </if>
+	</where>
+	<if test="pagingParams != null and pagingParams.orderRules != null">
+        ORDER BY ${pagingParams.orderRules}
+    </if>
+    <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+        LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+    </if>
+  </select>
+  <select id="count" resultType="long">
+    SELECT 
+      COUNT(1)
+    FROM
+      `tb_award` 
+    <where>
+       <if test="condition != null and condition.shopId != null">
+           `shop_id` = #{condition.shopId}
+       </if>
+       <if test="condition != null and condition.enableStatus != null">
+           AND `enable_status` = #{condition.enableStatus}
+       </if>
+       <if test="searchKey != null and searchKey != ''">
+           AND (`award_name` LIKE CONCAT('%', #{searchKey}, '%') OR `award_desc` LIKE CONCAT('%', #{searchKey}, '%'))
+       </if>
+    </where>
+  </select>
+  <insert id="save" useGeneratedKeys="true" keyColumn="award_id" keyProperty="awardId" parameterType="award">
+    INSERT INTO `tb_award` (
+	  `award_name`,
+	  `award_desc`,
+	  `award_img`,
+	  `points`,
+	  `priority`,
+	  `create_time`,
+	  `last_edit_time`,
+	  `enable_status`,
+	  `shop_id`
+	) 
+	VALUES
+	  (
+	    #{awardName},
+	    #{awardDesc},
+	    #{awardImg},
+	    #{points},
+	    #{priority},
+	    #{createTime},
+	    #{lastEditTime},
+	    #{enableStatus},
+	    #{shopId}
+	  )
+  </insert>
+  <update id="update" parameterType="award">
+    UPDATE 
+      `tb_award` 
+    <set>
+      <if test="awardName != null">`award_name` = #{awardName},</if>
+      <if test="awardDesc != null">`award_desc` = #{awardDesc},</if>
+      <if test="awardImg != null">`award_img` = #{awardImg},</if>
+      <if test="points != null">`points` = #{points},</if>
+      <if test="priority != null">`priority` = #{priority},</if>
+      <if test="createTime != null">`create_time` = #{createTime},</if>
+      <if test="lastEditTime != null">`last_edit_time` = #{lastEditTime},</if>
+      <if test="enableStatus != null">`enable_status` = #{enableStatus}</if>
+    </set> 
+    WHERE `award_id` = #{awardId}
+  </update>
+</mapper>

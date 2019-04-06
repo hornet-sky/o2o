@@ -65,4 +65,34 @@ public class ShopAdminRoutingController {
     public String productOperation() {
         return "shop/productoperation";
     }
+    
+    @GetMapping("/awardmanagement")
+    public String awardManagement() {
+        return "shop/awardmanagement";
+    }
+    
+    @GetMapping("/awardoperation")
+    public String awardOperation() {
+        return "shop/awardoperation";
+    }
+    
+    @GetMapping({"/awarddetail"})
+    public String awardDetail() {
+        return "shop/awarddetail";
+    }
+    
+    @GetMapping({"/pointsexpenditurerecordlist"})
+    public String pointsExpenditureRecordList() {
+        return "shop/pointsexpenditurerecordlist";
+    }
+    
+    @GetMapping({"/consumerpointslist"})
+    public String consumerPointsList() {
+        return "shop/consumerpointslist";
+    }
+    
+    @GetMapping({"/consumptionrecordlist"})
+    public String consumptionRecordList() {
+        return "shop/consumptionrecordlist";
+    }
 }

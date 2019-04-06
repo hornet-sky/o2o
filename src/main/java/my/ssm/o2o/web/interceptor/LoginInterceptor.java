@@ -27,7 +27,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     .append(URLEncoderUtil.encode("请先登录"))
                     .append("&targetUri=");
             String targetUri = request.getRequestURI() + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
-            redirectUri.append(URLEncoderUtil.encode(targetUri));
+            if(targetUri.indexOf("/shopadmin/") != -1) {
+                redirectUri.append(targetUri.substring(0, targetUri.indexOf("/shopadmin/")) + "/shopadmin/shoplist");
+            } else {
+                redirectUri.append(URLEncoderUtil.encode(targetUri));
+            }
             response.sendRedirect(redirectUri.toString());
             return false;
         }

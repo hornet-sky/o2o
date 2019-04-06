@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `tb_shop_category` (
 
 #创建店铺表
 CREATE TABLE IF NOT EXISTS `tb_shop` (
-  `shop_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '店铺类别ID（主键）',
+  `shop_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '店铺ID（主键）',
   `owner_id` INT NOT NULL COMMENT '店铺创建人ID',
   `area_id` INT COMMENT '店铺所在区域ID',
   `shop_category_id` INT NOT NULL COMMENT '店铺类别ID',
@@ -133,4 +133,67 @@ CREATE TABLE IF NOT EXISTS `tb_product_img` (
   CONSTRAINT fk_prodimg_product FOREIGN KEY(`product_id`) REFERENCES `tb_product`(`product_id`)
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品详情图片';
 
+#创建商品详情图片
+CREATE TABLE IF NOT EXISTS `tb_product_img` (
+  `product_img_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '图片ID（主键）',
+  `img_addr` VARCHAR(2000) NOT NULL COMMENT '图片地址',
+  `img_desc` VARCHAR(2000) COMMENT '图片说明',
+  `priority` INT NOT NULL COMMENT '权重（影响展示顺序）',
+  `create_time` DATETIME NOT NULL COMMENT '创建时间',
+  `product_id` INT COMMENT '商品ID',
+  CONSTRAINT fk_prodimg_product FOREIGN KEY(`product_id`) REFERENCES `tb_product`(`product_id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品详情图片';
 
+#创建奖品
+CREATE TABLE IF NOT EXISTS `tb_award` (
+  `award_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '奖品ID（主键）',
+  `award_name` VARCHAR(100) NOT NULL COMMENT '奖品名称',
+  `award_desc` VARCHAR(2000) COMMENT '奖品说明',
+  `award_img` VARCHAR(2000) COMMENT '奖品图片地址',
+  `points` INT COMMENT '兑换需要消耗的积分',
+  `priority` INT NOT NULL COMMENT '权重（影响展示顺序）',
+  `create_time` DATETIME NOT NULL COMMENT '创建时间',
+  `last_edit_time` DATETIME COMMENT '修改时间',
+  `enable_status` TINYINT(2) NOT NULL COMMENT '奖品状态：0 下架，1 在前端展示',
+  `shop_id` INT NOT NULL COMMENT '所属店铺ID',
+  CONSTRAINT fk_award_shop FOREIGN KEY(`shop_id`) REFERENCES `tb_shop`(`shop_id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='奖品';
+
+#消费记录
+CREATE TABLE IF NOT EXISTS `tb_consumption_record` (
+  `record_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '消费记录ID（主键）',
+  `consumer_id` INT NOT NULL COMMENT '顾客ID',
+  `consumer_name` VARCHAR(200) NOT NULL COMMENT '顾客名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `shop_id` INT NOT NULL COMMENT '店铺ID',
+  `shop_name` VARCHAR(256) NOT NULL COMMENT '店铺名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `product_id` INT NOT NULL COMMENT '商品ID',
+  `product_name` VARCHAR(100) NOT NULL COMMENT '商品名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `expenditure` INT COMMENT '花费',
+  `create_time` DATETIME NOT NULL COMMENT '创建时间（消费时间）',
+  `consumer_visible` BIT(1) NOT NULL COMMENT '顾客是否可见：0 不可见，1 可见',
+  `shopkeeper_visible` BIT(1) NOT NULL COMMENT '商家是否可见：0 不可见，1 可见',
+  `valid` BIT(1) NOT NULL COMMENT '是否有效（退款或违规操作会导致消费记录无效）',
+  CONSTRAINT fk_consumption_record_user FOREIGN KEY(`consumer_id`) REFERENCES `tb_user_info`(`user_id`),
+  CONSTRAINT fk_consumption_record_shop FOREIGN KEY(`shop_id`) REFERENCES `tb_shop`(`shop_id`),
+  CONSTRAINT fk_consumption_record_product FOREIGN KEY(`product_id`) REFERENCES `tb_product`(`product_id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消费记录';
+
+#积分记录
+CREATE TABLE IF NOT EXISTS `tb_points_record` (
+  `record_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '积分记录ID（主键）',
+  `consumer_id` INT NOT NULL COMMENT '顾客ID',
+  `consumer_name` VARCHAR(200) NOT NULL COMMENT '顾客名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `shop_id` INT NOT NULL COMMENT '店铺ID',
+  `shop_name` VARCHAR(256) NOT NULL COMMENT '店铺名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `product_id` INT NOT NULL COMMENT '商品ID/奖品ID',
+  `product_name` VARCHAR(100) NOT NULL COMMENT '商品名称/奖品名称', #适当的增加一些冗余数据可以防止表与表过度关联，从而提高查询效率
+  `points` INT COMMENT '积分值',
+  `oper_type` TINYINT(1) COMMENT '积分操作类型：-1 消费积分，1 获取积分',
+  `create_time` DATETIME NOT NULL COMMENT '创建时间（获得/消耗积分时间）',
+  `consumer_visible` BIT(1) NOT NULL COMMENT '顾客是否可见：0 不可见，1 可见',
+  `shopkeeper_visible` BIT(1) NOT NULL COMMENT '商家是否可见：0 不可见，1 可见',
+  `valid` BIT(1) NOT NULL COMMENT '是否有效（积分过期或违规操作会导致积分无效）',
+  CONSTRAINT fk_points_record_user FOREIGN KEY(`consumer_id`) REFERENCES `tb_user_info`(`user_id`),
+  CONSTRAINT fk_points_record_shop FOREIGN KEY(`shop_id`) REFERENCES `tb_shop`(`shop_id`),
+  CONSTRAINT fk_points_record_product FOREIGN KEY(`product_id`) REFERENCES `tb_product`(`product_id`)
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='积分记录';

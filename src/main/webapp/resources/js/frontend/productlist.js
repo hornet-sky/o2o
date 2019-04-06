@@ -72,19 +72,19 @@ $(function() {
 					appendProductItemsFirstPage();
 				}, 2000);
 			});
-			//4、搜索栏 - 点击右侧的“取消”按钮
+			//3、搜索栏 - 点击右侧的“取消”按钮
 			$contentPadded.find(".searchbar > a.searchbar-cancel").on("click", function() {
 				$searchIpt.val("");
 				appendProductItemsFirstPage();
 			});
-			//5、店铺卡片点击事件
+			//4、店铺卡片点击事件
 			$cardsContainer.on("click", "li.card", function() {
 				var currProductId = $(this).data("productId");
 				if(currProductId) {
 					location.href="productdetail?productId=" + currProductId;
 				}
 			});
-			//6、注册'infinite'事件处理函数
+			//5、注册'infinite'事件处理函数
 			$infiniteScroll.on('infinite', function() {
 				console.log("滚动触发请求数据...");
 				if(infiniteScrollEnabled) {

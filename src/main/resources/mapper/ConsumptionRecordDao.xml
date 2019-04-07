@@ -78,6 +78,26 @@
        </if>
     </where>
   </select>
+  <select id="countByShopIdAndDateRangeInEachGroup" resultType="java.util.Map">
+    SELECT 
+	  `product_id`,
+	  `product_name`,
+	  COUNT(1) `count`
+	FROM
+	  `tb_consumption_record` 
+	WHERE
+	  `shop_id` = #{shopId}
+	  AND `valid` = 1
+	  <if test="beginDate != null">
+	    AND `create_time` &gt;= #{beginDate}
+	  </if>
+	  <if test="endDate != null">
+        AND `create_time` &lt; #{endDate}
+      </if>
+	GROUP BY `product_id`, `product_name`
+	ORDER BY `count` DESC
+	LIMIT 0, #{topN}
+  </select>
   <insert id="save" useGeneratedKeys="true" keyColumn="record_id" keyProperty="recordId" parameterType="consumptionRecord">
     INSERT INTO `tb_consumption_record` (
 	  `consumer_id`,

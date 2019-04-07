@@ -1,6 +1,8 @@
 package my.ssm.o2o.dao;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +36,14 @@ public interface ConsumptionRecordDao {
      * @return  影响的行数
      */  
     int save(ConsumptionRecord consumptionRecord);
+    /**  
+     * <p>统计指定店铺、指定时间段的商品销量</p>  
+     * @param shopId 店铺ID
+     * @param beginDate 起始日期
+     * @param endDate 终止日期
+     * @param topN 按销量降序排列后的前N个商品销量
+     * @return  前N个商品销量
+     */  
+    List<Map<String, Object>> countByShopIdAndDateRangeInEachGroup(@Param("shopId") Long shopId, 
+            @Param("beginDate") Date beginDate, @Param("endDate") Date endDate, @Param("topN") Integer topN);
 }

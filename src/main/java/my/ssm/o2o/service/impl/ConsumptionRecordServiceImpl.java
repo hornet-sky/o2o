@@ -1,6 +1,10 @@
 package my.ssm.o2o.service.impl;
 
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +37,25 @@ public class ConsumptionRecordServiceImpl implements ConsumptionRecordService {
         List<ConsumptionRecord> list = consumptionRecordDao.list(condition, searchKey, pagingParams);
         long count = consumptionRecordDao.count(condition, searchKey);
         return new PagingResult<ConsumptionRecord>(list, count);
+    }
+
+    @Override
+    public List<List<Map<String, Object>>> listSalesVolumeForThreeDays(Long shopId) {
+        List<List<Map<String, Object>>> salesVolumeForThreeDays = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date today = calendar.getTime(); //今天
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        Date yesterday = calendar.getTime(); //昨天
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        Date theDayBeforeYesterday = calendar.getTime(); //前天
+        Integer topN = 10;
+        salesVolumeForThreeDays.add(consumptionRecordDao.countByShopIdAndDateRangeInEachGroup(shopId, theDayBeforeYesterday, yesterday, topN));
+        salesVolumeForThreeDays.add(consumptionRecordDao.countByShopIdAndDateRangeInEachGroup(shopId, yesterday, today, topN));
+        salesVolumeForThreeDays.add(consumptionRecordDao.countByShopIdAndDateRangeInEachGroup(shopId, today, null, topN));
+        return salesVolumeForThreeDays;
     }
 }

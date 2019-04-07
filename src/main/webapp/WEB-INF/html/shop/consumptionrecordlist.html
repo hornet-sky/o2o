@@ -40,6 +40,22 @@
     </div>
     <!-- 列表 -->
     <div class="content">
+    	<div class="buttons-tab">
+		    <a href="#tab1" class="tab-link button">前天</a>
+		    <a href="#tab2" class="tab-link button">昨天</a>
+		    <a href="#tab3" class="tab-link active button">今天</a>
+		</div>
+		<div class="tabs">
+	        <div id="tab1" class="tab">
+	            <div id='canvasDiv1'></div>
+	        </div>
+	        <div id="tab2" class="tab">
+	            <div id='canvasDiv2'></div>
+	        </div>
+	        <div id="tab3" class="tab active">
+	            <div id='canvasDiv3'></div>
+	        </div>
+	    </div>
         <div class="content-block">
             <div class="row row-title">
                 <div class="col-33">商品名称</div>
@@ -63,6 +79,8 @@
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 	<script type='text/javascript'
 		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+	<script type='text/javascript'
+		src='../resources/js/common/ichart.1.2.1.min.js' charset='utf-8'></script>	
     <script type='text/javascript'
         src='../resources/js/shop/consumptionrecordlist.js' charset='utf-8'></script>
     <script type='text/javascript'

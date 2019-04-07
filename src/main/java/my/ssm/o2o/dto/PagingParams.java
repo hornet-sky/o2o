@@ -1,6 +1,6 @@
 package my.ssm.o2o.dto;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,7 +24,7 @@ public class PagingParams {
     private Integer pageSize = 10;
     private Integer rowIndex;
     private Integer rowSize;
-    private Map<String, Direction> orderRuleMap = new HashMap<>();
+    private Map<String, Direction> orderRuleMap = new LinkedHashMap<>();
     public PagingParams(Integer pageNo, Integer pageSize) {
         this.pageNo = pageNo;
         this.pageSize = pageSize;

@@ -51,6 +51,9 @@
             <mvc:mapping path="/local/auth"/>
             <mvc:mapping path="/local/createandbindauth"/>
             <mvc:mapping path="/local/changepassword"/>
+            <mvc:mapping path="/frontend/loadconsumptionrecordlist"/>
+            <mvc:mapping path="/frontend/loadpointsrecordlist"/>
+            <mvc:mapping path="/frontend/loadpointsexpenditurerecordlist"/>
             <mvc:mapping path="/shopadmin/**"/>
             <bean class="my.ssm.o2o.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>

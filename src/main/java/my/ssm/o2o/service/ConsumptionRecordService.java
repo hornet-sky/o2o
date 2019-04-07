@@ -27,4 +27,13 @@ public interface ConsumptionRecordService {
      * @return  最近三天的商品销量
      */  
     List<List<Map<String, Object>>> listSalesVolumeForThreeDays(Long shopId);
+    /**  
+     * <p>查找指定条件及分页参数的消费记录</p>  
+     * @param consumerId 所属顾客ID
+     * @param searchKey 查询关键字
+     * @param pageNo 页码，从1开始
+     * @param pageSize 每页大小
+     * @return  带分页特性的消费记录集合
+     */  
+    PagingResult<ConsumptionRecord> listConsumptionRecordOnConsumerSide(Long consumerId, String searchKey, Integer pageNo, Integer pageSize);
 }

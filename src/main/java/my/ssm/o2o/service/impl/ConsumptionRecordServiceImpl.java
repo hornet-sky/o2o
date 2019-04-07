@@ -58,4 +58,17 @@ public class ConsumptionRecordServiceImpl implements ConsumptionRecordService {
         salesVolumeForThreeDays.add(consumptionRecordDao.countByShopIdAndDateRangeInEachGroup(shopId, today, null, topN));
         return salesVolumeForThreeDays;
     }
+
+    @Override
+    public PagingResult<ConsumptionRecord> listConsumptionRecordOnConsumerSide(Long consumerId, String searchKey,
+            Integer pageNo, Integer pageSize) {
+        PagingParams pagingParams = new PagingParams(pageNo, pageSize, "create_time", Direction.DESC);
+        ConsumptionRecord condition = new ConsumptionRecord();
+        condition.setConsumerId(consumerId);
+        condition.setConsumerVisible(true);
+        condition.setValid(true);
+        List<ConsumptionRecord> list = consumptionRecordDao.list(condition, searchKey, pagingParams);
+        long count = consumptionRecordDao.count(condition, searchKey);
+        return new PagingResult<ConsumptionRecord>(list, count);
+    }
 }

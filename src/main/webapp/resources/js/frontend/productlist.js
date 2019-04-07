@@ -81,7 +81,7 @@ $(function() {
 			$cardsContainer.on("click", "li.card", function() {
 				var currProductId = $(this).data("productId");
 				if(currProductId) {
-					location.href="productdetail?productId=" + currProductId;
+					location.href = "productdetail?productId=" + currProductId;
 				}
 			});
 			//5、注册'infinite'事件处理函数
@@ -93,6 +93,10 @@ $(function() {
 			});
 			//初次查询商品列表并以卡片的形式在页面展示
 			appendProductItems();
+			//6、右上角“奖品兑换”按钮
+			$("header > a.pull-right").on("click", function() {
+				location.href = "awardlist?shopId=" + shopId;
+			});
 		});
 	}
 	

@@ -38,11 +38,20 @@ public class PointsRecordServiceImpl implements PointsRecordService {
     }
 
     @Override
-    public PagingResult<Map<String, Object>> listConsumerTotalPointsRecord(Long shopId, String searchKey,
+    public PagingResult<Map<String, Object>> listConsumerTotalPointsRecordOnShopkeeperSide(Long shopId, String searchKey,
             Integer pageNo, Integer pageSize) {
         PagingParams pagingParams = new PagingParams(pageNo, pageSize);
-        List<Map<String, Object>> list = pointsRecordDao.listConsumerTotalPointsRecord(shopId, searchKey, pagingParams);
-        long count = pointsRecordDao.countConsumerTotalPointsRecord(shopId, searchKey);
+        List<Map<String, Object>> list = pointsRecordDao.listConsumerTotalPointsRecordOnShopkeeperSide(shopId, searchKey, pagingParams);
+        long count = pointsRecordDao.countConsumerTotalPointsRecordOnShopkeeperSide(shopId, searchKey);
+        return new PagingResult<Map<String, Object>>(list, count);
+    }
+
+    @Override
+    public PagingResult<Map<String, Object>> listShopTotalPointsRecordOnConsumerSide(Long consumerId, String searchKey,
+            Integer pageNo, Integer pageSize) {
+        PagingParams pagingParams = new PagingParams(pageNo, pageSize);
+        List<Map<String, Object>> list = pointsRecordDao.listShopTotalPointsRecordOnConsumerSide(consumerId, searchKey, pagingParams);
+        long count = pointsRecordDao.countShopTotalPointsRecordOnConsumerSide(consumerId, searchKey);
         return new PagingResult<Map<String, Object>>(list, count);
     }
 }

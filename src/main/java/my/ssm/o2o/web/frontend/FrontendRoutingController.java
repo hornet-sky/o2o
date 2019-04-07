@@ -36,4 +36,24 @@ public class FrontendRoutingController {
     public String productDetail() {
         return "frontend/productdetail";
     }
+    
+    @GetMapping({"/awardlist"})
+    public String awardList() {
+        return "frontend/awardlist";
+    }
+    
+    @GetMapping({"/consumptionrecordlist"})
+    public String consumptionRecordList() {
+        return "frontend/consumptionrecordlist";
+    }
+    
+    @GetMapping({"/pointsrecordlist"})
+    public String pointsRecordList() {
+        return "frontend/pointsrecordlist";
+    }
+    
+    @GetMapping({"/pointsexpenditurerecordlist"})
+    public String pointsExpenditureRecordList() {
+        return "frontend/pointsexpenditurerecordlist";
+    }
 }

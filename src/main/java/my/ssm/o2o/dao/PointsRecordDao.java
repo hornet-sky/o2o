@@ -36,14 +36,29 @@ public interface PointsRecordDao {
      * @param pagingParams 分页参数
      * @return  用户总积分记录列表
      */  
-    List<Map<String, Object>> listConsumerTotalPointsRecord(@Param("shopId") Long shopId, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
+    List<Map<String, Object>> listConsumerTotalPointsRecordOnShopkeeperSide(@Param("shopId") Long shopId, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
     /**  
      * <p>统计指定条件的用户总积分记录数量</p>  
      * @param shopId 所属店铺ID
      * @param searchKey 查询关键字
      * @return  用户总积分记录数量
      */  
-    long countConsumerTotalPointsRecord(@Param("shopId") Long shopId, @Param("searchKey") String searchKey);
+    long countConsumerTotalPointsRecordOnShopkeeperSide(@Param("shopId") Long shopId, @Param("searchKey") String searchKey);
+    /**  
+     * <p>查找指定条件及分页参数的店铺总积分记录</p>  
+     * @param consumerId 所属顾客ID
+     * @param searchKey 查询关键字
+     * @param pagingParams 分页参数
+     * @return  店铺总积分记录列表
+     */  
+    List<Map<String, Object>> listShopTotalPointsRecordOnConsumerSide(@Param("consumerId") Long consumerId, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
+    /**  
+     * <p>统计指定条件的店铺总积分记录数量</p>  
+     * @param consumerId 所属顾客ID
+     * @param searchKey 查询关键字
+     * @return  店铺总积分记录数量
+     */  
+    long countShopTotalPointsRecordOnConsumerSide(@Param("consumerId") Long consumerId, @Param("searchKey") String searchKey);
     /**  
      * <p>保存积分记录</p>  
      * @param award 待保存的积分记录

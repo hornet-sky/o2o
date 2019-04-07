@@ -37,8 +37,9 @@ public class AwardServiceImpl implements AwardService {
     }
     @Override
     public PagingResult<Award> listAward(Award condition, String searchKey, PagingParams pagingParams) {
-        if(pagingParams.isOrderRuleMapEmpty()) { //默认按创建顺序降序排列
-            pagingParams.addOrderRule("award_id", Direction.DESC);
+        if(pagingParams.isOrderRuleMapEmpty()) { //默认按权重降序排列
+            pagingParams.addOrderRule("priority", Direction.DESC);
+            pagingParams.addOrderRule("create_time", Direction.DESC);
         }
         List<Award> list = awardDao.list(condition, searchKey, pagingParams);
         long count = awardDao.count(condition, searchKey);

@@ -17,11 +17,13 @@ import my.ssm.o2o.dto.PagingParams;
 import my.ssm.o2o.dto.PagingResult;
 import my.ssm.o2o.dto.Result;
 import my.ssm.o2o.entity.Area;
+import my.ssm.o2o.entity.Award;
 import my.ssm.o2o.entity.Shop;
 import my.ssm.o2o.entity.ShopCategory;
 import my.ssm.o2o.enums.CommonOperStateEnum;
 import my.ssm.o2o.enums.ShopOperStateEnum;
 import my.ssm.o2o.service.AreaService;
+import my.ssm.o2o.service.AwardService;
 import my.ssm.o2o.service.CommonService;
 import my.ssm.o2o.service.ShopCategoryService;
 import my.ssm.o2o.service.ShopService;
@@ -41,6 +43,8 @@ public class ShopListController {
     private ShopCategoryService shopCategoryService;
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private AwardService awardService;
     @Autowired
     private CommonService commonService;
     
@@ -99,5 +103,31 @@ public class ShopListController {
             logger.error("获取店铺列表失败", e);
             return new OperationResult<PagingResult<Shop>, ShopOperStateEnum>(ShopOperStateEnum.OPERATION_FAILURE.getState(), "获取店铺列表失败");
         }
+    }
+    
+    @GetMapping("/loadawardlist")
+    @ResponseBody
+    public Result loadAwardList(@RequestParam(name = "shopId", required = true) Long shopId,
+            @RequestParam(name = "searchKey", required = false) String searchKey,
+            @RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        Map<String, Object> result = new HashMap<>();
+        PagingParams pagingParams = new PagingParams(pageNo, pageSize);
+        Award condition = new Award();
+        condition.setShopId(shopId);
+        condition.setEnableStatus(1);
+        try {
+            result.put("pagingResult", awardService.listAward(condition, searchKey, pagingParams));
+        } catch (Exception e) {
+            logger.error("获取奖品列表失败", e);
+            new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.INITIALIZATION_FAILURE.getState(), "获取奖品列表失败");
+        }
+        try {
+            result.put("resourcesServerContextPath", commonService.getResourcesServerContextPath());
+        } catch (Exception e) {
+            logger.error("获取资源服务器上下文路径失败", e);
+            new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.INITIALIZATION_FAILURE.getState(), "获取资源服务器上下文路径失败");
+        }
+        return new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.OPERATION_SUCCESS, result);
     }
 }

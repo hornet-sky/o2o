@@ -48,7 +48,7 @@ public class PointsRecordManagementController {
             @RequestParam(name="pageNo", required = false, defaultValue = "1") Integer pageNo, 
             @RequestParam(name="pageSize", required = false, defaultValue = "10") Integer pageSize) {
         try {
-            return pointsRecordService.listConsumerTotalPointsRecord(shopId, searchKey, pageNo, pageSize);
+            return pointsRecordService.listConsumerTotalPointsRecordOnShopkeeperSide(shopId, searchKey, pageNo, pageSize);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new OperationResult<PointsRecord, PointsRecordOperStateEnum>(PointsRecordOperStateEnum.OPERATION_FAILURE, e);

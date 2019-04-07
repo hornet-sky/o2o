@@ -1,0 +1,12 @@
+.content {
+	margin-bottom: 5rem;
+}
+.price::before {
+    content: "￥";
+}
+.item-title {
+	font-size: 1rem;
+}
+.item-subtitle {
+	font-size: .7rem;
+}

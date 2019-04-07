@@ -59,7 +59,7 @@ function constructRightPanel(config) {
 			if(!account) { //已登录但没有本地账号
 				btnsHtml += '<p><a href="../local/auth" external>绑定本地账号</a></p>';
 			}
-			btnsHtml += '<p><a href="javascript:$.alert(\'消费记录功能正在建设中...\');" external>消费记录</a></p><p><a href="javascript:$.alert(\'我的积分功能正在建设中...\');" external>我的积分</a></p><p><a href="javascript:$.alert(\'兑换记录功能正在建设中...\');" external>兑换记录</a></p>';
+			btnsHtml += '<p><a href="consumptionrecordlist" external>消费记录</a></p><p><a href="pointsrecordlist" external>我的积分</a></p><p><a href="pointsexpenditurerecordlist" external>兑换记录</a></p>';
 			if(account) { //已登录并且绑定了本地账号
 				btnsHtml += '<p><a href="../local/changepassword?account=' + account + '" external>修改密码</a></p><p><a href="../local/logout" external>退出系统</a></p>';
 			}

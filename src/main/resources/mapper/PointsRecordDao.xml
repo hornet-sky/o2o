@@ -84,7 +84,7 @@
        </if>
     </where>
   </select>
-  <select id="listConsumerTotalPointsRecord" resultType="map">
+  <select id="listConsumerTotalPointsRecordOnShopkeeperSide" resultType="map">
     SELECT 
 	  pr.`consumer_id`, 
 	  u.`name` AS `consumer_name`,
@@ -105,7 +105,7 @@
         LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
     </if>
   </select>
-  <select id="countConsumerTotalPointsRecord" resultType="long">
+  <select id="countConsumerTotalPointsRecordOnShopkeeperSide" resultType="long">
     SELECT COUNT(1) 
 	FROM 
 	(
@@ -128,6 +128,53 @@
 	      `user_id` = r.`consumer_id` 
 	      AND `name` LIKE CONCAT('%', #{searchKey}, '%')
 	  )
+   </if>
+  </select>
+  <select id="listShopTotalPointsRecordOnConsumerSide" resultType="map">
+    SELECT 
+      pr.`shop_id`, 
+      s.`shop_name`,
+      MAX(pr.`create_time`) AS `last_update_time`,
+      SUM(pr.`oper_type` * pr.`points`) AS `total_points` 
+    FROM 
+      `tb_points_record` pr
+      JOIN `tb_shop` s
+      ON pr.`shop_id` = s.`shop_id`
+    WHERE 
+      pr.`valid` = 1
+      AND pr.`consumer_id` = #{consumerId}
+      <if test="searchKey != null and searchKey != ''">
+        AND s.`shop_name` LIKE CONCAT('%', #{searchKey}, '%')
+      </if>
+    GROUP BY pr.`shop_id`, s.`shop_name`
+    ORDER BY `total_points` DESC
+    <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+        LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+    </if>
+  </select>
+  <select id="countShopTotalPointsRecordOnConsumerSide" resultType="long">
+    SELECT COUNT(1) 
+    FROM 
+    (
+      SELECT `shop_id` 
+      FROM 
+        `tb_points_record`
+      WHERE 
+        `valid` = 1
+        AND `consumer_id` = #{consumerId}
+      GROUP BY `shop_id`
+    ) r
+   <if test="searchKey != null and searchKey != ''">
+     WHERE 
+      EXISTS 
+      (
+        SELECT 1 
+        FROM 
+          `tb_shop` 
+        WHERE 
+          `shop_id` = r.`shop_id` 
+          AND `shop_name` LIKE CONCAT('%', #{searchKey}, '%')
+      )
    </if>
   </select>
   <insert id="save" useGeneratedKeys="true" keyColumn="record_id" keyProperty="recordId" parameterType="pointsRecord">

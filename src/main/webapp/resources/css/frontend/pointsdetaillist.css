@@ -1,0 +1,19 @@
+.content {
+	margin-bottom: 2.5rem;
+}
+
+.color-in {
+	color: #ee9f28;
+}
+
+#beginDate, #endDate {
+	width: 100%;
+	border: 1px solid #666;
+	border-radius: .25rem;
+	line-height: 1.25rem;
+	padding: 0 .5rem;
+	text-align: center;
+	text-align: center;
+	font-size: .7rem;
+    font-family: inherit;
+}

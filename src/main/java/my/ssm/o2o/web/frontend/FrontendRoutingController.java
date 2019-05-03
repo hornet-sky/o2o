@@ -56,4 +56,9 @@ public class FrontendRoutingController {
     public String pointsExpenditureRecordList() {
         return "frontend/pointsexpenditurerecordlist";
     }
+    
+    @GetMapping({"/pointsdetaillist"})
+    public String pointsDetailList() {
+        return "frontend/pointsdetaillist";
+    }
 }

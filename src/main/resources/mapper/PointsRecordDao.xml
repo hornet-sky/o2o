@@ -208,4 +208,172 @@
 	    #{valid}
 	  )
   </insert>
+  <select id="listShopPointsRecordDetailOnConsumerSide" resultType="map">
+    SELECT 
+	  `record_id`,
+	  `product_id`,
+	  `product_name`,
+	  `img_addr`,
+	  `points`,
+	  `oper_type`,
+	  `create_time` 
+	FROM
+	  (SELECT 
+	    `points_in`.`record_id`,
+	    `points_in`.`product_id`,
+	    `points_in`.`points`,
+	    `points_in`.`oper_type`,
+	    `points_in`.`create_time`,
+	    `prod`.`product_name`,
+	    `prod`.`img_addr` 
+	  FROM
+	    (SELECT 
+	      `record_id`,
+	      `product_id`,
+	      `points`,
+	      `oper_type`,
+	      `create_time` 
+	    FROM
+	      `tb_points_record` 
+	    WHERE `consumer_id` = #{consumerId} 
+	      AND `shop_id` = #{shopId} 
+	      <if test="beginDate != null and beginDate != ''">
+	      AND `create_time` &gt;= STR_TO_DATE(#{beginDate}, '%Y-%m-%d') 
+	      </if>
+	      <if test="endDate != null and endDate != ''">
+	      AND `create_time` &lt; DATE_ADD(
+	        STR_TO_DATE(#{endDate}, '%Y-%m-%d'),
+	        INTERVAL 1 DAY
+	      ) 
+	      </if>
+	      AND true = #{isPointsInShow}
+	      AND `oper_type` = 1 
+	      AND `consumer_visible` = 1 
+	      AND `valid` = 1) AS `points_in` 
+	    LEFT JOIN `tb_product` AS `prod` 
+	      ON `points_in`.`product_id` = `prod`.`product_id`
+	  <where>
+	      <if test="searchKey != null and searchKey != ''">
+	      `prod`.`product_name` LIKE CONCAT('%', #{searchKey}, '%') 
+	      </if>
+	  </where> 
+	    UNION ALL
+	    SELECT 
+	      `points_out`.`record_id`,
+	      `points_out`.`product_id`,
+	      `points_out`.`points`,
+	      `points_out`.`oper_type`,
+	      `points_out`.`create_time`,
+	      `award`.`award_name` AS `product_name`,
+	      `award`.`award_img` AS `img_addr`
+	    FROM
+	      (SELECT 
+	        `record_id`,
+	        `product_id`,
+	        `points`,
+	        `oper_type`,
+	        `create_time` 
+	      FROM
+	        `tb_points_record` 
+	      WHERE `consumer_id` = #{consumerId} 
+	        AND `shop_id` = #{shopId} 
+	        <if test="beginDate != null and beginDate != ''">
+	        AND `create_time` &gt;= STR_TO_DATE(#{beginDate}, '%Y-%m-%d') 
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	        AND `create_time` &lt; DATE_ADD(
+	          STR_TO_DATE(#{endDate}, '%Y-%m-%d'),
+	          INTERVAL 1 DAY
+	        ) 
+	        </if>
+	        AND true = #{isPointsOutShow}
+	        AND `oper_type` = - 1 
+	        AND `consumer_visible` = 1 
+	        AND `valid` = 1) AS `points_out` 
+	      LEFT JOIN `tb_award` AS `award` 
+	        ON `points_out`.`product_id` = `award`.`award_id`
+	    <where>
+            <if test="searchKey != null and searchKey != ''"> 
+	        `award`.`award_name` LIKE CONCAT('%', #{searchKey}, '%')
+	        </if>
+	    </where>
+	    ) r 
+	  ORDER BY `create_time` DESC 
+	  <if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+        LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+      </if>
+  </select>
+  <select id="countShopPointsRecordDetailOnConsumerSide" resultType="long">
+    SELECT 
+      COUNT(1) 
+    FROM
+      (SELECT 
+        1
+      FROM
+        (SELECT 
+          `record_id`,
+          `product_id`,
+          `points`,
+          `oper_type`,
+          `create_time` 
+        FROM
+          `tb_points_record` 
+        WHERE `consumer_id` = #{consumerId} 
+          AND `shop_id` = #{shopId} 
+          <if test="beginDate != null and beginDate != ''">
+          AND `create_time` &gt;= STR_TO_DATE(#{beginDate}, '%Y-%m-%d') 
+          </if>
+          <if test="endDate != null and endDate != ''">
+          AND `create_time` &lt; DATE_ADD(
+            STR_TO_DATE(#{endDate}, '%Y-%m-%d'),
+            INTERVAL 1 DAY
+          ) 
+          </if>
+          AND true = #{isPointsInShow}
+          AND `oper_type` = 1 
+          AND `consumer_visible` = 1 
+          AND `valid` = 1) AS `points_in` 
+        LEFT JOIN `tb_product` AS `prod` 
+          ON `points_in`.`product_id` = `prod`.`product_id`
+      <where>
+          <if test="searchKey != null and searchKey != ''">
+          `prod`.`product_name` LIKE CONCAT('%', #{searchKey}, '%') 
+          </if>
+      </where> 
+        UNION ALL
+        SELECT 
+          1
+        FROM
+          (SELECT 
+            `record_id`,
+            `product_id`,
+            `points`,
+            `oper_type`,
+            `create_time` 
+          FROM
+            `tb_points_record` 
+          WHERE `consumer_id` = #{consumerId} 
+            AND `shop_id` = #{shopId} 
+            <if test="beginDate != null and beginDate != ''">
+            AND `create_time` &gt;= STR_TO_DATE(#{beginDate}, '%Y-%m-%d') 
+            </if>
+            <if test="endDate != null and endDate != ''">
+            AND `create_time` &lt; DATE_ADD(
+              STR_TO_DATE(#{endDate}, '%Y-%m-%d'),
+              INTERVAL 1 DAY
+            ) 
+            </if>
+            AND true = #{isPointsOutShow}
+            AND `oper_type` = - 1 
+            AND `consumer_visible` = 1 
+            AND `valid` = 1) AS `points_out` 
+          LEFT JOIN `tb_award` AS `award` 
+            ON `points_out`.`product_id` = `award`.`award_id`
+        <where>
+            <if test="searchKey != null and searchKey != ''"> 
+            `award`.`award_name` LIKE CONCAT('%', #{searchKey}, '%')
+            </if>
+        </where>
+        ) r 
+  </select>
 </mapper>

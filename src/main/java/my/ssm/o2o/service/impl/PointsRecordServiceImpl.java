@@ -61,9 +61,19 @@ public class PointsRecordServiceImpl implements PointsRecordService {
             Boolean isPointsInShow, Boolean isPointsOutShow, Integer pageNo, Integer pageSize) {
         PagingParams pagingParams = new PagingParams(pageNo, pageSize);
         List<Map<String, Object>> list = pointsRecordDao.listShopPointsRecordDetailOnConsumerSide(
-                consumerId, shopId, beginDate, endDate, searchKey,isPointsInShow, isPointsOutShow, pagingParams);
+                consumerId, shopId, beginDate, endDate, searchKey, isPointsInShow, isPointsOutShow, pagingParams);
         long count = pointsRecordDao.countShopPointsRecordDetailOnConsumerSide(
-                consumerId, shopId, beginDate, endDate, searchKey,isPointsInShow, isPointsOutShow);
+                consumerId, shopId, beginDate, endDate, searchKey, isPointsInShow, isPointsOutShow);
+        return new PagingResult<Map<String, Object>>(list, count);
+    }
+
+    @Override
+    public PagingResult<Map<String, Object>> listPointsExpenditureOnConsumerSide(Long consumerId,
+            String searchKey, Integer pageNo, Integer pageSize) {
+        PagingParams pagingParams = new PagingParams(pageNo, pageSize);
+        List<Map<String, Object>> list = pointsRecordDao.listPointsExpenditureOnConsumerSide(
+                consumerId, searchKey, pagingParams);
+        long count = pointsRecordDao.countPointsExpenditureOnConsumerSide(consumerId, searchKey);
         return new PagingResult<Map<String, Object>>(list, count);
     }
 }

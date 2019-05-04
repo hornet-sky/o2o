@@ -79,7 +79,7 @@ public interface PointsRecordDao {
      */  
     List<Map<String, Object>> listShopPointsRecordDetailOnConsumerSide(@Param("consumerId") Long consumerId, @Param("shopId") Long shopId, @Param("beginDate") String beginDate, @Param("endDate") String endDate, @Param("searchKey") String searchKey, @Param("isPointsInShow") Boolean isPointsInShow, @Param("isPointsOutShow") Boolean isPointsOutShow, @Param("pagingParams") PagingParams pagingParams);
     /**  
-     * <p>统计指定条件及分页参数的店铺积分详情数量</p>  
+     * <p>统计指定条件的店铺积分详情数量</p>  
      * @param consumerId 所属顾客ID
      * @param shopId 所属店铺ID
      * @param beginDate 开始日期
@@ -90,4 +90,19 @@ public interface PointsRecordDao {
      * @return  店铺积分详情数量
      */  
     long countShopPointsRecordDetailOnConsumerSide(@Param("consumerId") Long consumerId, @Param("shopId") Long shopId, @Param("beginDate") String beginDate, @Param("endDate") String endDate, @Param("searchKey") String searchKey, @Param("isPointsInShow") Boolean isPointsInShow, @Param("isPointsOutShow") Boolean isPointsOutShow);
+    /**  
+     * <p>查找指定条件及分页参数的积分支出列表</p>  
+     * @param consumerId 顾客ID
+     * @param searchKey 关键字
+     * @param pagingParams 分页参数
+     * @return  积分支出列表
+     */  
+    List<Map<String, Object>> listPointsExpenditureOnConsumerSide(@Param("consumerId") Long consumerId, @Param("searchKey") String searchKey, @Param("pagingParams") PagingParams pagingParams);
+    /**  
+     * <p>统计指定条件的积分支出记录的数量</p>  
+     * @param consumerId 顾客ID
+     * @param searchKey 关键字
+     * @return  积分支出记录的数量
+     */  
+    long countPointsExpenditureOnConsumerSide(@Param("consumerId") Long consumerId, @Param("searchKey") String searchKey);
 }

@@ -376,4 +376,51 @@
         </where>
         ) r 
   </select>
+  <select id="listPointsExpenditureOnConsumerSide" resultType="map">
+      SELECT 
+		  r.`record_id`,
+		  r.`product_id`,
+		  r.`shop_id`,
+		  r.`shop_name`,
+		  r.`points`,
+		  r.`create_time`,
+		  a.`award_name`,
+		  a.`award_img` 
+		FROM
+		  `tb_points_record` r 
+		  LEFT JOIN `tb_award` a 
+		    ON r.`product_id` = a.`award_id` 
+		WHERE r.`oper_type` = -1 
+		  AND r.`consumer_visible` = 1 
+		  AND r.`valid` = 1 
+		  <if test="consumerId != null">
+		  AND r.`consumer_id` = #{consumerId} 
+		  </if>
+		  <if test="searchKey != null and searchKey != ''">
+		  AND (a.`award_name` LIKE CONCAT('%', #{searchKey}, '%') 
+              OR r.`shop_name` LIKE CONCAT('%', #{searchKey}, '%'))
+		  </if>
+		ORDER BY r.`create_time` DESC
+		<if test="pagingParams != null and pagingParams.rowIndex != null and pagingParams.rowSize != null">
+          LIMIT #{pagingParams.rowIndex}, #{pagingParams.rowSize}
+        </if>
+  </select>
+  <select id="countPointsExpenditureOnConsumerSide" resultType="long">
+      SELECT 
+          COUNT(1)
+      FROM
+        `tb_points_record` r 
+        LEFT JOIN `tb_award` a 
+          ON r.`product_id` = a.`award_id` 
+      WHERE r.`oper_type` = -1 
+        AND r.`consumer_visible` = 1 
+        AND r.`valid` = 1 
+        <if test="consumerId != null">
+        AND r.`consumer_id` = #{consumerId} 
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+        AND (a.`award_name` LIKE CONCAT('%', #{searchKey}, '%') 
+            OR r.`shop_name` LIKE CONCAT('%', #{searchKey}, '%'))
+        </if>
+  </select>
 </mapper>

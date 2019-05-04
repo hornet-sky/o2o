@@ -52,4 +52,13 @@ public interface PointsRecordService {
      * @return  带分页特性的店铺积分详情集合
      */  
     PagingResult<Map<String, Object>> listShopPointsRecordDetailOnConsumerSide(Long consumerId, Long shopId, String beginDate, String endDate, String searchKey, Boolean isPointsInShow, Boolean isPointsOutShow, Integer pageNo, Integer pageSize);
+    /**  
+     * <p>查找指定条件及分页参数的积分支出记录集合</p>  
+     * @param consumerId 所属顾客ID
+     * @param searchKey 关键字
+     * @param pageNo 页码，从1开始
+     * @param pageSize 每页大小
+     * @return  带分页特性的积分支出记录集合
+     */  
+    PagingResult<Map<String, Object>> listPointsExpenditureOnConsumerSide(Long consumerId, String searchKey, Integer pageNo, Integer pageSize);
 }

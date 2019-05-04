@@ -106,4 +106,33 @@ public class ConsumerInfoController {
             return new OperationResult<PointsRecord, PointsRecordOperStateEnum>(PointsRecordOperStateEnum.OPERATION_FAILURE, e);
         }
     }
+    
+    @GetMapping("/loadpointsexpenditureinitdata")
+    @ResponseBody
+    public Result loadPointsExpenditureInitData() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result.put("resourcesServerContextPath", commonService.getResourcesServerContextPath());
+        } catch (Exception e) {
+            logger.error("获取资源服务器上下文路径失败", e);
+            new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.INITIALIZATION_FAILURE.getState(), "获取资源服务器上下文路径失败");
+        }
+        return new OperationResult<Map<String, Object>, CommonOperStateEnum>(CommonOperStateEnum.OPERATION_SUCCESS, result);
+    }
+    
+    @GetMapping("/loadpointsexpenditurelist")
+    @ResponseBody
+    public Result loadPointsExpenditureList(
+            @RequestParam(name = "searchKey", required = false) String searchKey,
+            @RequestParam(name = "pageNo", required = false, defaultValue = "1") Integer pageNo, 
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+            HttpSession session) {
+        UserInfo userInfo = (UserInfo) session.getAttribute("user");
+        try {
+            return pointsRecordService.listPointsExpenditureOnConsumerSide(userInfo.getUserId(), searchKey, pageNo, pageSize);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new OperationResult<PointsRecord, PointsRecordOperStateEnum>(PointsRecordOperStateEnum.OPERATION_FAILURE, e);
+        }
+    }
 }
